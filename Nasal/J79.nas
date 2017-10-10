@@ -2,9 +2,11 @@
 #License: GPLv2+
 
 
+
+#temporary engine startup script for testing the FDM.
+
 var TRUE = 1;
 var FALSE = 0;
-
 
 source = {
 cutoff1: 	"/controls/engines/engine/cutoff",
@@ -20,7 +22,6 @@ engine2Starter:  "/controls/engines/engine[1]/starter",
 };
 
 var runit = TRUE;
-
 
 var openFuelCutoff = func ()
 {
@@ -40,7 +41,5 @@ var init = func ()
 	setprop(source.engine2Starter, TRUE);
 
 	settimer(openFuelCutoff, 10);
-
-
 
 } _setlistener("/nasal/J79/loaded", init);
