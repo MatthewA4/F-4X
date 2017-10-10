@@ -1,4 +1,4 @@
-# F-4_Phantom_II
+# F-4 Phantom II for FlightGear Flight Simulator
 
 ----------------------------------------------------------
 Copyright (C) 2017  Matthew A.
@@ -19,7 +19,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See LICENSE file for the GPL version 2 text.
 ----------------------------------------------------------
-
-F-4 Phantom II for FlightGear Flight Simulator
 
 This project is still very early in development.
