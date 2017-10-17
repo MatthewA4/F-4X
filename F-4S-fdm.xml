@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="http://jsbsim.sourceforge.net/JSBSim.xsl"?>
-<fdm_config name="F-4J/S" version="2.0" release="ALPHA"
+<fdm_config name="F-4S" version="2.0" release="ALPHA"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
 
@@ -8,11 +8,11 @@
   <author> Matthew A. </author>
   <filecreationdate>2017-10-08</filecreationdate>
   <version>$Revision: 1.20 $</version>
-  <description> Models a F-4J/S. </description>
+  <description> Models a F-4S. </description>
  </fileheader>
 
 <!--
-  File:     F-4J/S.xml
+  File:     F-4S-fdm.xml
   Inputs:
     name:          F-4J/S
     type:          two-engine transonic/supersonic fighter

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright (C) 2017  Matthew A.
 
@@ -18,8 +18,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 See LICENSE file for the GPL version 2 text.
 -->
+
 <PropertyList>
+	<sim>
+		<author>Matthew A.</author>
+		<description>F-4S Phantom II</description>
+		<aircraft-version>0.1</aircraft-version>
+		<rating>
+			<FDM type="int">0</FDM>
+			<systems type="int">0</systems>
+			<cockpit type="int">0</cockpit>
+			<model type="int">0</model>
+		</rating>
+		<status>Alpha</status>
+
+		<flight-model>jsb</flight-model>
+		<aero>F-4S-fdm</aero>
+
 		<model>
-			<path>F-4J_S.ac</path>
+			<path>Models/F-4S.xml</path>
 		</model>
+	</sim>
+	<nasal>
+		<init>
+			<file>Aircraft/F-4X/Nasal/init.nas</file>
+		</init>
+
+		<electrical>
+			<file>Aircraft/F-4X/Nasal/electrical.nas</file>
+		</electrical>
+
+		<J79>
+			<file>Aircraft/F-4X/Nasal/J79.nas</file>
+		</J79>
+
+		<realism>
+		    	<file>Aircraft/F-4X/Nasal/realism.nas</file>
+		</realism>
+        </nasal>   
 </PropertyList>
