@@ -1,8 +1,6 @@
 #Copyright (C) 2017 Matthew A.
 #License: GPLv2+
 
-
-
 #temporary engine startup script for testing the FDM.
 
 var TRUE = 1;
@@ -40,6 +38,6 @@ var init = func ()
 	setprop(source.engine1Starter, TRUE);
 	setprop(source.engine2Starter, TRUE);
 
-	settimer(openFuelCutoff, 10);
+	settimer(openFuelCutoff, 5);
 
 } _setlistener("/nasal/J79/loaded", init);

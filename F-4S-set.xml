@@ -40,10 +40,6 @@ See LICENSE file for the GPL version 2 text.
 		</model>
 	</sim>
 	<nasal>
-		<init>
-			<file>Aircraft/F-4X/Nasal/init.nas</file>
-		</init>
-
 		<electrical>
 			<file>Aircraft/F-4X/Nasal/electrical.nas</file>
 		</electrical>
@@ -52,8 +48,8 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/Nasal/J79.nas</file>
 		</J79>
 
-		<realism>
-		    	<file>Aircraft/F-4X/Nasal/realism.nas</file>
-		</realism>
+		<views>
+		    	<file>Aircraft/F-4X/Nasal/views.nas</file>
+		</views>
         </nasal>   
 </PropertyList>

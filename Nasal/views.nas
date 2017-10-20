@@ -23,7 +23,7 @@ ModelViewEnabled:   	"/sim/view[7]/enabled", #model view
 #disable specific views
 var init = func ()
 {
-    print("successfully loaded realism.nas");
+    print("successfully loaded views.nas");
     setprop(source.HeliViewEnabled, FALSE);
     setprop(source.ChaseViewEnabled, FALSE);
     setprop(source.TowerViewEnabled, FALSE);
@@ -31,7 +31,7 @@ var init = func ()
     setprop(source.ChaseViewNoYawEnabled, FALSE);
     setprop(source.FBWViewEnabled, FALSE);
     setprop(source.ModelViewEnabled, TRUE);
-} _setlistener("/nasal/realism/loaded", init);
+} _setlistener("/nasal/views/loaded", init);
 
 
 var ResetHeliView = func ()
