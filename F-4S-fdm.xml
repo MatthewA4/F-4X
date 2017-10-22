@@ -11,33 +11,6 @@
   <description> Models a F-4S. </description>
  </fileheader>
 
-<!--
-  File:     F-4S-fdm.xml
-  Inputs:
-    name:          F-4J/S
-    type:          two-engine transonic/supersonic fighter
-    max weight:    38000 lb
-    wing span:     38.41 ft
-    length:        57.59 ft
-    wing area:     538.34 sq-ft
-    gear type:     tricycle
-    castering:     
-    retractable?:  yes
-    # engines:     2
-    engine type:   turbine
-    engine layout: aft fuselage
-    yaw damper?    yes
-  Outputs:
-    wing loading:  70.59 lb/sq-ft
-    payload:       -636.0 lbs
-    CL-alpha:      3.6 per radian
-    CL-0:          0.08
-    CL-max:        1
-    CD-0:          0.024
-    K:             0.12
-
--->
-
  <metrics>
    <wingarea  unit="FT2">  538.34 </wingarea>
    <wingspan  unit="FT" >   38.41 </wingspan>
@@ -534,13 +507,27 @@
        </product>
     </function>
 
+    
+    <!-- Reference: ADA101648, page 28 -->
     <function name="aero/force/Lift_elevator">
        <description>Lift due to Elevator Deflection</description>
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
-           <property>fcs/elevator-pos-rad</property>
-           <value>0.2</value>
+	   <property>fcs/elevator-pos-deg</property>
+	   <table>
+		   <independentVar lookup="row">aero/alpha-deg</independentVar>
+		   <tableData>
+			0     0.0070
+			20    0.0057
+			40    0.0046
+			60    0.0037
+			75    0.0030
+			100   0.0030
+			120   0.0030
+		</tableData>
+	</table>
+
        </product>
     </function>
 
