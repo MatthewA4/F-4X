@@ -457,7 +457,8 @@
  <aerodynamics>
 
   <axis name="LIFT">
- <!-- Reference: NASA Technical Note D-7721, page 15 -->
+	  <!-- Reference: NASA Technical Note D-7721, page 15 -->
+	  <!-- Reference: ADA101648, page 28 -->
     <function name="aero/force/Lift_alpha">
       <description>Lift due to alpha</description>
       <product>
@@ -478,6 +479,9 @@
 		    35    1.06
 		    40    1.05
 		    45    1.02
+		    60    0.8
+		    80    0.4
+		    100   -0.2
 	 <!-- -0.20 -0.640
                0.00  0.080
                0.26  1.000
