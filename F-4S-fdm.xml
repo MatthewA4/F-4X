@@ -522,7 +522,7 @@
     </function>
 
     
-    <!-- Reference: ADA101648, page 25, AoA between -15 and 0 implied but not in the source. -->
+    <!-- Reference: ADA101648, page 25, AoA -15 and up to but not including 0 are implied and not in the source. -->
     <function name="aero/force/Lift_elevator">
        <description>Lift due to Elevator Deflection</description>
        <product>
@@ -567,21 +567,42 @@
   </axis>
 
   <axis name="DRAG">
-
+   <!-- Reference: ADA101648 page 25, AoA -15 up to but not including 0 are implied and not found in document. -->
     <function name="aero/force/Drag_basic">
        <description>Drag at zero lift</description>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <table>
-            <independentVar lookup="row">aero/alpha-rad</independentVar>
-            <tableData>
-             -1.57    1.500
-             -0.26    0.031
-              0.00    0.024
-              0.26    0.031
-              1.57    1.500
-            </tableData>
+            <independentVar lookup="row">aero/alpha-deg</independentVar>
+	    <tableData>
+		-15  -0.0247
+		-10  -0.130
+	        -5   -0.066	
+		0    0.035
+		5    0.066
+		10   0.130
+		15   0.247
+		20   0.382
+		25   0.510
+		30   0.655
+		35   0.786
+		40   0.911
+		45   1.011
+		50   1.128
+		55   1.245
+		60   1.352
+		65   1.405
+		70   1.451
+		75   1.493
+		80   1.523
+		85   1.542
+		90   1.570
+		95   1.585
+		100  1.600
+		105  1.583
+		110  1.567
+		</tableData>
           </table>
        </product>
     </function>
