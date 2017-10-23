@@ -522,7 +522,7 @@
     </function>
 
     
-    <!-- Reference: ADA101648, page 28 -->
+    <!-- Reference: ADA101648, page 25, AoA between -15 and 0 implied but not in the source. -->
     <function name="aero/force/Lift_elevator">
        <description>Lift due to Elevator Deflection</description>
        <product>
@@ -532,13 +532,32 @@
 	   <table>
 		   <independentVar lookup="row">aero/alpha-deg</independentVar>
 		   <tableData>
-			0     0.0070
-			20    0.0057
-			40    0.0046
-			60    0.0037
-			75    0.0030
-			100   0.0030
-			120   0.0030
+			-15   -0.00637   
+			-10   -0.00676   
+			-5    -0.00699   
+			0     0.00699
+			5     0.00694
+			10    0.00676
+			15    0.00637
+			20    0.00571
+			25    0.00513
+			30    0.00503
+			35    0.00486
+			40    0.00463
+			45    0.00438
+			50    0.00416
+			55    0.00393
+			60    0.00371
+			65    0.00348
+			70    0.00324
+			75    0.00300
+			80    0.00300
+			85    0.00300
+			90    0.00300
+			95    0.00300
+			100   0.00300
+			105   0.00300
+			110   0.00300
 		</tableData>
 	</table>
 
