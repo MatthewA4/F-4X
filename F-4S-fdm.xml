@@ -613,7 +613,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>aero/cl-squared</property>
-           <value>0.12</value>
+           <value>0</value>
          </product>
     </function>
 
