@@ -458,7 +458,7 @@
 
   <axis name="LIFT">
 	  <!-- Reference: NASA Technical Note D-7721, page 15 -->
-	  <!-- Reference: ADA101648, page 25 -->
+	  <!-- Reference: ADA101648, page 25 for positive AoA including 0-->
     <function name="aero/force/Lift_alpha">
       <description>Lift due to alpha</description>
       <product>
@@ -469,7 +469,7 @@
             <tableData>
 		    -10   -0.4
 		    -5	  -1.12
-		    0     0.12
+		    0     0.122
 		    5     0.4146
 		    10    0.6834
 		    15    0.9053
@@ -492,10 +492,6 @@
 		    100  -0.257
 		    105  -0.402
 		    110  -0.547
-	 <!-- -0.20 -0.640
-               0.00  0.080
-               0.26  1.000
-	       0.60  0.448-->
             </tableData>
           </table>
       </product>
@@ -567,7 +563,8 @@
   </axis>
 
   <axis name="DRAG">
-   <!-- Reference: ADA101648 page 25, AoA -15 up to but not including 0 are implied and not found in document. -->
+    <!-- Reference: ADA101648 page 25 -->
+    <!-- Reference: NASA TN D-7721, page 13  -->
     <function name="aero/force/Drag_basic">
        <description>Drag at zero lift</description>
        <product>
@@ -576,9 +573,8 @@
           <table>
             <independentVar lookup="row">aero/alpha-deg</independentVar>
 	    <tableData>
-		-15  -0.0247
-		-10  -0.130
-	        -5   -0.066	
+		-10  0.07
+		-5   0.038
 		0    0.035
 		5    0.066
 		10   0.130
