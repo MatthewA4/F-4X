@@ -19,7 +19,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See LICENSE file for the GPL version 2 text.
 -->
 <PropertyList>
-		<model>
-			<path>F-4S.ac</path>
-		</model>
+	<path>F-4S.ac</path>
+	<animation>
+		<name>MoveRudder</name>
+		<type>rotate</type>
+		<object-name>Rudder</object-name>
+		<property>controls/flight/rudder</property>
+		<factor>-30</factor>
+		<axis>
+			<x1-m>9.73712</x1-m>
+			<y1-m>0</y1-m>
+			<z1-m>2.86457</z1-m>
+			<x2-m>9.15163</x2-m>
+			<y2-m>0</y2-m>
+			<z2-m>0.101384</z2-m>
+		</axis>
+	</animation>
 </PropertyList>
