@@ -24,7 +24,7 @@ See LICENSE file for the GPL version 2 text.
 		<name>MoveRudder</name>
 		<type>rotate</type>
 		<object-name>Rudder</object-name>
-		<property>controls/flight/rudder</property>
+		<property>surface-positions/rudder-pos-norm</property>
 		<factor>-30</factor>
 		<axis>
 			<x1-m>9.73712</x1-m>
@@ -39,7 +39,7 @@ See LICENSE file for the GPL version 2 text.
 		<name>MoveHorizontalStab</name>
 		<type>rotate</type>
 		<object-name>HorizontalStab</object-name>
-		<property>controls/flight/elevator</property>
+		<property>surface-positions/elevator-pos-norm</property>
 		<factor>30</factor>
 		<axis>
 			<x1-m>8.96876</x1-m>
