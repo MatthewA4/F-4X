@@ -147,8 +147,7 @@
       <z>   0.00 </z>
     </location>
     <orient unit="DEG">
-     <!-- Reference: ADA101648, page 35 -->	    
-      <pitch> 5.75 </pitch>
+      <pitch> 0.00 </pitch>
       <roll>  0.00 </roll>
       <yaw>   0.00 </yaw>
     </orient>
@@ -160,7 +159,8 @@
        <z>   0.00 </z>
      </location>
      <orient unit="DEG">
-       <pitch> 0.00 </pitch>
+	<!-- Reference: ADA101648, page 35 -->	    
+       <pitch> 5.75 </pitch>
        <roll>  0.00 </roll>
        <yaw>   0.00 </yaw>
      </orient>
@@ -174,8 +174,7 @@
       <z>   0.00 </z>
     </location>
     <orient unit="DEG">
-    <!-- Reference: ADA101648, page 35 -->	    
-     <pitch> 5.75 </pitch>
+     <pitch>  0.00 </pitch>
       <roll>  0.00 </roll>
       <yaw>   0.00 </yaw>
     </orient>
@@ -187,7 +186,8 @@
        <z>   0.00 </z>
      </location>
      <orient unit="DEG">
-       <pitch> 0.00 </pitch>
+    <!-- Reference: ADA101648, page 35 -->	    
+       <pitch> 5.75 </pitch>
        <roll>  0.00 </roll>
        <yaw>   0.00 </yaw>
      </orient>
@@ -460,7 +460,7 @@
 	  <!-- Reference: NASA Technical Note D-7721, page 15 -->
 	  <!-- Reference: ADA101648, page 25 for positive AoA including 0-->
     <function name="aero/force/Lift_alpha">
-      <description>Lift due to alpha</description>
+      <description>CL_BASIC</description>
       <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
@@ -520,7 +520,7 @@
     
     <!-- Reference: ADA101648, page 25, AoA -15 and up to but not including 0 are implied and not in the source. -->
     <function name="aero/force/Lift_elevator">
-       <description>Lift due to Elevator Deflection</description>
+       <description>CL_STAB</description>
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
@@ -566,7 +566,7 @@
     <!-- Reference: ADA101648 page 25 -->
     <!-- Reference: NASA TN D-7721, page 13  -->
     <function name="aero/force/Drag_basic">
-       <description>Drag at zero lift</description>
+       <description>CD_BASIC</description>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
@@ -693,9 +693,9 @@
 
   <axis name="SIDE">
 
-<!-- Reference: NASA Technical Note D-7721, page 15-19 -->
+<!-- Reference: NASA TN-D-7721, page 15-19 -->
     <function name="aero/force/Side_beta">
-       <description>Side force due to beta</description>
+       <description>CY_B</description>
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
@@ -717,14 +717,26 @@
 
   <axis name="ROLL">
 
+ <!-- Reference: NASA-TN-D-7721, pages 15-19 --> 	  
     <function name="aero/moment/Roll_beta">
-       <description>Roll moment due to beta</description>
+       <description>Cl_beta</description>
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/bw-ft</property>
-           <property>aero/beta-rad</property>
-           <value>-0.1</value>
+	   <table>
+		   <independentVar lookup="row">aero/beta-deg</independentVar>
+		   <independentVar lookup="column">aero/alpha-deg</independentVar>
+	   <tableData>
+	                   0       5      10     15       20        25      30      35       40       45
+	         -10   0.006   0.010  0.012   -0.005   0.0001   0.0085    0.02   0.029    0.032    0.025
+		 -5    0.005   0.007  0.008    0.005   -0.009    0.003    0.011  0.014    0.015    0.013 
+		 0     0.002   0.001  0.0005  -0.002   0.000     0.000    0.002  0.001    -0.002   -0.001
+		 5    -0.005  -0.001  -0.005  -0.005   0.002    -0.002   -0.008  -0.0125  -0.0115   -0.0065
+		 10   -0.006  -0.005  -0.01   -0.007   -0.0055  -0.0099   -0.02  -0.025   -0.0295   -0.0225
+	 </tableData>
+	 </table>
+
        </product>
     </function>
 
