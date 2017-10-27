@@ -50,4 +50,35 @@ See LICENSE file for the GPL version 2 text.
 			<z2-m>0.6917447</z2-m>
 		</axis>
 	</animation>
+	<animation>
+		<name>MoveLeftAileron</name>
+		<type>rotate</type>
+		<object-name>LeftWingAileron</object-name>
+		<property>surface-positions/left-aileron-pos-norm</property>
+		<factor>30</factor>
+		<axis>
+			<x1-m>4.42033</x1-m>
+			<y1-m>-4.17459</y1-m>
+			<z1-m>-0.59628</z1-m>
+			<x2-m>3.80134</x2-m>
+			<y2-m>-2.27278</y2-m>
+			<z2-m>-0.59628</z2-m>
+		</axis>
+	</animation>
+
+	<animation>
+		<name>MoveRightAileron</name>
+		<type>rotate</type>
+		<object-name>RightWingAileron</object-name>
+		<property>surface-positions/right-aileron-pos-norm</property>
+		<factor>30</factor>
+		<axis>
+			<x1-m>4.42033</x1-m>
+			<y1-m>4.17459</y1-m>
+			<z1-m>-0.59628</z1-m>
+			<x2-m>3.80134</x2-m>
+			<y2-m>2.27278</y2-m>
+			<z2-m>-0.59628</z2-m>
+		</axis>
+	</animation>
 </PropertyList>

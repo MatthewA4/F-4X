@@ -299,7 +299,7 @@
         <max>  0.35 </max>
       </domain>
       <range>
-        <min> -1 </min>
+        <min>  0 </min>
         <max>  1 </max>
       </range>
       <output>fcs/left-aileron-pos-norm</output>
@@ -312,8 +312,8 @@
         <max>  0.35 </max>
       </domain>
       <range>
-        <min> -1 </min>
-        <max>  1 </max>
+        <min>  -1 </min>
+	<max>   0 </max>
       </range>
       <output>fcs/right-aileron-pos-norm</output>
    </aerosurface_scale>
