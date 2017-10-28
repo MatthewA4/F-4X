@@ -846,6 +846,60 @@
 	    </product>
     </function>
 
+    <!-- Reference: ADA101648, page 26 -->
+    <function name="aero/moment/Roll_left_spoiler">
+	    <description>CRDSP left spoiler</description>
+	    <product>
+		    <property>aero/qbar-psf</property>
+		    <property>metrics/Sw-sqft</property>
+		    <property>metrics/Sw-sqft</property>
+		    <value>45</value>
+		    <property>fcs/left-spoiler-pos-norm</property>
+		    <table>
+			    <independentVar lookup="row">aero/alpha-deg</independentVar>
+			    <tableData>
+				    0   0.000130
+				    5   0.000140
+				    10  0.000093
+				    15  0.000066
+				    20  0.000054
+				    25  0.000040
+				    30  0.000030
+				    35  0.000020
+				    40  0.000010
+				    45  0.000000
+			    </tableData>
+		    </table>
+	    </product>
+    </function>
+
+    <!-- Reference: ADA101648, page 26 -->
+     <function name="aero/moment/Roll_right_spoiler">
+	    <description>CRDSP right spoiler</description>
+	    <product>
+		    <property>aero/qbar-psf</property>
+		    <property>metrics/Sw-sqft</property>
+		    <property>metrics/Sw-sqft</property>
+		    <value>45</value>
+		    <property>fcs/right-spoiler-pos-norm</property>
+		    <table>
+			    <independentVar lookup="row">aero/alpha-deg</independentVar>
+			    <tableData>
+				    0   0.000130
+				    5   0.000140
+				    10  0.000093
+				    15  0.000066
+				    20  0.000054
+				    25  0.000040
+				    30  0.000030
+				    35  0.000020
+				    40  0.000010
+				    45  0.000000
+			    </tableData>
+		    </table>
+	    </product>
+    </function>
+    
     <function name="aero/moment/Roll_rudder">
        <description>Roll moment due to rudder</description>
        <product>
