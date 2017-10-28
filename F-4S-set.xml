@@ -39,6 +39,13 @@ See LICENSE file for the GPL version 2 text.
 			<path>Models/F-4S.xml</path>
 		</model>
 	</sim>
+
+	<surface-positions>
+		<left-spoiler-pos-norm alias="/fdm/jsbsim/fcs/left-spoiler-pos-norm"/>
+		<right-spoiler-pos-norm alias="/fdm/jsbsim/fcs/right-spoiler-pos-norm"/>
+	</surface-positions>
+
+
 	<nasal>
 		<electrical>
 			<file>Aircraft/F-4X/Nasal/electrical.nas</file>
@@ -51,5 +58,5 @@ See LICENSE file for the GPL version 2 text.
 		<views>
 		    	<file>Aircraft/F-4X/Nasal/views.nas</file>
 		</views>
-        </nasal>   
+	</nasal>
 </PropertyList>
