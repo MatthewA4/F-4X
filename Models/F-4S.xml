@@ -25,7 +25,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>Rudder</object-name>
 		<property>surface-positions/rudder-pos-norm</property>
-		<factor>-30</factor>
+		<factor>-1</factor>
 		<axis>
 			<x1-m>9.73712</x1-m>
 			<y1-m>0</y1-m>
@@ -40,7 +40,6 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>HorizontalStab</object-name>
 		<property>surface-positions/elevator-pos-norm</property>
-		<factor>30</factor>
 		<axis>
 			<x1-m>8.96876</x1-m>
 			<y1-m>-1.26672</y1-m>
@@ -55,7 +54,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>LeftWingAileron</object-name>
 		<property>surface-positions/left-aileron-pos-norm</property>
-		<factor>30</factor>
+		<factor>1</factor>
 		<axis>
 			<x1-m>4.42033</x1-m>
 			<y1-m>-4.17459</y1-m>
@@ -71,7 +70,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>RightWingAileron</object-name>
 		<property>surface-positions/right-aileron-pos-norm</property>
-		<factor>30</factor>
+		<factor>1</factor>
 		<axis>
 			<x1-m>4.42033</x1-m>
 			<y1-m>4.17459</y1-m>
@@ -87,7 +86,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>RightWingSpoiler1</object-name>
 		<property>surface-positions/right-spoiler-pos-norm</property>
-		<factor>-45</factor>
+		<factor>-1</factor>
 		<axis>
 			<x1-m>3.20712</x1-m>
 			<y1-m>2.29796</y1-m>
@@ -102,7 +101,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>RightWingSpoiler2</object-name>
 		<property>surface-positions/right-spoiler-pos-norm</property>
-		<factor>-45</factor>
+		<factor>-1</factor>
 		<axis>
 			<x1-m>3.20712</x1-m>
 			<y1-m>2.29796</y1-m>
@@ -118,7 +117,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>LeftWingSpoiler1</object-name>
 		<property>surface-positions/left-spoiler-pos-norm</property>
-		<factor>-45</factor>
+		<factor>-1</factor>
 		<axis>
 			<x1-m>3.20712</x1-m>
 			<y1-m>-2.29796</y1-m>
@@ -133,7 +132,7 @@ See LICENSE file for the GPL version 2 text.
 		<type>rotate</type>
 		<object-name>LeftWingSpoiler2</object-name>
 		<property>surface-positions/left-spoiler-pos-norm</property>
-		<factor>-45</factor>
+		<factor>-1</factor>
 		<axis>
 			<x1-m>3.20712</x1-m>
 			<y1-m>-2.29796</y1-m>
