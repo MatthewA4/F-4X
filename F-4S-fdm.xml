@@ -318,6 +318,32 @@
       <output>fcs/right-aileron-pos-norm</output>
    </aerosurface_scale>
 
+   <aerosurface_scale name="Left spoiler normalization">
+	   <input>fcs/left-aileron-pos-rad</input>
+	   <domain>
+		   <min> -0.35 </min>
+		   <max> 0.35 </max>
+	   </domain>
+	   <range>
+		   <min> -1 </min>
+		   <max>  0 </max>
+	   </range>
+	   <output>fcs/left-spoiler-pos-norm</output>
+   </aerosurface_scale>
+
+   <aerosurface_scale name="Right spoiler normalization">
+	   <input>fcs/right-aileron-pos-rad</input>
+	   <domain>
+		   <min> -0.35 </min>
+		   <max> 0.35 </max>
+	   </domain>
+	   <range>
+		   <min> 0 </min>
+		   <max> 1 </max>
+	   </range>
+	   <output>fcs/right-spoiler-pos-norm</output>
+   </aerosurface_scale>
+
   </channel>
 
   <property value="1">fcs/yaw-damper-enable</property>
@@ -713,6 +739,7 @@
  	</table>
        </product>
     </function>
+
   </axis>
 
   <axis name="ROLL">
@@ -764,15 +791,59 @@
        </product>
     </function>
 
-    <function name="aero/moment/Roll_aileron">
-       <description>Roll moment due to aileron</description>
+<!-- Reference: ADA101648, page 26 -->
+    <function name="aero/moment/Roll_left_aileron">
+       <description>CRDA left aileron</description>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
-          <property>metrics/bw-ft</property>
-          <property>fcs/left-aileron-pos-rad</property>
-          <value>0.12</value>
+	  <property>metrics/bw-ft</property>
+	  <value>30</value>
+	  <property>fcs/left-aileron-pos-norm</property>
+		    <table>
+			    <independentVar lookup="row">aero/alpha-deg</independentVar>
+			    <tableData>
+				    0    0.000448
+				    5    0.000459
+				    10   0.000431
+				    15   0.000405
+				    20   0.000379
+				    25   0.000354
+				    30   0.000312
+				    35   0.000210
+				    40   0.000105
+				    45   0.000000
+			    </tableData>
+		    </table>
+
        </product>
+    </function>
+
+    <!-- Reference: ADA101648, page 26 -->
+    <function name="aero/moment/Roll_right_aileron">
+	    <description>CRDA right aileron</description>
+	    <product>
+		    <property>aero/qbar-psf</property>
+		    <property>metrics/Sw-sqft</property>
+		    <property>metrics/bw-ft</property>
+		    <value>30</value>
+		    <property>fcs/right-aileron-pos-norm</property>
+		    <table>
+			    <independentVar lookup="row">aero/alpha-deg</independentVar>
+			    <tableData>
+				    0    0.000448
+				    5    0.000459
+				    10   0.000431
+				    15   0.000405
+				    20   0.000379
+				    25   0.000354
+				    30   0.000312
+				    35   0.000210
+				    40   0.000105
+				    45   0.000000
+			    </tableData>
+		    </table>
+	    </product>
     </function>
 
     <function name="aero/moment/Roll_rudder">
