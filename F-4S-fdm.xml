@@ -901,15 +901,30 @@
 		    </table>
 	    </product>
     </function>
-    
+
+    <!-- Reference: ADA101648, page 26 --> 
     <function name="aero/moment/Roll_rudder">
-       <description>Roll moment due to rudder</description>
+       <description>CRDR</description>
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/bw-ft</property>
-           <property>fcs/rudder-pos-rad</property>
-           <value>0.01</value>
+	   <property>fcs/rudder-pos-norm</property>
+	   <table>
+		   <independentVar lookup="row">aero/alpha-deg</independentVar>
+		   <tableData>
+			   0    0.000199
+			   5    0.000165
+			   10   0.000135
+			   15   0.000116
+			   20   0.000092
+			   25   0.000069
+			   30   0.000052
+			   35   0.000035
+			   40   0.000017
+			   45   0.000000
+		   </tableData>
+	   </table>
        </product>
     </function>
 
