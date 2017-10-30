@@ -656,8 +656,8 @@
                 0.00      0.000
                 0.81      0.000
                 1.00      0.28
-		1.20      0.23
-		2.5       0.19
+                1.20      0.23
+                2.5       0.19
             </tableData>
           </table>
         </product>
@@ -789,7 +789,31 @@
             <property>fcs/right-spoiler-pos-norm</property>
         </product>
     </function>
-        
+    
+    <!-- Reference: ADA101648, page 25 -->
+    <function name="aero/force/CYDR">
+        <description>Cy due to rudder position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <property>fcs/rudder-pos-norm</property>
+            <table>
+                <independentVar lookup="row">aero/alpha-deg</independentVar>
+                <tableData>
+                    0   0.00151
+                    5   0.00142
+                    10  0.00134
+                    15  0.00130
+                    20  0.00124
+                    25  0.00098
+                    30  0.00073
+                    35  0.00048
+                    40  0.00024
+                    45  0.00000
+                </tableData>
+            </table>
+        </product>
+    </function>
   </axis>
 
   <axis name="ROLL">
