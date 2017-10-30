@@ -745,7 +745,51 @@
  	</table>
        </product>
     </function>
-
+    
+    <!-- Reference: ADA101648, page 17 -->
+    <function name="aero/force/CYDA_left">
+        <description>Cy due to left aileron position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <value>-0.000167</value>
+            <property>fcs/left-aileron-pos-norm</property>
+        </product>
+    </function>
+    
+    <!-- Reference: ADA101648, page 17 -->
+    <function name="aero/force/CYDA_right">
+        <description>Cy due to right aileron position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <value>-0.000167</value>
+            <property>fcs/right-aileron-pos-norm</property>
+        </product>
+    </function>
+    
+    <!-- Reference: ADA101648, page 17 -->
+    <function name="aero/force/CYDSP_left">
+        <description>Cy due to left spoiler position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <value>-0.00006</value>
+            <property>fcs/left-spoiler-pos-norm</property>
+        </product>
+    </function>
+    
+     <!-- Reference: ADA101648, page 17 -->
+    <function name="aero/force/CYDSP_right">
+        <description>Cy due to right spoiler position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <value>-0.00006</value>
+            <property>fcs/right-spoiler-pos-norm</property>
+        </product>
+    </function>
+        
   </axis>
 
   <axis name="ROLL">
