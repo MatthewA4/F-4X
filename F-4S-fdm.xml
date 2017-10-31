@@ -261,6 +261,15 @@
       </range>
       <output>fcs/elevator-pos-norm</output>
    </aerosurface_scale>
+   
+<aerosurface_scale name="elevator norm radians">
+    <input>fcs/elevator-pos-norm</input>
+    <range>
+        <min>-0.35</min>
+        <max>0.35</max>
+    </range>
+    <output>fcs/elevator-pos-norm-rad</output>
+</aerosurface_scale>
 
   </channel>
 
@@ -716,7 +725,7 @@
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
-           <abs><property>fcs/elevator-pos-norm</property></abs>
+           <abs><property>fcs/elevator-pos-norm-rad</property></abs>
            <value>0.04</value>
        </product>
     </function>
@@ -1069,18 +1078,40 @@
        </product>
     </function>
 
-    <function name="aero/moment/Pitch_elevator">
+    <!-- Reference: ADA101648, page 27 -->
+    <function name="aero/moment/CM_STAB">
        <description>Pitch moment due to elevator</description>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/elevator-pos-rad</property>
+          <property>fcs/elevator-pos-norm-rad</property>
           <table>
-            <independentVar lookup="row">velocities/mach</independentVar>
+            <independentVar lookup="row">aero/alpha-deg</independentVar>
             <tableData>
-              0.0     -0.800
-              2.0     -0.200
+                0   -0.01010
+                5   -0.01004
+                10  -0.00981
+                15  -0.00926
+                20  -0.00828
+                25  -0.00745
+                30  -0.00733
+                35  -0.00677
+                40  -0.00627
+                45  -0.00572
+                50  -0.00519
+                55  -0.00466
+                60  -0.00414
+                65  -0.00361
+                70  -0.00308
+                75  -0.00256
+                80  -0.00202
+                85  -0.00150
+                90  -0.00099
+                95  -0.00052
+                100  0.00000
+                105  0.00000
+                110  0.00000
             </tableData>
           </table>
        </product>
