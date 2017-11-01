@@ -20,10 +20,10 @@
    <htailarm  unit="FT" >   17.70 </htailarm>
    <vtailarea unit="FT2">   67.50 </vtailarea>
    <vtailarm  unit="FT" >    6.38 </vtailarm>
-   <location name="AERORP" unit="IN">
-     <x> 478.62 </x>
+   <location name="AERORP" unit="M">
+     <x>   0.80354  </x>
      <y>   0.00 </y>
-     <z>   0.00 </z>
+     <z>   0.37 </z>
    </location>
    <location name="EYEPOINT" unit="IN">
      <x> 138.22 </x>
@@ -47,28 +47,28 @@
    <!-- End Reference -->
    <emptywt unit="LBS" >     30770 </emptywt>
    <location name="CG" unit="IN">
-     <x> 478.62 </x>
-     <y>   0.00 </y>
-     <z> -17.28 </z>
+     <x> 20.00 </x>
+     <y> 0.00 </y>
+     <z> 0.00 </z>
    </location>
-   <pointmass name="Payload">
+   <!-- <pointmass name="Payload">
     <description> -636 LBS + full (7866 LBS) fuel should bring model up to entered max weight</description>
     <weight unit="LBS">   -318.0 </weight>
     <location name="POINTMASS" unit="IN">
-      <x> 478.62 </x>
+      <x>   0.00 </x>
       <y>   0.00 </y>
-      <z> -17.28 </z>
+      <z>   0.00 </z>
     </location>
-  </pointmass> 
+    </pointmass> -->
  </mass_balance>
 
  <ground_reactions>
 
   <contact type="BOGEY" name="NOSE">
-   <location unit="IN">
-     <x>  89.84 </x>
-     <y>   0.00 </y>
-     <z> -82.93 </z>
+   <location unit="M">
+     <x>  -4.60491 </x>
+     <y>   0.00    </y>
+     <z>  -2.19997 </z>
    </location>
    <static_friction>  0.80 </static_friction>
    <dynamic_friction> 0.50 </dynamic_friction>
@@ -81,10 +81,10 @@
   </contact>
 
   <contact type="BOGEY" name="LEFT_MAIN">
-   <location unit="IN">
-     <x> 497.76 </x>
-     <y> -41.48 </y>
-     <z> -82.93 </z>
+   <location unit="M">
+     <x>  1.36855 </x>
+     <y> -2.75707 </y>
+     <z> -2.25371 </z>
    </location>
    <static_friction>  0.80 </static_friction>
    <dynamic_friction> 0.50 </dynamic_friction>
@@ -97,10 +97,10 @@
   </contact>
 
   <contact type="BOGEY" name="RIGHT_MAIN">
-   <location unit="IN">
-     <x> 497.76 </x>
-     <y>  41.48 </y>
-     <z> -82.93 </z>
+   <location unit="M">
+     <x>  1.36855 </x>
+     <y>  2.75707 </y>
+     <z> -2.25371 </z>
    </location>
    <static_friction>  0.80 </static_friction>
    <dynamic_friction> 0.50 </dynamic_friction>
@@ -113,10 +113,10 @@
   </contact>
 
   <contact type="STRUCTURE" name="LEFT_WING">
-    <location unit="IN">
-     <x> 478.62 </x>
-     <y> -19.20 </y>
-     <z> -17.28 </z>
+    <location unit="M">
+     <x> 4.92865 </x>
+     <y> -5.85857 </y>
+     <z> -0.6969805 </z>
     </location>
     <static_friction>  1.00 </static_friction>
     <dynamic_friction> 1.00 </dynamic_friction>
@@ -126,9 +126,9 @@
 
   <contact type="STRUCTURE" name="RIGHT_WING">
     <location unit="IN">
-     <x> 478.62 </x>
-     <y>  19.20 </y>
-     <z> -17.28 </z>
+     <x> 4.92865 </x>
+     <y>  5.85857 </y>
+     <z> -0.6969805 </z>
     </location>
     <static_friction>  1.00 </static_friction>
     <dynamic_friction> 1.00 </dynamic_friction>
@@ -141,22 +141,22 @@
  <propulsion>
 
    <engine file="J79-GE-10">
-    <location unit="IN">
-      <x> 631.08 </x>
-      <y> -20.00 </y>
-      <z>   0.00 </z>
+    <location unit="M">
+      <x> 3.98235 </x>
+      <y> -0.731923 </y>
+      <z> -0.158145 </z>
     </location>
     <orient unit="DEG">
       <pitch> 0.00 </pitch>
       <roll>  0.00 </roll>
       <yaw>   0.00 </yaw>
     </orient>
-    <feed>0</feed>
+    <feed>7</feed>
     <thruster file="direct">
-     <location unit="IN">
-       <x> 631.08 </x>
-       <y> -20.00 </y>
-       <z>   0.00 </z>
+     <location unit="M">
+       <x> 5.85124 </x>
+       <y> -0.621589 </y>
+       <z> -0.434733 </z>
      </location>
      <orient unit="DEG">
 	<!-- Reference: ADA101648, page 35 -->	    
@@ -168,22 +168,22 @@
   </engine>
 
    <engine file="J79-GE-10">
-    <location unit="IN">
-      <x> 631.08 </x>
-      <y>  20.00 </y>
-      <z>   0.00 </z>
+    <location unit="M">
+      <x> 3.98235 </x>
+      <y> 0.731923 </y>
+      <z> -0.158145 </z>
     </location>
     <orient unit="DEG">
      <pitch>  0.00 </pitch>
       <roll>  0.00 </roll>
       <yaw>   0.00 </yaw>
     </orient>
-    <feed>1</feed>
+    <feed>8</feed>
     <thruster file="direct">
-     <location unit="IN">
-       <x> 631.08 </x>
-       <y>  20.00 </y>
-       <z>   0.00 </z>
+     <location unit="M">
+       <x> 5.85124 </x>
+       <y> 0.621589 </y>
+       <z>-0.434733 </z>
      </location>
      <orient unit="DEG">
     <!-- Reference: ADA101648, page 35 -->	    
@@ -194,34 +194,104 @@
     </thruster>
   </engine>
 
-  <tank type="FUEL" number="0">
-     <location unit="IN">
-       <x> 478.62 </x>
+  <!-- Fuel tank quanities come from the NAVAIR 01-245FDD-1, Change 2 -->
+  
+  <!-- Fuel Cell #1 -->
+  <tank type="FUEL" n="0">
+      <location unit="M">
+          <x> -1.20 </x>
+          <y>  0.00000 </y>
+          <z>  0.37889 </z>
+      </location>
+      <capacity unit="LBS"> 1571 </capacity>
+      <contents unit="LBS"> 1571 </contents>
+  </tank>
+  
+  <!-- Fuel Cell #2 -->
+  <tank type="FUEL" n="1">
+      <location unit="M">
+       <x> -0.8 </x>
        <y>   0.00 </y>
-       <z> -17.28 </z>
+       <z>  0.7575 </z>
      </location>
-     <capacity unit="LBS"> 2622.00 </capacity>
-     <contents unit="LBS"> 1311.00 </contents>
+     <capacity unit="LBS"> 1503 </capacity>
+     <contents unit="LBS"> 1503 </contents>
   </tank>
 
-  <tank type="FUEL" number="1">
-     <location unit="IN">
-       <x> 478.62 </x>
+  <!-- Fuel Cell #3 -->
+  <tank type="FUEL" n="2">
+      <location unit="M">
+       <x> 0.703104 </x>
        <y>   0.00 </y>
-       <z> -17.28 </z>
+       <z> 0.8 </z>
      </location>
-     <capacity unit="LBS"> 2622.00 </capacity>
-     <contents unit="LBS"> 1311.00 </contents>
+     <capacity unit="LBS"> 1115 </capacity>
+     <contents unit="LBS"> 1115 </contents>
+  </tank>
+  
+  <!-- Fuel Cell #4 -->
+  <tank type="FUEL" n="3">
+      <location unit="M">
+          <x> 2.15 </x>
+          <y> 0.0000 </y>
+          <z> 0.8075 </z>
+      </location>
+      <capacity unit="LBS"> 1503 </capacity>
+      <contents unit="LBS"> 1503 </contents>
   </tank>
 
-  <tank type="FUEL" number="2">
-     <location unit="IN">
-       <x> 478.62 </x>
-       <y>   0.00 </y>
-       <z> -17.28 </z>
+  <!-- Fuel Cell #5 -->
+  <tank type="FUEL" n="4">
+      <location unit="M">
+       <x> 2.5 </x>
+       <y> 0.00 </y>
+       <z> 0.65 </z>
      </location>
-     <capacity unit="LBS"> 2622.00 </capacity>
-     <contents unit="LBS"> 1311.00 </contents>
+     <capacity unit="LBS"> 1367 </capacity>
+     <contents unit="LBS"> 1367 </contents>
+  </tank>
+  
+  <!-- Fuel Cell #6 -->
+  <tank type="FUEL" n="5">
+      <location unit="M">
+       <x> 4.6 </x>
+       <y> 0.00 </y>
+       <z> 0.65 </z>
+     </location>
+     <capacity unit="LBS"> 1598 </capacity>
+     <contents unit="LBS"> 1598 </contents>
+  </tank>
+  
+  <tank type="FUEL" n="6">
+      <location unit="M">
+       <x> 5.4 </x>
+       <y> 0.00 </y>
+       <z> 0.75 </z>
+     </location>
+     <capacity unit="LBS"> 646 </capacity>
+     <contents unit="LBS"> 646 </contents>
+  </tank>
+  
+  <!-- Left Wing Fuel Tank -->
+  <tank type="FUEL" n="7">
+      <location unit="M">
+          <x> 0.8 </x>
+          <y> -1.8 </y>
+          <z> 0.57 </z>
+      </location>
+      <capacity unit="LBS"> 2142 </capacity>
+      <contents unit="LBS"> 2142 </contents>
+  </tank>
+  
+  <!-- Right Wing Fuel Tank -->
+  <tank type="FUEL" n="8">
+      <location unit="M">
+          <x> 0.8 </x>
+          <y> 1.8 </y>
+          <z> 0.57 </z>
+      </location>
+      <capacity unit="LBS"> 2142 </capacity>
+      <contents unit="LBS"> 2142 </contents>
   </tank>
 
  </propulsion>
