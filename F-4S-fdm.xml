@@ -1240,6 +1240,58 @@
            </table>
        </product>
     </function>
+  
+    <!-- Reference: ADA101648, page 27 -->
+    <function name="aero/moment/CMDA_left_aileron">
+        <description>Pitch moment due to left aileron position</description>
+        <product>
+          <property>aero/qbar-psf</property>
+          <property>metrics/Sw-sqft</property>
+          <property>metrics/cbarw-ft</property>
+          <property>fcs/left-aileron-pos-rad</property>
+          <table>
+              <independentVar lookup="row">aero/alpha-deg</independentVar>
+              <tableData>
+                  0   -0.00105
+                  5   -0.00092
+                  10  -0.00079
+                  15  -0.00068
+                  20  -0.00066
+                  25  -0.00066
+                  30  -0.00066
+                  35  -0.00066
+                  40  -0.00066
+                  45  -0.00066
+              </tableData>
+          </table>
+      </product>
+  </function>
+  
+  <!-- Reference: ADA101648, page 27 -->
+  <function name="aero/moment/CMDA_right_aileron">
+        <description>Pitch moment due to right aileron position</description>
+        <product>
+          <property>aero/qbar-psf</property>
+          <property>metrics/Sw-sqft</property>
+          <property>metrics/cbarw-ft</property>
+          <property>fcs/left-aileron-pos-rad</property>
+          <table>
+              <independentVar lookup="row">aero/alpha-deg</independentVar>
+              <tableData>
+                  0   -0.00105
+                  5   -0.00092
+                  10  -0.00079
+                  15  -0.00068
+                  20  -0.00066
+                  25  -0.00066
+                  30  -0.00066
+                  35  -0.00066
+                  40  -0.00066
+                  45  -0.00066
+              </tableData>
+          </table>
+      </product>
+  </function>
 
   </axis>
 
