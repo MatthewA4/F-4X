@@ -1274,7 +1274,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/left-aileron-pos-rad</property>
+          <property>fcs/right-aileron-pos-rad</property>
           <table>
               <independentVar lookup="row">aero/alpha-deg</independentVar>
               <tableData>
