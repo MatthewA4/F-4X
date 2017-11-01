@@ -39,12 +39,25 @@ See LICENSE file for the GPL version 2 text.
 			<path>Models/F-4S.xml</path>
 		</model>
 	</sim>
+    
+    <consumables>
+        <fuel>
+            <tank n="0"><name>Fuel Cell #1</name></tank>
+            <tank n="1"><name>Fuel Cell #2</name></tank>
+            <tank n="2"><name>Fuel Cell #3</name></tank>
+            <tank n="3"><name>Fuel Cell #4</name></tank>
+            <tank n="4"><name>Fuel Cell #5</name></tank>
+            <tank n="5"><name>Fuel Cell #6</name></tank>
+            <tank n="6"><name>Fuel Cell #7</name></tank>
+            <tank n="7"><name>Right Wing Tank</name></tank>
+            <tank n="8"><name>Left Wing Tank</name></tank>
+        </fuel>
+    </consumables>
 
 	<surface-positions>
 		<left-spoiler-pos-norm alias="/fdm/jsbsim/fcs/left-spoiler-pos-norm"/>
 		<right-spoiler-pos-norm alias="/fdm/jsbsim/fcs/right-spoiler-pos-norm"/>
 	</surface-positions>
-
 
 	<nasal>
 		<electrical>
