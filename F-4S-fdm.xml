@@ -1187,7 +1187,8 @@
        </product>
     </function>
 
-    <function name="aero/moment/Pitch_damp">
+    <!-- Reference: ADA101648, page 27 -->
+    <function name="aero/moment/CMQ">
        <description>Pitch moment due to pitch rate</description>
        <product>
            <property>aero/qbar-psf</property>
@@ -1195,11 +1196,26 @@
            <property>metrics/cbarw-ft</property>
            <property>aero/ci2vel</property>
            <property>velocities/q-aero-rad_sec</property>
-           <value>-18</value>
+           <table>
+               <independentVar lookup="row">aero/alpha-deg</independentVar>
+               <tableData>
+                   0   -3.10
+                   5   -3.41
+                   10  -3.78
+                   15  -3.92
+                   20  -3.80
+                   25  -3.62
+                   30  -3.15
+                   35  -3.15
+                   40  -3.15
+                   45  -3.15
+               </tableData>
+           </table>
        </product>
     </function>
 
-    <function name="aero/moment/Pitch_alphadot">
+    <!-- Reference: ADA101648, page 27 -->
+    <function name="aero/moment/CMAD">
        <description>Pitch moment due to alpha rate</description>
        <product>
            <property>aero/qbar-psf</property>
@@ -1207,7 +1223,21 @@
            <property>metrics/cbarw-ft</property>
            <property>aero/ci2vel</property>
            <property>aero/alphadot-rad_sec</property>
-           <value>-9</value>
+           <table>
+               <independentVar lookup="row">aero/alpha-deg</independentVar>
+               <tableData>
+                   0   -1.30
+                   5   -1.42
+                   10  -1.58
+                   15  -1.63
+                   20  -1.59
+                   25  -1.52
+                   30  -1.32
+                   35  -1.32
+                   40  -1.32
+                   45  -1.32
+               </tableData>
+           </table>
        </product>
     </function>
 
