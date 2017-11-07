@@ -296,7 +296,7 @@
 
  </propulsion>
 
- <flight_control name="FCS: F-4J/S">
+ <flight_control name="FCS: F-4S">
 
   <channel name="Pitch">
 
@@ -312,8 +312,8 @@
    <aerosurface_scale name="Elevator Control">
       <input>fcs/pitch-trim-sum</input>
       <range>
-        <min> -0.35 </min>
-        <max>  0.35 </max>
+        <min> -0.366519 </min>
+        <max>  0.157079 </max>
       </range>
       <output>fcs/elevator-pos-rad</output>
    </aerosurface_scale>
@@ -321,8 +321,8 @@
    <aerosurface_scale name="elevator normalization">
       <input>fcs/elevator-pos-rad</input>
       <domain>
-        <min> -0.35 </min>
-        <max>  0.35 </max>
+        <min> -0.366519 </min>
+        <max>  0.157079 </max>
       </domain>
       <!-- Reference: ADA101648, page 20 -->
       <range>
@@ -331,16 +331,6 @@
       </range>
       <output>fcs/elevator-pos-norm</output>
    </aerosurface_scale>
-   
-<aerosurface_scale name="elevator norm radians">
-    <input>fcs/elevator-pos-norm</input>
-    <range>
-        <min>-0.35</min>
-        <max>0.35</max>
-    </range>
-    <output>fcs/elevator-pos-norm-rad</output>
-</aerosurface_scale>
-
   </channel>
 
   <channel name="Roll">
@@ -795,8 +785,8 @@
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
-           <abs><property>fcs/elevator-pos-norm-rad</property></abs>
            <value>0.04</value>
+           <abs><property>fcs/elevator-pos-rad</property></abs>
        </product>
     </function>
 
@@ -1155,7 +1145,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/elevator-pos-norm-rad</property>
+          <property>fcs/elevator-pos-rad</property>
           <table>
             <independentVar lookup="row">aero/alpha-deg</independentVar>
             <tableData>
