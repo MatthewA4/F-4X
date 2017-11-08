@@ -544,8 +544,8 @@
           <time>     0 </time>
        </setting>
        <setting>
-          <position> 1 </position>
-          <time>     1 </time>
+          <position> 30 </position>
+          <time>     3 </time>
        </setting>
      </traverse>
      <output>fcs/speedbrake-pos-norm</output>
