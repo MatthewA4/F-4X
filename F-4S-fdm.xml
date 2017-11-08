@@ -703,6 +703,15 @@
           </table>
        </product>
     </function>
+    
+    <function name="aero/force/CD_Stores">
+        <description>Drag due to stores constant (delta)</description>
+        <product>
+          <property>aero/qbar-psf</property>
+          <property>metrics/Sw-sqft</property>
+          <value>0.0037</value>
+        </product>
+    </function>
 
     <function name="aero/force/Drag_induced">
        <description>Induced drag</description>
