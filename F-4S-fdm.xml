@@ -1593,6 +1593,7 @@
 
     <function name="aero/lift/Alpha_N_180to110">
         <description>Lift at alpha between -180 to -110</description>
+        <product>
         <ifthen>
             <ge> <p> aero/alpha-deg </p> <v> -180.00 </v> </ge>
             <v> 1.00 </v>
