@@ -1570,6 +1570,125 @@
   
    <!-- Implements the Lift equations using the tables above -->   
   <axis name="LIFT">
+
+    <function name="aero/lift/Alpha_N_180to110">
+        <description>Lift at alpha between -180 to -110</description>
+        <ifthen>
+            <ge> <p> aero/alpha-deg </p> <v> -180.00 </v> </ge>
+            <v> 1.00 </v>
+            <v> 0.00 </v>
+        </ifthen>
+        
+         <ifthen>
+            <lt> <p> aero/alpha-deg </p> <v> -110.00 </v> </lt>
+            <v> 1.00 </v>
+            <v> 0.00 </v>
+        </ifthen>
+        
+        <sum>
+            <v>0.122</v>
+                <product>
+                    <v>0.00300</v>
+                    <property>fcs/elevator-pos-norm</property>
+                </product>
+        </sum>
+    </product>
+        
+        
+    </function>
+      
+    <function name="aero/lift/Alpha_N_110to0">
+        <description>Lift from -110 to 0 degrees AoA</description>
+        <product>
+            <ifthen>
+                <ge>
+                    <p>aero/alpha-deg</p>
+                    <v> -110.0 </v>
+                </ge>
+                <v> 1.00 </v>
+                <v> 0.00 </v>
+            </ifthen>
+            <ifthen>
+                <lt>
+                    <p>aero/alpha-deg</p>
+                    <v> 0.00 </v>
+                </lt>
+                <v> 1.00 </v>
+                <v> 0.00 </v>
+            </ifthen>
+            
+            <sum>
+                <difference>
+                    <v>0.244</v> <!-- CL_BASIC at 0 AoA -->
+                    <property>aero/coefficient/CL/CL_BASIC</property>
+                </difference>
+                <property>aero/coefficient/CL/CL_STAB</property>
+            </sum>
+            
+        </product>
+    </function>
+    
+   <function name="aero/lift/Alpha_0to110">
+     <description>Lift from 0 to 110 degrees Alpha</description>
+       <product>
+              <!-- If Alpha greater than or equal to 0 -->
+          <ifthen>
+              <ge> 
+                  <p>aero/alpha-deg</p> 
+                  <v> 0.00 </v>
+              </ge>
+              <v> 1.00 </v>
+              <v> 0.00 </v>
+          </ifthen>
+          <!-- and less than 110 -->
+          <ifthen>
+              <lt>
+                  <p>aero/alpha-deg</p>
+                  <v> 110.0 </v>
+              </lt>
+              <v> 1.00 </v>
+              <v> 0.00 </v>
+          </ifthen>
+          
+      <sum>
+          <property>aero/coefficient/CL/CL_BASIC</property>
+          <property>aero/coefficient/CL/CL_STAB</property>
+      </sum>
+     </product>
+    </function>
+      
+   <function name="aero/lift/Alpha110to180">
+       <description>Lift from 110 to 180 degrees Alpha</description>
+       <product>
+           <ifthen>
+              <ge> 
+                  <p>aero/alpha-deg</p> 
+                  <v> 110.00 </v>
+              </ge>
+              <v> 1.00 </v>
+              <v> 0.00 </v>
+          </ifthen>
+    
+          <ifthen>
+              <lt>
+                  <p>aero/alpha-deg</p>
+                  <v> 180.0 </v>
+              </lt>
+              <v> 1.00 </v>
+              <v> 0.00 </v>
+          </ifthen>
+          
+          <sum>
+              <v>-0.547</v> <!-- CL_BASIC @ 110 AoA -->
+              <product>
+                  <v>0.00300</v> <!-- CL_STAB @ 110 AoA -->
+                  <p>fcs/elevator-pos-norm</p>
+              </product>
+          </sum>
+          
+      </product>
+  </function>
+      
   </axis>
     
   <axis name="DRAG">
