@@ -1713,7 +1713,53 @@
   </axis>
     
   <axis name="DRAG">
-  </axis>
+  
+      <function name="aero/drag/drag_ABS_110">
+          <description>Drag at absolute value of alpha less than 110 AoA</description>
+          <product>
+              <ifthen>
+                  <lt>
+                      <p>aero/alpha-deg-abs</p>
+                      <v>110</v>
+                  </lt>
+                  <v> 1.00 </v>
+                  <v> 0.00 </v>
+              </ifthen>
+              <sum>
+                  <property>aero/coefficient/CD/CD_BASIC</property>
+                  <v> 0.0037 </v>
+              </sum>
+          </product>
+          </function>
+          
+          <function name="aero/drag/drag_ABS_110_180">
+              <description>Drag at ABS AoA between 110 and 180 AoA</description>
+              <product>
+                  <ifthen>
+                      <ge>
+                          <property>aero/alpha-deg-abs</property>
+                          <v> 110 </v>
+                      </ge>
+                      <v> 1.00 </v>
+                      <v> 0.00 </v>
+                  </ifthen>
+                  
+                  <ifthen>
+                      <le>
+                          <property>aero/alpha-deg-abs</property>
+                          <v> 180 </v>
+                      </le>
+                      <v> 1.00 </v>
+                      <v> 0.00 </v>
+                  </ifthen>
+                  
+                  <sum>
+                      <v>1.567</v>
+                      <v>0.0037</v>
+                  </sum>
+              </product>
+            </function>
+        </axis>
 
   <axis name="SIDE">
   </axis>
