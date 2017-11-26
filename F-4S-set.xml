@@ -69,7 +69,7 @@ See LICENSE file for the GPL version 2 text.
 		</J79>
 
 		<views>
-            <bypass type="bool">true</bypass>
+            <enabled type="bool">false</enabled>
             <file>Aircraft/F-4X/Nasal/views.nas</file>
 		</views>
 	</nasal>
