@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<!--
+Copyright (C) 2017  Matthew Anderson.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See LICENSE file for the GPL version 2 text.
+-->
+<PropertyList>
+	<path>Aircraft/F-4X/Models/F-4S.ac</path>
+	<animation>
+		<name>MoveRudder</name>
+		<type>rotate</type>
+		<object-name>Rudder</object-name>
+		<property>surface-positions/rudder-pos-norm</property>
+		<factor>-1</factor>
+		<axis>
+			<x1-m>9.73712</x1-m>
+			<y1-m>0</y1-m>
+			<z1-m>2.86457</z1-m>
+			<x2-m>9.15163</x2-m>
+			<y2-m>0</y2-m>
+			<z2-m>0.101384</z2-m>
+		</axis>
+	</animation>
+	<animation>
+		<name>MoveHorizontalStab</name>
+		<type>rotate</type>
+		<object-name>HorizontalStab</object-name>
+		<property>surface-positions/elevator-pos-norm</property>
+		<axis>
+			<x1-m>8.96876</x1-m>
+			<y1-m>-1.26672</y1-m>
+			<z1-m>0.6918447</z1-m>
+			<x2-m>8.96876</x2-m>
+			<y2-m>1.26672</y2-m>
+			<z2-m>0.6917447</z2-m>
+		</axis>
+	</animation>
+	<animation>
+		<name>MoveLeftAileron</name>
+		<type>rotate</type>
+		<object-name>LeftWingAileron</object-name>
+		<property>surface-positions/left-aileron-pos-norm</property>
+		<factor>1</factor>
+		<axis>
+			<x1-m>4.42033</x1-m>
+			<y1-m>-4.17459</y1-m>
+			<z1-m>-0.59628</z1-m>
+			<x2-m>3.80134</x2-m>
+			<y2-m>-2.27278</y2-m>
+			<z2-m>-0.59628</z2-m>
+		</axis>
+	</animation>
+
+	<animation>
+		<name>MoveRightAileron</name>
+		<type>rotate</type>
+		<object-name>RightWingAileron</object-name>
+		<property>surface-positions/right-aileron-pos-norm</property>
+		<factor>1</factor>
+		<axis>
+			<x1-m>4.42033</x1-m>
+			<y1-m>4.17459</y1-m>
+			<z1-m>-0.59628</z1-m>
+			<x2-m>3.80134</x2-m>
+			<y2-m>2.27278</y2-m>
+			<z2-m>-0.59628</z2-m>
+		</axis>
+	</animation>
+
+	<animation>
+		<name>MoveRightWingSpoiler1</name>
+		<type>rotate</type>
+		<object-name>RightWingSpoiler1</object-name>
+		<property>surface-positions/right-spoiler-pos-norm</property>
+		<factor>-1</factor>
+		<axis>
+			<x1-m>3.20712</x1-m>
+			<y1-m>2.29796</y1-m>
+			<z1-m>-0.5250699</z1-m>
+			<x2-m>4.1002</x2-m>
+			<y2-m>4.08749</y2-m>
+			<z2-m>-0.525069</z2-m>
+		</axis>
+	</animation>
+	<animation>
+		<name>MoveRightWingSpoiler2</name>
+		<type>rotate</type>
+		<object-name>RightWingSpoiler2</object-name>
+		<property>surface-positions/right-spoiler-pos-norm</property>
+		<factor>-1</factor>
+		<axis>
+			<x1-m>3.20712</x1-m>
+			<y1-m>2.29796</y1-m>
+			<z1-m>-0.5250699</z1-m>
+			<x2-m>4.1002</x2-m>
+			<y2-m>4.08749</y2-m>
+			<z2-m>-0.525069</z2-m>
+		</axis>
+	</animation>
+
+	<animation>
+		<name>MoveLeftWingSpoiler1</name>
+		<type>rotate</type>
+		<object-name>LeftWingSpoiler1</object-name>
+		<property>surface-positions/left-spoiler-pos-norm</property>
+		<factor>-1</factor>
+		<axis>
+			<x1-m>3.20712</x1-m>
+			<y1-m>-2.29796</y1-m>
+			<z1-m>-0.5250699</z1-m>
+			<x2-m>4.1002</x2-m>
+			<y2-m>-4.08749</y2-m>
+			<z2-m>-0.525069</z2-m>
+		</axis>
+	</animation>
+	<animation>
+		<name>MoveLeftWingSpoiler2</name>
+		<type>rotate</type>
+		<object-name>LeftWingSpoiler2</object-name>
+		<property>surface-positions/left-spoiler-pos-norm</property>
+		<factor>-1</factor>
+		<axis>
+			<x1-m>3.20712</x1-m>
+			<y1-m>-2.29796</y1-m>
+			<z1-m>-0.5250699</z1-m>
+			<x2-m>4.1002</x2-m>
+			<y2-m>-4.08749</y2-m>
+			<z2-m>-0.525069</z2-m>
+		</axis>
+	</animation>
+
+	<animation>
+		<name>MoveLeftFlap</name>
+		<type>rotate</type>
+		<object-name>LeftWingFlap</object-name>
+		<property>surface-positions/flap-pos-norm</property>
+		<factor>30</factor>
+		<axis>
+			<x1-m>3.97982</x1-m>
+			<y1-m>-2.87556</y1-m>
+			<z1-m>-0.59375</z1-m>
+			<x2-m>3.38386</x2-m>
+			<y2-m>-0.966417</y2-m>
+			<z2-m>-0.59375</z2-m>
+		</axis>
+	</animation>
+	<animation>
+		<name>MoveRightFlap</name>
+		<type>rotate</type>
+		<object-name>RightWingFlap</object-name>
+		<property>surface-positions/flap-pos-norm</property>
+		<factor>-30</factor>
+		<axis>
+			<x1-m>3.97982</x1-m>
+			<y1-m>2.87556</y1-m>
+			<z1-m>-0.59375</z1-m>
+			<x2-m>3.38386</x2-m>
+			<y2-m>0.966417</y2-m>
+			<z2-m>-0.59375</z2-m>
+		</axis>
+	</animation>
+
+    <animation>
+        <name>MoveLeftSpeedBrake</name>
+        <type>rotate</type>
+        <object-name>LeftWingSpeedbrake</object-name>
+        <property>/fdm/jsbsim/fcs/speedbrake-pos-norm</property>
+        <factor>-1</factor>
+        <axis>
+            <x1-m>2.45337</x1-m>
+            <y1-m>-1.20476</y1-m>
+			<z1-m>-0.69238</z1-m>
+			<x2-m>3.22593</x2-m>
+			<y2-m>-3.0493</y2-m>
+			<z2-m>-0.66403</z2-m>
+		</axis>
+	</animation>
+
+    <animation>
+        <name>MoveRightSpeedBrake</name>
+        <type>rotate</type>
+        <object-name>RightWingSpeedbrake</object-name>
+        <property>/fdm/jsbsim/fcs/speedbrake-pos-norm</property>
+        <factor>1</factor>
+        <axis>
+            <x1-m>2.45337</x1-m>
+            <y1-m>1.20476</y1-m>
+			<z1-m>-0.69238</z1-m>
+			<x2-m>3.22593</x2-m>
+			<y2-m>3.0493</y2-m>
+			<z2-m>-0.66403</z2-m>
+		</axis>
+	</animation>
+
+</PropertyList>
