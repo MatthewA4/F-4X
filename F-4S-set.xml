@@ -21,7 +21,7 @@ See LICENSE file for the GPL version 2 text.
 
 <PropertyList>
 	<sim>
-		<author>Matthew A.</author>
+		<author>Matthew Anderson</author>
 		<description>F-4S Phantom II</description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
@@ -39,7 +39,7 @@ See LICENSE file for the GPL version 2 text.
 			<path>Models/F-4S.xml</path>
 		</model>
 	</sim>
-    
+
     <consumables>
         <fuel>
             <tank n="0"><name>Fuel Cell #1</name></tank>
