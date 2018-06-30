@@ -1,7 +1,7 @@
 # F-4 Phantom II for FlightGear Flight Simulator
 
 ----------------------------------------------------------
-Copyright (C) 2017  Matthew A.
+Copyright (C) 2017  Matthew Anderson
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
