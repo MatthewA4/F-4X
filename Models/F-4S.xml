@@ -177,7 +177,7 @@ See LICENSE file for the GPL version 2 text.
     <animation>
         <name>MoveLeftSpeedBrake</name>
         <type>rotate</type>
-        <object-name>LeftWingSpeedbrake</object-name>
+        <object-name>LeftSpeedbrake</object-name>
         <property>/fdm/jsbsim/fcs/speedbrake-pos-norm</property>
         <factor>-1</factor>
         <axis>
@@ -193,7 +193,7 @@ See LICENSE file for the GPL version 2 text.
     <animation>
         <name>MoveRightSpeedBrake</name>
         <type>rotate</type>
-        <object-name>RightWingSpeedbrake</object-name>
+        <object-name>RightSpeedbrake</object-name>
         <property>/fdm/jsbsim/fcs/speedbrake-pos-norm</property>
         <factor>1</factor>
         <axis>
