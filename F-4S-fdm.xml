@@ -5,39 +5,39 @@
    xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
 <!--
 
-       ___i__i_,                                                                                                                                      
-       :vnvvnvvvvi,                                                                                                                                   
-        IIIIlIllIvvs|                                                                                                                                 
-        vvilIllllllIvs|.                                                                                                                              
-        IlIIIlllIlIlllIv=,                                                                                                                            
-        IIliiilllllIlIIIvvi_                                                                                                                          
-        iiiilllllIlIlIIllllIv,                                                                                                                        
-        li|>illlIllIlIlIIIIlIvv,                                                                                                                      
-        IIIi|iIlllIllIlIlIIIIllvs(                                                                                                                    
-        vIIIi|IlIllIlIlIIlIIIIIIIvv>.                                                                                                                 
-        IIIIlilllIlIlIIIlIIIIvIIIIIvv>,                                                                                                               
-        vIIIlllllIlIIlIIIIIIvlIIIvlIIvvs,                                                                                                             
-        IIvlIllllIlIlIIIIIIvlIIIIIIIIIIlvs,                                                  _a,________,                                             
-        IIlllIlillIlIIlIIIIllllllllllIIIIlIi______________,_________s)YY111vlliiiiiiiiiiviIvIvIvvnvvvvvvvvis(__                                       
-        ~~~~^^^~<IIIvvvvvvvvvvvvvvvvvvvvvvvvnvnnnnnnnnnnnnnooooooooovvnvvnvvvvnvnvnvnvnvvvnvvnvnvvvnvvvnvvvvvvvvi_.                                   
-          ._%%vvnnnvnvvnvnvnvnvvvvvvvvnvvnvnvnvvvvvvnvvnvnnvnvnvnnnnnvnvnvnnnnvnvnvnvnvnnvnvnvvvvnvvvvvvvvvvvvvvvvvi,                                 
-        _aoonvvvvIi|vvnvvnvnvvnvnvnvnnvvnvvnvvnvnnnvnvnvnvvnvnvnvvvvvnvnvnvvvvnvvvvvnvvvvvvnvvnvnvvnvvvvvvvvvvvvvvvvvi,                               
-        {1}+||Ivlliiv|liIIvIvnvvnvvnvvvnvvnvvnvnvvvnvnvvvvvvIIIIlvllillllllllllllIlIlllllllliIIIIvlvIIIvvvvvvvvvvvvvvvvi_                             
-         +|iilIllIIIllllliiivvvvvvnvvnvvnvnvnvnvnnvnvvvvvvvvvvvvnvvnnvnvnvnvnvnvnvnvnvnvnnvnvnvvIIllIIIliilIvvIvvvvvvvvIv=.                           
-         :iiilllIIIlIIIliiiii|iiivvnnnnnvnvnvnvnvvvvvnvnvnnnvnnnvnnvnvnvnvvnvnvnvnvnvvvnvvvvvvvvvvvvvvvvsIiiiiiivvvvvvvvvvs=,                         
-         =liililllIIIi||+|+++|+||||I1nnnnnvnvnvnvnvnnnvnnvnvnvnvnvvvvvnvvvnvvvvvvvvvvvvvvvvvvIvvIIvIvIvIIliliiiivvvnvvvvvvvvIiii__.                   
-         iiililllIIi~||||+|||+|++|+||i{vnvnnnnvnvnnvnvnvvnvvvvvvvvvvvvvIvvIIvIvIIIIIlIIllllllllllIlllIlIliiiiilivvvvvvvvvvvvvvvvvvIiv_,               
-        _iiiilllIi~`  -~||+|=++|++|++++|vnvnvnvvvvvvvvvvvlIvIIIIlllIllllllllllllIlIlIlIIlIllIlIlIllllllli|liliilIIvIvIvvvvvvvvnvvvvvvvli_             
-        :iiillIi~        -<||||||||||++=vnvvvvIvIllilililllllllllllllllllllIlllIlllIllIllllIlllllllllllli|liiiilllllllllllIlIvIvvvvvvvvvIi_           
-        %ilvI%+             ~+iliii|||||vvv>|+||||||||||||iiiililillillilllillililiiilillllllllllllililii|liliiiiiiiiiiiiiiiiiiliilililiIvIi_         
-        vr"^>'                 -"~%|i||iiIll||+|+|||+||||||||+|||||||||||||||i||i||i|i|i|||||iiiiiiiiii|||liiiiii|i||i||||||i||||||||||||||||=        
-                                   -|ilIiiiili||||+|||+|+|+|+||+|||||||ii|i||i|i|i|iii||i|i|||+||||+|+||=lliiii|+||+|+|++||||=|==+=========+-         
-                                    =ivvc+|+|+||||||||||||||||||||+|+||svvvlvlIlIIIIli||+++|+|+<si=|+r-=|li||i||+||+||+||+|++|=|+|+|+|+|=~`           
-                                    =Ivvi|+||+|+|+||=++|+~-~~111~-~11~ {vvvvvvvvvvvvvvvs__              "'            =`?'11~11~~-~1111               
-                                    -~` 11~"^11`                       ~~~^~^^^iiiiiiiiii+^`                          ~                               
+       ___i__i_,
+       :vnvvnvvvvi,
+        IIIIlIllIvvs|
+        vvilIllllllIvs|.
+        IlIIIlllIlIlllIv=,
+        IIliiilllllIlIIIvvi_
+        iiiilllllIlIlIIllllIv,
+        li|>illlIllIlIlIIIIlIvv,
+        IIIi|iIlllIllIlIlIIIIllvs(
+        vIIIi|IlIllIlIlIIlIIIIIIIvv>.
+        IIIIlilllIlIlIIIlIIIIvIIIIIvv>,
+        vIIIlllllIlIIlIIIIIIvlIIIvlIIvvs,
+        IIvlIllllIlIlIIIIIIvlIIIIIIIIIIlvs,                                                  _a,________,
+        IIlllIlillIlIIlIIIIllllllllllIIIIlIi______________,_________s)YY111vlliiiiiiiiiiviIvIvIvvnvvvvvvvvis(__
+        ~~~~^^^~<IIIvvvvvvvvvvvvvvvvvvvvvvvvnvnnnnnnnnnnnnnooooooooovvnvvnvvvvnvnvnvnvnvvvnvvnvnvvvnvvvnvvvvvvvvi_.
+          ._%%vvnnnvnvvnvnvnvnvvvvvvvvnvvnvnvnvvvvvvnvvnvnnvnvnvnnnnnvnvnvnnnnvnvnvnvnvnnvnvnvvvvnvvvvvvvvvvvvvvvvvi,
+        _aoonvvvvIi|vvnvvnvnvvnvnvnvnnvvnvvnvvnvnnnvnvnvnvvnvnvnvvvvvnvnvnvvvvnvvvvvnvvvvvvnvvnvnvvnvvvvvvvvvvvvvvvvvi,
+        {1}+||Ivlliiv|liIIvIvnvvnvvnvvvnvvnvvnvnvvvnvnvvvvvvIIIIlvllillllllllllllIlIlllllllliIIIIvlvIIIvvvvvvvvvvvvvvvvi_
+         +|iilIllIIIllllliiivvvvvvnvvnvvnvnvnvnvnnvnvvvvvvvvvvvvnvvnnvnvnvnvnvnvnvnvnvnvnnvnvnvvIIllIIIliilIvvIvvvvvvvvIv=.
+         :iiilllIIIlIIIliiiii|iiivvnnnnnvnvnvnvnvvvvvnvnvnnnvnnnvnnvnvnvnvvnvnvnvnvnvvvnvvvvvvvvvvvvvvvvsIiiiiiivvvvvvvvvvs=,
+         =liililllIIIi||+|+++|+||||I1nnnnnvnvnvnvnvnnnvnnvnvnvnvnvvvvvnvvvnvvvvvvvvvvvvvvvvvvIvvIIvIvIvIIliliiiivvvnvvvvvvvvIiii__.
+         iiililllIIi~||||+|||+|++|+||i{vnvnnnnvnvnnvnvnvvnvvvvvvvvvvvvvIvvIIvIvIIIIIlIIllllllllllIlllIlIliiiiilivvvvvvvvvvvvvvvvvvIiv_,
+        _iiiilllIi~`  -~||+|=++|++|++++|vnvnvnvvvvvvvvvvvlIvIIIIlllIllllllllllllIlIlIlIIlIllIlIlIllllllli|liliilIIvIvIvvvvvvvvnvvvvvvvli_
+        :iiillIi~        -<||||||||||++=vnvvvvIvIllilililllllllllllllllllllIlllIlllIllIllllIlllllllllllli|liiiilllllllllllIlIvIvvvvvvvvvIi_
+        %ilvI%+             ~+iliii|||||vvv>|+||||||||||||iiiililillillilllillililiiilillllllllllllililii|liliiiiiiiiiiiiiiiiiiliilililiIvIi_
+        vr"^>'                 -"~%|i||iiIll||+|+|||+||||||||+|||||||||||||||i||i||i|i|i|||||iiiiiiiiii|||liiiiii|i||i||||||i||||||||||||||||=
+                                   -|ilIiiiili||||+|||+|+|+|+||+|||||||ii|i||i|i|i|iii||i|i|||+||||+|+||=lliiii|+||+|+|++||||=|==+=========+-
+                                    =ivvc+|+|+||||||||||||||||||||+|+||svvvlvlIlIIIIli||+++|+|+<si=|+r-=|li||i||+||+||+||+|++|=|+|+|+|+|=~`
+                                    =Ivvi|+||+|+|+||=++|+~-~~111~-~11~ {vvvvvvvvvvvvvvvs__              "'            =`?'11~11~~-~1111
+                                    -~` 11~"^11`                       ~~~^~^^^iiiiiiiiii+^`                          ~
 -->
  <fileheader>
-  <author> Matthew A. </author>
+  <author> Matthew Anderson </author>
   <filecreationdate>2017-10-08</filecreationdate>
   <version>$Revision: 1.20 $</version>
   <description> Models a F-4S. </description>
@@ -71,7 +71,7 @@
 
  <mass_balance>
 
-   <!-- Reference: ADA101648, page 19 -->	 
+   <!-- Reference: ADA101648, page 19 -->
    <ixx unit="SLUG*FT2">     23850 </ixx>
    <iyy unit="SLUG*FT2">    127400 </iyy>
    <izz unit="SLUG*FT2">    146000 </izz>
@@ -191,7 +191,7 @@
        <z> -0.434733 </z>
      </location>
      <orient unit="DEG">
-	<!-- Reference: ADA101648, page 35 -->	    
+	<!-- Reference: ADA101648, page 35 -->
        <pitch> 5.75 </pitch>
        <roll>  0.00 </roll>
        <yaw>   0.00 </yaw>
@@ -218,7 +218,7 @@
        <z>-0.434733 </z>
      </location>
      <orient unit="DEG">
-    <!-- Reference: ADA101648, page 35 -->	    
+    <!-- Reference: ADA101648, page 35 -->
        <pitch> 5.75 </pitch>
        <roll>  0.00 </roll>
        <yaw>   0.00 </yaw>
@@ -227,7 +227,7 @@
   </engine>
 
   <!-- Fuel tank quanities come from the NAVAIR 01-245FDD-1, Change 2 -->
-  
+
   <!-- Fuel Cell #1 -->
   <tank type="FUEL" n="0">
       <location unit="M">
@@ -238,7 +238,7 @@
       <capacity unit="LBS"> 1571 </capacity>
       <contents unit="LBS"> 1571 </contents>
   </tank>
-  
+
   <!-- Fuel Cell #2 -->
   <tank type="FUEL" n="1">
       <location unit="M">
@@ -260,7 +260,7 @@
      <capacity unit="LBS"> 1115 </capacity>
      <contents unit="LBS"> 1115 </contents>
   </tank>
-  
+
   <!-- Fuel Cell #4 -->
   <tank type="FUEL" n="3">
       <location unit="M">
@@ -282,7 +282,7 @@
      <capacity unit="LBS"> 1367 </capacity>
      <contents unit="LBS"> 1367 </contents>
   </tank>
-  
+
   <!-- Fuel Cell #6 -->
   <tank type="FUEL" n="5">
       <location unit="M">
@@ -293,7 +293,7 @@
      <capacity unit="LBS"> 1598 </capacity>
      <contents unit="LBS"> 1598 </contents>
   </tank>
-  
+
   <tank type="FUEL" n="6">
       <location unit="M">
        <x> 5.4 </x>
@@ -303,7 +303,7 @@
      <capacity unit="LBS"> 646 </capacity>
      <contents unit="LBS"> 646 </contents>
   </tank>
-  
+
   <!-- Left Wing Fuel Tank -->
   <tank type="FUEL" n="7">
       <location unit="M">
@@ -314,7 +314,7 @@
       <capacity unit="LBS"> 2142 </capacity>
       <contents unit="LBS"> 2142 </contents>
   </tank>
-  
+
   <!-- Right Wing Fuel Tank -->
   <tank type="FUEL" n="8">
       <location unit="M">
@@ -430,7 +430,7 @@
        </range>
        <output>fcs/left-spoiler-pos-rad</output>
    </aerosurface_scale>
-   
+
    <aerosurface_scale name="Right spoiler control">
        <input>-fcs/roll-trim-sum</input>
        <range>
@@ -439,9 +439,9 @@
        </range>
        <output>fcs/right-spoiler-pos-rad</output>
    </aerosurface_scale>
-   
-   
-   
+
+
+
    <aerosurface_scale name="Left spoiler normalization">
 	   <input>fcs/left-spoiler-pos-rad</input>
 	   <domain>
@@ -611,11 +611,11 @@
 
      <!-- alpha absolute value -->
      <function name="aero/alpha-deg-abs">
-         <abs> <p> aero/alpha-deg </p> </abs> 
+         <abs> <p> aero/alpha-deg </p> </abs>
     </function>
-    
+
     <!-- Lift Tables -->
-     
+
     <!-- Reference: ADA101648, page 25 for positive AoA including 0-->
     <function name="aero/coefficient/CL/CL_BASIC">
       <description>CL_BASIC</description>
@@ -625,29 +625,29 @@
           <table>
             <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
             <tableData>
-		    0     0.122
-		    5     0.4146
-		    10    0.6834
-		    15    0.9053
-		    20    0.9396
-		    25    1.010
-		    30    1.067
-		    35    1.049
-		    40    1.024
-		    45    0.969
-		    50    0.927
-		    55    0.872
-		    60    0.798
-		    65    0.677
-		    70    0.546
-		    75    0.418
-		    80    0.289
-		    85    0.157
-		    90    0.025
-		    95   -0.116 
-		    100  -0.257
-		    105  -0.402
-		    110  -0.547
+      		    0     0.122
+      		    5     0.4146
+      		    10    0.6834
+      		    15    0.9053
+      		    20    0.9396
+      		    25    1.010
+      		    30    1.067
+      		    35    1.049
+      		    40    1.024
+      		    45    0.969
+      		    50    0.927
+      		    55    0.872
+      		    60    0.798
+      		    65    0.677
+      		    70    0.546
+      		    75    0.418
+      		    80    0.289
+      		    85    0.157
+      		    90    0.025
+      		    95   -0.116
+      		    100  -0.257
+      		    105  -0.402
+      		    110  -0.547
             </tableData>
           </table>
       </product>
@@ -673,7 +673,7 @@
        </product>
     </function>
 
-    
+
     <!-- Reference: ADA101648, page 25 -->
     <function name="aero/coefficient/CL/CL_STAB">
        <description>CL_STAB</description>
@@ -684,38 +684,38 @@
 	   <table>
 		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 		   <tableData>
-			0     0.00699
-			5     0.00694
-			10    0.00676
-			15    0.00637
-			20    0.00571
-			25    0.00513
-			30    0.00503
-			35    0.00486
-			40    0.00463
-			45    0.00438
-			50    0.00416
-			55    0.00393
-			60    0.00371
-			65    0.00348
-			70    0.00324
-			75    0.00300
-			80    0.00300
-			85    0.00300
-			90    0.00300
-			95    0.00300
-			100   0.00300
-			105   0.00300
-			110   0.00300
+    			0     0.00699
+    			5     0.00694
+    			10    0.00676
+    			15    0.00637
+    			20    0.00571
+    			25    0.00513
+    			30    0.00503
+    			35    0.00486
+    			40    0.00463
+    			45    0.00438
+    			50    0.00416
+    			55    0.00393
+    			60    0.00371
+    			65    0.00348
+    			70    0.00324
+    			75    0.00300
+    			80    0.00300
+    			85    0.00300
+    			90    0.00300
+    			95    0.00300
+    			100   0.00300
+    			105   0.00300
+    			110   0.00300
 		</tableData>
 	</table>
 
        </product>
     </function>
 
-  
+
   <!-- Drag tables -->
-  
+
   <!-- Reference: ADA101648 page 25 -->
     <function name="aero/coefficient/CD/CD_BASIC">
        <description>Basic drag</description>
@@ -724,35 +724,35 @@
           <property>metrics/Sw-sqft</property>
           <table>
             <independentVar lookup="row">aero/alpha-deg</independentVar>
-	    <tableData>
-		0    0.035
-		5    0.066
-		10   0.130
-		15   0.247
-		20   0.382
-		25   0.510
-		30   0.655
-		35   0.786
-		40   0.911
-		45   1.011
-		50   1.128
-		55   1.245
-		60   1.352
-		65   1.405
-		70   1.451
-		75   1.493
-		80   1.523
-		85   1.542
-		90   1.570
-		95   1.585
-		100  1.600
-		105  1.583
-		110  1.567
-		</tableData>
+          	    <tableData>
+              		0    0.035
+              		5    0.066
+              		10   0.130
+              		15   0.247
+              		20   0.382
+              		25   0.510
+              		30   0.655
+              		35   0.786
+              		40   0.911
+              		45   1.011
+              		50   1.128
+              		55   1.245
+              		60   1.352
+              		65   1.405
+              		70   1.451
+              		75   1.493
+              		80   1.523
+              		85   1.542
+              		90   1.570
+              		95   1.585
+              		100  1.600
+              		105  1.583
+              		110  1.567
+          		</tableData>
           </table>
        </product>
     </function>
-    
+
     <function name="aero/coefficient/CD/CD_Stores">
         <description>Drag due to stores constant (delta)</description>
         <product>
@@ -837,10 +837,10 @@
            <abs><property>fcs/elevator-pos-rad</property></abs>
        </product>
     </function>
-  
-    
-    <!-- Sideforce Tables --> 
-    
+
+
+    <!-- Sideforce Tables -->
+
   <!-- Reference: ADA101648, page 25-->
     <function name="aero/coefficient/CY/CYB">
        <description>CY_B</description>
@@ -850,7 +850,7 @@
            <table>
 		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
-		        0   -0.011
+		            0   -0.011
                 5   -0.011
                 10  -0.011
                 15  -0.011
@@ -876,7 +876,7 @@
            </table>
        </product>
     </function>
-    
+
     <!-- Reference: ADA101648, page 17 -->
     <function name="aero/coefficient/CY/CYDA">
         <description>Cy due to aileron position, this is a constant</description>
@@ -887,7 +887,7 @@
             <property>fcs/left-aileron-pos-norm</property>
         </product>
     </function>
-    
+
     <!-- Reference: ADA101648, page 17 -->
     <function name="aero/coefficient/CY/CYDSP">
         <description>Cy due to spoiler position</description>
@@ -898,7 +898,7 @@
             <property>fcs/left-spoiler-pos-norm</property>
         </product>
     </function>
-    
+
     <!-- Reference: ADA101648, page 25 -->
     <function name="aero/coefficient/CY/CYDR">
         <description>Cy due to rudder position</description>
@@ -923,11 +923,11 @@
             </table>
         </product>
     </function>
-    
-    
+
+
     <!-- Roll Tables -->
-    
-     <!-- Reference: ADA101648, page 25 --> 	  
+
+     <!-- Reference: ADA101648, page 25 -->
     <function name="aero/coefficient/CR/CRB1">
        <description>Roll moment -- beta #1</description>
        <product>
@@ -936,36 +936,36 @@
            <property>metrics/bw-ft</property>
 	   <table>
 		   <independentVar lookup="row">aero/alpha-deg</independentVar>
-           <tableData>     
-           0   -0.00132
-           5   -0.00175
-           10  -0.00236
-           15  -0.00219
-           20  -0.00118
-           25  -0.00006
-           30  -0.00025
-           35  -0.00010
-           40  -0.00108
-           45  -0.00180
-           50  -0.00232
-           55  -0.00241
-           60  -0.00255
-           65  -0.00268
-           70  -0.00279
-           75  -0.00291
-           80  -0.00300
-           85  -0.00300
-           90  -0.00300
-           95  -0.00300
-           100 -0.00300
-           105 -0.00300
-           110 -0.00300
+           <tableData>
+             0   -0.00132
+             5   -0.00175
+             10  -0.00236
+             15  -0.00219
+             20  -0.00118
+             25  -0.00006
+             30  -0.00025
+             35  -0.00010
+             40  -0.00108
+             45  -0.00180
+             50  -0.00232
+             55  -0.00241
+             60  -0.00255
+             65  -0.00268
+             70  -0.00279
+             75  -0.00291
+             80  -0.00300
+             85  -0.00300
+             90  -0.00300
+             95  -0.00300
+             100 -0.00300
+             105 -0.00300
+             110 -0.00300
            </tableData>
 	   </table>
     </product>
    </function>
-   
-    <!-- Reference: ADA101648, page 25 --> 
+
+    <!-- Reference: ADA101648, page 25 -->
    <function name="aero/coefficient/CR/CRB2">
        <description>Roll moment -- beta #2</description>
        <product>
@@ -1002,8 +1002,8 @@
            </table>
       </product>
   </function>
-   
-   
+
+
     <!-- Reference: ADA101648, page 25 -->
     <function name="aero/coefficient/CR/CRP1">
        <description>Roll moment due to roll rate</description>
@@ -1057,7 +1057,7 @@
             </table>
         </product>
     </function>
-    
+
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CR/CRR">
        <description>Roll moment due to yaw rate</description>
@@ -1096,16 +1096,16 @@
 		    <table>
 			    <independentVar lookup="row">aero/alpha-deg</independentVar>
 			    <tableData>
-				    0    0.000448
-				    5    0.000459
-				    10   0.000431
-				    15   0.000405
-				    20   0.000379
-				    25   0.000354
-                    30   0.000312
-                    35   0.000210
-                    40   0.000105
-                    45   0.000000
+    			    0    0.000448
+    			    5    0.000459
+    			    10   0.000431
+    			    15   0.000405
+    			    20   0.000379
+    			    25   0.000354
+              30   0.000312
+              35   0.000210
+              40   0.000105
+              45   0.000000
             </tableData>
         </table>
 
@@ -1138,7 +1138,7 @@
 	    </product>
     </function>
 
-    <!-- Reference: ADA101648, page 26 --> 
+    <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CR/CRDR">
        <description>rudder position</description>
        <product>
@@ -1163,10 +1163,10 @@
 	   </table>
        </product>
     </function>
-    
-    
+
+
     <!-- Pitch Moments -->
-    
+
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CM/CM_BASIC">
        <description>Pitch moment due to alpha</description>
@@ -1298,7 +1298,7 @@
            </table>
        </product>
     </function>
-  
+
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CM/CMDA">
         <description>Pitch moment due to aileron position</description>
@@ -1324,7 +1324,7 @@
           </table>
       </product>
   </function>
-    
+
    <!-- Reference: ADA101648, page 27 -->
   <function name="aero/coefficient/CM/CMDSP">
       <description>Pitch moment due to spoiler position</description>
@@ -1350,7 +1350,7 @@
           </table>
       </product>
   </function>
-    
+
   <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CM/DCM1">
         <description>delta pitch moment #1</description>
@@ -1377,7 +1377,7 @@
                 </table>
             </product>
         </function>
-  
+
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CM/DCM2">
         <description>delta pitch moment #2</description>
@@ -1404,8 +1404,8 @@
             </table>
         </product>
     </function>
-  
-    
+
+
      <function name="aero/coefficient/CN/CNB1">
        <description>Yaw moment due to beta</description>
        <product>
@@ -1430,7 +1430,7 @@
            </table>
        </product>
     </function>
-    
+
     <function name="aero/coefficient/CN/CNB2">
        <description>Yaw moment due to beta</description>
        <product>
@@ -1482,7 +1482,7 @@
            </table>
        </product>
     </function>
-    
+
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CN/CNP">
         <description>Yaw moment due to roll rate</description>
@@ -1509,7 +1509,7 @@
             </table>
         </product>
     </function>
-    
+
      <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CN/CNDA">
         <description>Yaw moment due to aileron position</description>
@@ -1586,9 +1586,9 @@
             </table>
         </product>
     </function>
-    
-  
-   <!-- Implements the Lift equations using the tables above -->   
+
+
+   <!-- Implements the Lift equations using the tables above -->
   <axis name="LIFT">
 
     <function name="aero/lift/Alpha_N_180to110">
@@ -1599,13 +1599,13 @@
             <v> 1.00 </v>
             <v> 0.00 </v>
         </ifthen>
-        
+
          <ifthen>
             <lt> <p> aero/alpha-deg </p> <v> -110.00 </v> </lt>
             <v> 1.00 </v>
             <v> 0.00 </v>
         </ifthen>
-        
+
         <sum>
             <v>0.122</v>
                 <product>
@@ -1614,10 +1614,10 @@
                 </product>
         </sum>
     </product>
-        
-        
+
+
     </function>
-      
+
     <function name="aero/lift/Alpha_N_110to0">
         <description>Lift from -110 to 0 degrees AoA</description>
         <product>
@@ -1637,7 +1637,7 @@
                 <v> 1.00 </v>
                 <v> 0.00 </v>
             </ifthen>
-            
+
             <sum>
                 <difference>
                     <v>0.244</v> <!-- CL_BASIC at 0 AoA -->
@@ -1645,17 +1645,17 @@
                 </difference>
                 <property>aero/coefficient/CL/CL_STAB</property>
             </sum>
-            
+
         </product>
     </function>
-    
+
    <function name="aero/lift/Alpha_0to110">
      <description>Lift from 0 to 110 degrees Alpha</description>
        <product>
               <!-- If Alpha greater than or equal to 0 -->
           <ifthen>
-              <ge> 
-                  <p>aero/alpha-deg</p> 
+              <ge>
+                  <p>aero/alpha-deg</p>
                   <v> 0.00 </v>
               </ge>
               <v> 1.00 </v>
@@ -1670,26 +1670,26 @@
               <v> 1.00 </v>
               <v> 0.00 </v>
           </ifthen>
-          
+
       <sum>
           <property>aero/coefficient/CL/CL_BASIC</property>
           <property>aero/coefficient/CL/CL_STAB</property>
       </sum>
      </product>
     </function>
-      
+
    <function name="aero/lift/Alpha110to180">
        <description>Lift from 110 to 180 degrees Alpha</description>
        <product>
            <ifthen>
-              <ge> 
-                  <p>aero/alpha-deg</p> 
+              <ge>
+                  <p>aero/alpha-deg</p>
                   <v> 110.00 </v>
               </ge>
               <v> 1.00 </v>
               <v> 0.00 </v>
           </ifthen>
-    
+
           <ifthen>
               <lt>
                   <p>aero/alpha-deg</p>
@@ -1698,7 +1698,7 @@
               <v> 1.00 </v>
               <v> 0.00 </v>
           </ifthen>
-          
+
           <sum>
               <v>-0.547</v> <!-- CL_BASIC @ 110 AoA -->
               <product>
@@ -1706,14 +1706,14 @@
                   <p>fcs/elevator-pos-norm</p>
               </product>
           </sum>
-          
+
       </product>
   </function>
-      
+
   </axis>
-    
+
   <axis name="DRAG">
-  
+
       <function name="aero/drag/drag_ABS_110">
           <description>Drag at absolute value of alpha less than 110 AoA</description>
           <product>
@@ -1731,7 +1731,7 @@
               </sum>
           </product>
           </function>
-          
+
           <function name="aero/drag/drag_ABS_110_180">
               <description>Drag at ABS AoA between 110 and 180 AoA</description>
               <product>
@@ -1743,7 +1743,7 @@
                       <v> 1.00 </v>
                       <v> 0.00 </v>
                   </ifthen>
-                  
+
                   <ifthen>
                       <le>
                           <property>aero/alpha-deg-abs</property>
@@ -1752,7 +1752,7 @@
                       <v> 1.00 </v>
                       <v> 0.00 </v>
                   </ifthen>
-                  
+
                   <sum>
                       <v>1.567</v>
                       <v>0.0037</v>
@@ -1762,6 +1762,27 @@
         </axis>
 
   <axis name="SIDE">
+    <function name="aero/side/ABS_ALPHA_45">
+          <description>Sideforce at less than absolute value Alpha 45</description>
+          <product>
+              <ifthen>
+                  <le> <p> aero/alpha-deg-abs </p> <v> 45.0 </v> </le>
+                  <v> 1.00 </v>
+                  <v> 0.00 </v>
+              </ifthen>
+          </product>
+
+          <sum>
+                <product>
+                    <property>aero/coefficient/CY/CYB</property>
+                    <property>aero/beta-deg</property>
+                </product>
+
+                <!--<product>aero/coefficient/CY/ </product>-->
+
+          </sum>
+    </function>
+
   </axis>
 
   <axis name="ROLL">
@@ -1779,4 +1800,3 @@
  </external_reactions>
 
 </fdm_config>
-
