@@ -54,6 +54,12 @@ See LICENSE file for the GPL version 2 text.
         </fuel>
     </consumables>
 
+		<sound>
+			<path type="string">Audio/audio.xml</path>
+			<enabled type="bool">true</enabled>
+		</sound>
+
+
 	<surface-positions>
 		<left-spoiler-pos-norm alias="/fdm/jsbsim/fcs/left-spoiler-pos-norm"/>
 		<right-spoiler-pos-norm alias="/fdm/jsbsim/fcs/right-spoiler-pos-norm"/>
