@@ -1091,8 +1091,8 @@
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
-	  <property>metrics/bw-ft</property>
-	  <property>fcs/left-aileron-pos-norm</property>
+	         <property>metrics/bw-ft</property>
+	         <property>fcs/left-aileron-pos-norm</property>
 		    <table>
 			    <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 			    <tableData>
@@ -1770,12 +1770,13 @@
                   <v> 1.00 </v>
                   <v> 0.00 </v>
               </ifthen>
-          </product>
           <sum>
                 <product>
                     <property>aero/coefficient/CY/CYB</property>
                     <property>aero/beta-deg</property>
                 </product>
+
+                <product>
                   <p> aero/coefficient/CY/CYDA </p>
                   <p> fcs/right-aileron-pos-norm </p>
                 </product>
@@ -1786,14 +1787,15 @@
                 </product>
 
                 <product>
-                  <p> aero/coefficient/CY/CYDR <p>
+                  <p> aero/coefficient/CY/CYDR </p>
                   <p> fcs/rudder-pos-norm </p>
                 </product>
           </sum>
+        </product>
     </function>
 
     <function name="aero/side/ABS_ALPHA_45_110">
-      <description>sideforce at greater than 45 AoA, but less than 110 AoA <description>
+      <description>sideforce at greater than 45 AoA, but less than 110 AoA </description>
         <product>
           <ifthen>
               <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
@@ -1803,10 +1805,10 @@
 
           <ifthen>
             <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
-            <v> 1.00 <v>
-            <v> 0.00 <v>
+            <v> 1.00 </v>
+            <v> 0.00 </v>
           </ifthen>
-          <sum>
+            <sum>
                 <product>
                     <property>aero/coefficient/CY/CYB</property>
                     <property>aero/beta-deg</property>
@@ -1820,48 +1822,154 @@
                   <p> aero/coefficient/CY/CYDSP </p>
                   <p> fcs/right-aileron-pos-norm </p>
                 </product>
-          </sum>
+              </sum>
           </product>
     </function>
 
     <function name="aero/side/ABS_ALPHA_110_180">
       <description> sideforce at greater than ABS 110 AoA, less than 180 ABS AoA </description>
-      <ifthen>
-        <ge> <p> aero/alpha-deg-abs </p> <v> 110 </v> </ge>
-        <v> 1.00 </v>
-        <v> 0.00 </v>
-      </ifthen>
+      <product>
+        <ifthen>
+          <ge> <p> aero/alpha-deg-abs </p> <v> 110 </v> </ge>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
 
-      <ifthen>
-        <le> <p> aero/alpha-deg-abs </p> <v> 180 </v> </ge>
-        <v> 1.00 </v>
-        <v> 0.00 </v>
-      </ifthen>
+        <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 180 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
 
-      <sum>
-        <product>
-          <v> 0.0030 </v>
-          <p> aero/beta-deg </p>
-        </product>
+        <sum>
+          <product>
+            <v> 0.0030 </v>
+            <p> aero/beta-deg </p>
+          </product>
 
-        <product>
-          <p> aero/coefficient/CY/CYDA </p>
-          <p> fcs/right-aileron-pos-norm </p>
-        </product>
+          <product>
+            <p> aero/coefficient/CY/CYDA </p>
+            <p> fcs/right-aileron-pos-norm </p>
+          </product>
 
-        <product>
-          <p> aero/coefficient/CY/CYDSP </p>
-          <p> fcs/right-aileron-pos-norm </p>
-        </product>
+          <product>
+            <p> aero/coefficient/CY/CYDSP </p>
+            <p> fcs/right-aileron-pos-norm </p>
+          </product>
 
-      </sum>
-
+        </sum>
+    </product>
     </function>
 
 
   </axis>
 
   <axis name="ROLL">
+    <function name="aero/roll/ABS_ALPHA_45">
+      <description> roll less than or equal to ABS 45 AoA </description>
+      <product>
+      <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+      </ifthen>
+
+      <sum>
+        <product>
+          <p> aero/coefficient/CR/CRB1 </p>
+          <p> aero/beta-deg </p>
+        </product>
+        <p> aero/coefficient/CR/CRP1 </p>
+        <p> aero/coefficient/CR/CRR </p>
+        <p> aero/coefficient/CR/CRDA </p>
+        <p> aero/coefficient/CR/CRDSP </p>
+        <p> aero/coefficient/CR/CRDR </p>
+      </sum>
+    </product>
+    </function>
+
+    <function name="aero/roll/ABS_ALPHA_45_110">
+      <description> 45 to 110 ABS AoA</description>
+      <product>
+        <ifthen>
+          <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+        <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+        <sum>
+          <product>
+            <p> aero/coefficient/CR/CRB1 </p>
+            <p> aero/beta-deg </p>
+          </product>
+
+          <product>
+            <v> -0.100 </v>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <property>metrics/bw-ft</property>
+            <property>aero/bi2vel</property>
+            <property>velocities/p-aero-rad_sec</property>
+          </product>
+
+          <product>
+              <v> 0.050 </v>
+              <property>aero/qbar-psf</property>
+              <property>metrics/Sw-sqft</property>
+              <property>metrics/bw-ft</property>
+              <property>aero/bi2vel</property>
+              <property>velocities/r-aero-rad_sec</property>
+          </product>
+      </sum>
+
+      </product>
+      </function>
+
+    <function name="aero/roll/ABS_ALPHA_110_180">
+      <description> from 110 to 180 ABS AoA </description>
+      <product>
+          <ifthen>
+            <ge> <p> aero/alpha-deg-abs </p> <v> 110 </v> </ge>
+            <v> 1.00 </v>
+            <v> 0.00 </v>
+          </ifthen>
+
+          <ifthen>
+            <le> <p> aero/alpha-deg-abs </p> <v> 180 </v> </le>
+            <v> 1.00 </v>
+            <v> 0.00 </v>
+          </ifthen>
+
+          <sum>
+            <product>
+              <v> -0.00300 </v>
+              <p> aero/beta-deg </p>
+            </product>
+            <product>
+              <v> -0.100 </v>
+              <property>aero/qbar-psf</property>
+              <property>metrics/Sw-sqft</property>
+              <property>metrics/bw-ft</property>
+              <property>aero/bi2vel</property>
+              <property>velocities/p-aero-rad_sec</property>
+            </product>
+            <product>
+                <v> 0.050 </v>
+                <property>aero/qbar-psf</property>
+                <property>metrics/Sw-sqft</property>
+                <property>metrics/bw-ft</property>
+                <property>aero/bi2vel</property>
+                <property>velocities/r-aero-rad_sec</property>
+            </product>
+          </sum>
+        </product>
+      </function>
 
   </axis>
 
