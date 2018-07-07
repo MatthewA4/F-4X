@@ -1415,7 +1415,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/bw-ft</property>
-           <property>aero/beta-rad</property>
+           <property>aero/beta-deg</property>
            <table>
                <independentVar>aero/alpha-deg-abs</independentVar>
                <tableData>
@@ -2000,6 +2000,26 @@
   </axis>
 
   <axis name="YAW">
+    <function name="aero/yaw/ABS_ALPHA_45">
+      <description> up to 45 AoA </description>
+      <product>
+        <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+        <sum>
+          <p> aero/coefficient/CN/CNB1 </p>
+          <p> aero/coefficient/CN/CNP </p>
+          <p> aero/coefficient/CN/CNR </p>
+          <p> aero/coefficient/CN/CNDA </p>
+          <p> aero/coefficient/CN/CNDR </p>
+          <p> aero/coefficient/CN/CNDSP </p>
+        </sum>
+      </product>
+    </function>
+
   </axis>
 
  </aerodynamics>
