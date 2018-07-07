@@ -615,6 +615,7 @@
       		    100  -0.257
       		    105  -0.402
       		    110  -0.547
+              180  -0.547
             </tableData>
           </table>
       </product>
@@ -674,6 +675,7 @@
     			100   0.00300
     			105   0.00300
     			110   0.00300
+          180   0.00300
 		</tableData>
 	</table>
 
@@ -715,6 +717,7 @@
               		100  1.600
               		105  1.583
               		110  1.567
+                  180  1.567
           		</tableData>
           </table>
        </product>
@@ -839,6 +842,7 @@
                 95   0.0030
                 100  0.0030
                 110  0.0030
+                180  0.0030
                 </tableData>
            </table>
        </product>
@@ -886,6 +890,7 @@
                     35  0.00048
                     40  0.00024
                     45  0.00000
+                    180 0.00000
                 </tableData>
             </table>
         </product>
@@ -927,6 +932,7 @@
              100 -0.00300
              105 -0.00300
              110 -0.00300
+             180 -0.00300
            </tableData>
 	   </table>
     </product>
@@ -965,6 +971,7 @@
                    100 -0.00300
                    105 -0.00300
                    110 -0.00300
+                   180 -0.00300
                </tableData>
            </table>
       </product>
@@ -993,6 +1000,7 @@
                    35  -0.250
                    40  -0.164
                    45  -0.100
+                   180 -0.100
                </tableData>
            </table>
        </product>
@@ -1020,6 +1028,7 @@
                     35 -0.250
                     40 -0.164
                     45 -0.100
+                    180 -0.100
                 </tableData>
             </table>
         </product>
@@ -1047,6 +1056,7 @@
                    35  0.204
                    40  0.085
                    45  0.050
+                   180 0.050
                </tableData>
            </table>
        </product>
@@ -1073,6 +1083,7 @@
 					35   0.000210
 					40   0.000105
 					45   0.000000
+          180  0.000000
 				</tableData>
 			</table>
 		</product>
@@ -1099,6 +1110,7 @@
 					35 -0.000020
 					40 -0.000010
 					45 -0.000000
+          180 -0.000000
 				</tableData>
 			</table>
 		</product>
@@ -1124,6 +1136,7 @@
 					35  0.000020
 					40  0.000010
 					45  0.000000
+          180 0.000000
 				</tableData>
 			</table>
 		</product>
@@ -1150,6 +1163,7 @@
 			   35   0.000035
 			   40   0.000017
 			   45   0.000000
+         180  0.000000
 		   </tableData>
 	   </table>
        </product>
@@ -1193,6 +1207,13 @@
                    100 -0.658
                    105 -0.695
                    110 -0.729
+                   120 -0.729
+                   130 -0.729
+                   140 -0.729
+                   150 -0.729
+                   160 -0.729
+                   170 -0.729
+                   180 -0.729
                </tableData>
            </table>
        </product>
@@ -1233,6 +1254,7 @@
                 100  0.00000
                 105  0.00000
                 110  0.00000
+                180  0.00000
             </tableData>
           </table>
        </product>
@@ -1262,6 +1284,7 @@
                    35  -3.15
                    40  -3.15
                    45  -3.15
+                   180 -3.15
                </tableData>
            </table>
        </product>
@@ -1289,6 +1312,7 @@
                    35  -1.32
                    40  -1.32
                    45  -1.32
+                   180 -1.32
                </tableData>
            </table>
        </product>
@@ -1315,6 +1339,7 @@
                   35  -0.00066
                   40  -0.00066
                   45  -0.00066
+                  180 -0.00066
               </tableData>
           </table>
       </product>
@@ -1341,6 +1366,7 @@
                   35  0.000000
                   40  0.000000
                   45  0.000000
+                  180 0.000000
               </tableData>
           </table>
       </product>
@@ -1368,6 +1394,7 @@
                         35 0.000   0.000    0.0000   -0.0025  -0.0087  -0.0106  -0.0125
                         40 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000
                         45 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000
+                        180 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000
                     </tableData>
                 </table>
             </product>
@@ -1395,6 +1422,7 @@
                         35 0.000   0.000  0.0000   0.0025  0.0087  0.0106  0.0125
                         40 0.000   0.000  0.0000   0.0000  0.0000  0.0000  0.0000
                         45 0.000   0.000  0.0000   0.0000  0.0000  0.0000  0.0000
+                        180 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000
                 </tableData>
             </table>
         </product>
@@ -1586,186 +1614,31 @@
    <!-- Implements the Lift equations using the tables above -->
   <axis name="LIFT">
 
-    <function name="aero/lift/Alpha_N_180to110">
-        <description>Lift at alpha between -180 to -110</description>
-        <product>
-        <ifthen>
-            <ge> <p> aero/alpha-deg-abs </p> <v> -180.00 </v> </ge>
-            <v> 1.00 </v>
-            <v> 0.00 </v>
-        </ifthen>
-
-         <ifthen>
-            <lt> <p> aero/alpha-deg-abs </p> <v> -110.00 </v> </lt>
-            <v> 1.00 </v>
-            <v> 0.00 </v>
-        </ifthen>
-
-        <sum>
-            <v>0.122</v>
-                <product>
-                    <v>0.00300</v>
-                    <property>fcs/elevator-deg</property>
-                </product>
-        </sum>
-    </product>
-
-
-    </function>
-
-    <function name="aero/lift/Alpha_N_110to0">
-        <description>Lift from -110 to 0 degrees AoA</description>
-        <product>
-            <ifthen>
-                <ge>
-                    <p>aero/alpha-deg-abs</p>
-                    <v> -110.0 </v>
-                </ge>
-                <v> 1.00 </v>
-                <v> 0.00 </v>
-            </ifthen>
-            <ifthen>
-                <lt>
-                    <p>aero/alpha-deg-abs</p>
-                    <v> 0.00 </v>
-                </lt>
-                <v> 1.00 </v>
-                <v> 0.00 </v>
-            </ifthen>
-
-            <sum>
-                <difference>
-                    <v>0.244</v> <!-- CL_BASIC at 0 AoA -->
-                    <property>aero/coefficient/CL/CL_BASIC</property>
-                </difference>
-                <property>aero/coefficient/CL/CL_STAB</property>
-            </sum>
-
-        </product>
-    </function>
-
-   <function name="aero/lift/Alpha_0to110">
+   <function name="aero/lift/total">
      <description>Lift from 0 to 110 degrees Alpha</description>
-       <product>
               <!-- If Alpha greater than or equal to 0 -->
-          <ifthen>
-              <ge>
-                  <p>aero/alpha-deg-abs</p>
-                  <v> 0.00 </v>
-              </ge>
-              <v> 1.00 </v>
-              <v> 0.00 </v>
-          </ifthen>
-          <!-- and less than 110 -->
-          <ifthen>
-              <lt>
-                  <p>aero/alpha-deg-abs</p>
-                  <v> 110.0 </v>
-              </lt>
-              <v> 1.00 </v>
-              <v> 0.00 </v>
-          </ifthen>
-
       <sum>
           <property>aero/coefficient/CL/CL_BASIC</property>
           <property>aero/coefficient/CL/CL_STAB</property>
       </sum>
-     </product>
     </function>
-
-   <function name="aero/lift/Alpha110to180">
-       <description>Lift from 110 to 180 degrees Alpha</description>
-       <product>
-           <ifthen>
-              <ge>
-                  <p>aero/alpha-deg-abs</p>
-                  <v> 110.00 </v>
-              </ge>
-              <v> 1.00 </v>
-              <v> 0.00 </v>
-          </ifthen>
-
-          <ifthen>
-              <lt>
-                  <p>aero/alpha-deg-abs</p>
-                  <v> 180.0 </v>
-              </lt>
-              <v> 1.00 </v>
-              <v> 0.00 </v>
-          </ifthen>
-
-          <sum>
-              <v>-0.547</v> <!-- CL_BASIC @ 110 AoA -->
-              <product>
-                  <v>0.00300</v> <!-- CL_STAB @ 110 AoA -->
-                  <p>fcs/elevator-deg</p>
-              </product>
-          </sum>
-
-      </product>
-  </function>
-
   </axis>
 
   <axis name="DRAG">
 
-      <function name="aero/drag/drag_ABS_110">
-          <description>Drag at absolute value of alpha less than 110 AoA</description>
-          <product>
-              <ifthen>
-                  <lt>
-                      <p>aero/alpha-deg-abs</p>
-                      <v>110</v>
-                  </lt>
-                  <v> 1.00 </v>
-                  <v> 0.00 </v>
-              </ifthen>
+      <function name="aero/drag/total">
+          <description>total drag</description>
               <sum>
                   <property>aero/coefficient/CD/CD_BASIC</property>
                   <property>aero/coefficient/CD/CDM </property>
                   <v> 0.0037 </v> <!-- delta CD -->
               </sum>
-          </product>
           </function>
-
-          <function name="aero/drag/drag_ABS_110_180">
-              <description>Drag at ABS AoA between 110 and 180 AoA</description>
-              <product>
-                  <ifthen>
-                      <ge>
-                          <property>aero/alpha-deg-abs</property>
-                          <v> 110 </v>
-                      </ge>
-                      <v> 1.00 </v>
-                      <v> 0.00 </v>
-                  </ifthen>
-
-                  <ifthen>
-                      <le>
-                          <property>aero/alpha-deg-abs</property>
-                          <v> 180 </v>
-                      </le>
-                      <v> 1.00 </v>
-                      <v> 0.00 </v>
-                  </ifthen>
-
-                  <sum>
-                      <v>1.567</v>
-                      <v>0.0037</v> <!-- delta CD -->
-                  </sum>
-              </product>
-            </function>
         </axis>
 
   <axis name="SIDE">
-    <function name="aero/side/ABS_ALPHA_45">
+    <function name="aero/side/total">
           <description>Sideforce at less than absolute value Alpha 45</description>
-          <product>
-              <ifthen>
-                  <le> <p> aero/alpha-deg-abs </p> <v> 45.0 </v> </le>
-                  <v> 1.00 </v>
-                  <v> 0.00 </v>
-              </ifthen>
           <sum>
                 <product>
                     <property>aero/coefficient/CY/CYB</property>
@@ -1775,73 +1648,12 @@
                   <p> aero/coefficient/CY/CYDSP </p>
                   <p> aero/coefficient/CY/CYDR </p>
           </sum>
-        </product>
     </function>
-
-    <function name="aero/side/ABS_ALPHA_45_110">
-      <description>sideforce at greater than 45 AoA, but less than 110 AoA </description>
-        <product>
-          <ifthen>
-              <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
-              <v> 1.00 </v>
-              <v> 0.00 </v>
-          </ifthen>
-
-          <ifthen>
-            <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
-            <v> 1.00 </v>
-            <v> 0.00 </v>
-          </ifthen>
-            <sum>
-                <product>
-                    <property>aero/coefficient/CY/CYB</property>
-                    <property>aero/beta-deg</property>
-                </product>
-                  <p> aero/coefficient/CY/CYDA </p>
-                  <p> aero/coefficient/CY/CYDSP </p>
-              </sum>
-          </product>
-    </function>
-
-    <function name="aero/side/ABS_ALPHA_110_180">
-      <description> sideforce at greater than ABS 110 AoA, less than 180 ABS AoA </description>
-      <product>
-        <ifthen>
-          <ge> <p> aero/alpha-deg-abs </p> <v> 110 </v> </ge>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-        <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 180 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-        <sum>
-          <product>
-            <v> 0.0030 </v>
-            <p> aero/beta-deg </p>
-          </product>
-            <p> aero/coefficient/CY/CYDA </p>
-            <p> aero/coefficient/CY/CYDSP </p>
-        </sum>
-    </product>
-    </function>
-
-
   </axis>
 
   <axis name="ROLL">
-    <function name="aero/roll/ABS_ALPHA_45">
+    <function name="aero/roll/total">
       <description> roll less than or equal to ABS 45 AoA </description>
-      <product>
-      <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-      </ifthen>
-
       <sum>
         <product>
           <p> aero/coefficient/CR/CRB1 </p>
@@ -1854,148 +1666,30 @@
         <p> aero/coefficient/CR/CRDSP-R </p>
         <p> aero/coefficient/CR/CRDR </p>
       </sum>
-    </product>
-    </function>
-
-    <function name="aero/roll/ABS_ALPHA_45_110">
-      <description> 45 to 110 ABS AoA</description>
-      <product>
-        <ifthen>
-          <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-        <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-        <sum>
-          <product>
-            <p> aero/coefficient/CR/CRB1 </p>
-            <p> aero/beta-deg </p>
-          </product>
-
-          <product>
-            <v> -0.100 </v>
-            <property>aero/qbar-psf</property>
-            <property>metrics/Sw-sqft</property>
-            <property>metrics/bw-ft</property>
-            <property>aero/bi2vel</property>
-            <property>velocities/p-aero-rad_sec</property>
-          </product>
-
-          <product>
-              <v> 0.050 </v>
-              <property>aero/qbar-psf</property>
-              <property>metrics/Sw-sqft</property>
-              <property>metrics/bw-ft</property>
-              <property>aero/bi2vel</property>
-              <property>velocities/r-aero-rad_sec</property>
-          </product>
-      </sum>
-
-      </product>
-      </function>
-
-    <function name="aero/roll/ABS_ALPHA_110_180">
-      <description> from 110 to 180 ABS AoA </description>
-      <product>
-          <ifthen>
-            <ge> <p> aero/alpha-deg-abs </p> <v> 110 </v> </ge>
-            <v> 1.00 </v>
-            <v> 0.00 </v>
-          </ifthen>
-
-          <ifthen>
-            <le> <p> aero/alpha-deg-abs </p> <v> 180 </v> </le>
-            <v> 1.00 </v>
-            <v> 0.00 </v>
-          </ifthen>
-
-          <sum>
-            <product>
-              <v> -0.00300 </v>
-              <p> aero/beta-deg </p>
-            </product>
-            <product>
-              <v> -0.100 </v>
-              <property>aero/qbar-psf</property>
-              <property>metrics/Sw-sqft</property>
-              <property>metrics/bw-ft</property>
-              <property>aero/bi2vel</property>
-              <property>velocities/p-aero-rad_sec</property>
-            </product>
-            <product>
-                <v> 0.050 </v>
-                <property>aero/qbar-psf</property>
-                <property>metrics/Sw-sqft</property>
-                <property>metrics/bw-ft</property>
-                <property>aero/bi2vel</property>
-                <property>velocities/r-aero-rad_sec</property>
-            </product>
-          </sum>
-        </product>
       </function>
 
   </axis>
 
   <axis name="PITCH">
-    <function name="aero/pitch/ABS_ALPHA_45">
-      <description> 0 to 45 ABS AoA </description>
-      <product>
-        <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
 
-        <sum>
-          <p> aero/coefficient/CM/CM_BASIC </p>
-          <p> aero/coefficient/CM/DCM1 </p>
-          <p> aero/coefficient/CM/CM_STAB </p>
-          <p> aero/coefficient/CM/CMDA </p>
-          <p> aero/coefficient/CM/CMDSP </p>
-          <p> aero/coefficient/CM/CMAD </p>
-          <p> aero/coefficient/CM/CMQ </p>
-        </sum>
-
-      </product>
+    <function name="aero/pitch/total">
+      <description> total pitch </description>
+      <sum>
+        <p> aero/coefficient/CM/CM_BASIC </p>
+        <p> aero/coefficient/CM/DCM1 </p>
+        <p> aero/coefficient/CM/CM_STAB </p>
+        <p> aero/coefficient/CM/CMDA </p>
+        <p> aero/coefficient/CM/CMDSP </p>
+        <p> aero/coefficient/CM/CMAD </p>
+        <p> aero/coefficient/CM/CMQ </p>
+      </sum>
     </function>
-
-    <function name="aero/pitch/ABS_ALPHA_45_110">
-      <description> 45 to 110 abs AoA </description>
-      <product>
-        <ifthen>
-          <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-        <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
-      </product>
-    </function>
-
 
   </axis>
 
   <axis name="YAW">
-    <function name="aero/yaw/ABS_ALPHA_45">
-      <description> up to 45 AoA </description>
-      <product>
-        <ifthen>
-          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
-          <v> 1.00 </v>
-          <v> 0.00 </v>
-        </ifthen>
-
+    <function name="aero/yaw/total">
+      <description> total yaw </description>
         <sum>
           <p> aero/coefficient/CN/CNB1 </p>
           <p> aero/coefficient/CN/CNP </p>
@@ -2004,7 +1698,6 @@
           <p> aero/coefficient/CN/CNDR </p>
           <p> aero/coefficient/CN/CNDSP </p>
         </sum>
-      </product>
     </function>
 
   </axis>
