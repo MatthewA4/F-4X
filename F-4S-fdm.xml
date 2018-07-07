@@ -373,8 +373,8 @@
 				<input>fcs/roll-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
-					<min> -30 </min>
-					<max>   1 </max>
+					<min> -1 </min>
+					<max> 30 </max>
 				</range>
 			</aerosurface_scale>
 
@@ -388,8 +388,8 @@
 				<input>fcs/roll-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
-					<min> -1 </min>
-					<max> 30 </max>
+					<min> -30 </min>
+					<max>   1 </max>
 				</range>
 			</aerosurface_scale>
 
@@ -1044,10 +1044,7 @@
 			<property>aero/qbar-psf</property>
 			<property>metrics/Sw-sqft</property>
 			<property>metrics/bw-ft</property>
-			<sum> <!-- On purpose instead of fcs/aileron-deg -->
-				<property>fcs/aileron-left-deg</property>
-				<property>fcs/aileron-right-deg</property>
-			</sum>
+			<property>fcs/aileron-deg</property>
 			<table>
 				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 				<tableData>
