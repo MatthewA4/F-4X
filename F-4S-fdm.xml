@@ -328,238 +328,236 @@
 
  </propulsion>
 
- <flight_control name="FCS: F-4S">
+	<flight_control name="FCS: F-4S"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) -->
 
-  <channel name="Pitch">
+		<channel name="Pitch">
 
-   <summer name="Pitch Trim Sum">
-      <input>fcs/elevator-cmd-norm</input>
-      <input>fcs/pitch-trim-cmd-norm</input>
-      <clipto>
-        <min> -1 </min>
-        <max>  1 </max>
-      </clipto>
-   </summer>
+			<summer name="fcs/pitch-sum">
+				<input>fcs/elevator-cmd-norm</input>
+				<input>fcs/pitch-trim-cmd-norm</input>
+				<clipto>
+					<min> -1 </min>
+					<max>  1 </max>
+				</clipto>
+			</summer>
 
-   <aerosurface_scale name="Elevator Control">
-      <input>fcs/pitch-trim-sum</input>
-      <range>
-        <min> -0.366519 </min>
-        <max>  0.157079 </max>
-      </range>
-      <output>fcs/elevator-pos-rad</output>
-   </aerosurface_scale>
+			<aerosurface_scale name="fcs/elevator-deg-a">
+				<input>fcs/pitch-sum</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min> -21 </min>
+					<max>   9 </max>
+				</range>
+			</aerosurface_scale>
 
-   <aerosurface_scale name="elevator normalization">
-      <input>fcs/elevator-pos-rad</input>
-      <domain>
-        <min> -0.366519 </min>
-        <max>  0.157079 </max>
-      </domain>
-      <!-- Reference: ADA101648, page 20 -->
-      <range>
-        <min>  -21 </min>
-        <max>  9 </max>
-      </range>
-      <output>fcs/elevator-pos-norm</output>
-   </aerosurface_scale>
-  </channel>
+			<lag_filter name="fcs/elevator-deg">
+				<input>fcs/elevator-deg-a</input>
+				<c1>16.2</c1>
+				<output>/surface-positions/elevator</output>
+			</lag_filter>
 
-  <channel name="Roll">
+		</channel>
 
-   <summer name="Roll Trim Sum">
-      <input>fcs/aileron-cmd-norm</input>
-      <input>fcs/roll-trim-cmd-norm</input>
-      <clipto>
-        <min> -1 </min>
-        <max>  1 </max>
-      </clipto>
-   </summer>
+		<channel name="Roll">
 
-   <aerosurface_scale name="Aileron Control">
-      <input>fcs/roll-trim-sum</input>
-      <range>
-        <min>  -0.35 </min>
-        <max>  0.35 </max>
-      </range>
-      <output>fcs/aileron-pos-rad</output>
-   </aerosurface_scale>
+			<summer name="fcs/roll-sum">
+				<input>fcs/aileron-cmd-norm</input>
+				<input>fcs/roll-trim-cmd-norm</input>
+				<clipto>
+					<min> -1 </min>
+					<max>  1 </max>
+				</clipto>
+			</summer>
 
+			<aerosurface_scale name="fcs/aileron-left-deg-a">
+				<input>fcs/roll-sum</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min> -30 </min>
+					<max>   1 </max>
+				</range>
+			</aerosurface_scale>
 
+			<lag_filter name="fcs/aileron-left-deg">
+				<input>fcs/aileron-left-deg-a</input>
+				<c1>18.4</c1>
+				<output>/surface-positions/aileron-left</output>
+			</lag_filter>
 
-   <aerosurface_scale name="aileron normalization">
-      <input>fcs/aileron-pos-rad</input>
-      <domain>
-        <min>  -0.35 </min>
-        <max>  0.35 </max>
-      </domain>
-      <!-- Reference: ADA101648, page 20 -->
-      <range>
-        <min>  -30 </min>
-        <max>  30 </max>
-      </range>
-      <output>fcs/aileron-pos-norm</output>
-   </aerosurface_scale>
+			<aerosurface_scale name="fcs/aileron-right-deg-a">
+				<input>fcs/roll-sum</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min> -1 </min>
+					<max> 30 </max>
+				</range>
+			</aerosurface_scale>
 
-   <aerosurface_scale name="spoiler control">
-       <input>fcs/roll-trim-sum</input>
-       <range>
-           <min> 0 </min>
-           <max> 0.750491 </max>
-       </range>
-       <output>fcs/spoiler-pos-rad</output>
-   </aerosurface_scale>
+			<lag_filter name="fcs/aileron-right-deg">
+				<input>fcs/aileron-right-deg-a</input>
+				<c1>18.4</c1>
+				<output>/surface-positions/aileron-right</output>
+			</lag_filter>
 
-   <aerosurface_scale name="spoiler normalization">
-	   <input>fcs/spoiler-pos-rad</input>
-	   <domain>
-		   <min>  0.00 </min>
-		   <max>  0.750491 </max>
-	   </domain>
-	   <!-- Reference: ADA101648, page 20 -->
-	   <range>
-		   <min>  0  </min>
-		   <max>  43 </max>
-	   </range>
-	   <output>fcs/spoiler-pos-norm</output>
-   </aerosurface_scale>
+			<summer name="fcs/aileron-deg">
+				<input>fcs/aileron-left-deg</input>
+				<input>fcs/aileron-right-deg</input>
+			</summer>
 
-  </channel>
+			<pure_gain name="fcs/roll-sum-inverted">
+				<input>fcs/roll-sum</input>
+				<gain> -1.0 </gain>
+			</pure_gain>
 
-  <property value="1">fcs/yaw-damper-enable</property>
-  <channel name="Yaw">
+			<aerosurface_scale name="fcs/spoiler-left-deg-a">
+				<input>fcs/roll-sum-inverted</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min>  0  </min>
+					<max> 43 </max>
+				</range>
+			</aerosurface_scale>
 
-   <summer name="Rudder Command Sum">
-      <input>fcs/rudder-cmd-norm</input>
-      <input>fcs/yaw-trim-cmd-norm</input>
-      <clipto>
-        <min> -1 </min>
-        <max>  1 </max>
-      </clipto>
-   </summer>
+			<lag_filter name="fcs/spoiler-left-deg">
+				<input>fcs/spoiler-left-deg-a</input>
+				<c1>27.8</c1>
+				<output>/surface-positions/spoiler-left</output>
+			</lag_filter>
 
-   <scheduled_gain name="Yaw Damper Rate">
-      <input>velocities/r-aero-rad_sec</input>
-      <table>
-        <independentVar lookup="row">velocities/ve-kts</independentVar>
-         <tableData>
-            30     0.00
-            60     2.00
-         </tableData>
-      </table>
-      <gain>fcs/yaw-damper-enable</gain>
-   </scheduled_gain>
+			<aerosurface_scale name="fcs/spoiler-right-deg-a">
+				<input>fcs/roll-sum</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min>  0  </min>
+					<max> 43 </max>
+				</range>
+			</aerosurface_scale>
 
-   <summer name="Rudder Sum">
-      <input>fcs/rudder-command-sum</input>
-      <input>fcs/yaw-damper-rate</input>
-      <clipto>
-        <min> -1.1 </min>
-        <max>  1.1 </max>
-      </clipto>
-   </summer>
+			<lag_filter name="fcs/spoiler-right-deg">
+				<input>fcs/spoiler-right-deg-a</input>
+				<c1>27.8</c1>
+				<output>/surface-positions/spoiler-right</output>
+			</lag_filter>
 
-   <aerosurface_scale name="Rudder Control">
-      <input>fcs/rudder-sum</input>
-      <domain>
-        <min> -1.1 </min>
-        <max>  1.1 </max>
-      </domain>
-      <range>
-        <min> -0.35 </min>
-        <max>  0.35 </max>
-      </range>
-      <output>fcs/rudder-pos-rad</output>
-   </aerosurface_scale>
+			<fcs_function name="fcs/spoiler-deg">
+				<function>
+					<product>
+						<sum>
+							<property>fcs/spoiler-left-deg</property>
+							<property>fcs/spoiler-right-deg</property>
+						</sum>
+						<value>0.5</value>
+					</product>
+				</function>
+			</fcs_function>
 
-   <aerosurface_scale name="rudder normalization">
-      <input>fcs/rudder-pos-rad</input>
-      <domain>
-        <min> -0.35 </min>
-        <max>  0.35 </max>
-      </domain>
-      <!-- Reference: ADA101648, page 20-->
-      <range>
-        <min> -30 </min>
-        <max>  30 </max>
-      </range>
-      <output>fcs/rudder-pos-norm</output>
-   </aerosurface_scale>
+		</channel>
 
-  </channel>
+		<property value="1">fcs/yaw-damper-enable</property>
+		
+		<channel name="Yaw">
 
-  <channel name="Flaps">
-   <kinematic name="Flaps Control">
-     <input>fcs/flap-cmd-norm</input>
-     <traverse>
-       <setting>
-          <position>  0 </position>
-          <time>      0 </time>
-       </setting>
-       <setting>
-          <position> 15 </position>
-          <time>      4 </time>
-       </setting>
-       <setting>
-          <position> 30 </position>
-          <time>      3 </time>
-       </setting>
-     </traverse>
-     <output>fcs/flap-pos-deg</output>
-   </kinematic>
+			<summer name="fcs/rudder-sum"> <!-- For some reason, the default ones in JSB are inverted -->
+				<input>/controls/flight/rudder</input>
+				<input>/controls/flight/rudder-trim</input>
+				<clipto>
+					<min> -1.0 </min>
+					<max>  1.0 </max>
+				</clipto>
+			</summer>
 
-   <aerosurface_scale name="flap normalization">
-      <input>fcs/flap-pos-deg</input>
-      <domain>
-        <min>  0 </min>
-        <max> 30 </max>
-      </domain>
-      <range>
-        <min> 0 </min>
-        <max> 1 </max>
-      </range>
-      <output>fcs/flap-pos-norm</output>
-   </aerosurface_scale>
+			<aerosurface_scale name="fcs/rudder-deg-a">
+				<input>fcs/rudder-sum</input>
+				<!-- Reference: ADA101648, page 20-->
+				<range>
+					<min> -30 </min>
+					<max>  30 </max>
+				</range>
+			</aerosurface_scale>
 
-  </channel>
+			<lag_filter name="fcs/rudder-deg">
+				<input>fcs/rudder-deg-a</input>
+				<c1>19.1</c1>
+				<output>/surface-positions/rudder</output>
+			</lag_filter>
 
-  <channel name="Landing Gear">
-   <kinematic name="Gear Control">
-     <input>gear/gear-cmd-norm</input>
-     <traverse>
-       <setting>
-          <position> 0 </position>
-          <time>     0 </time>
-       </setting>
-       <setting>
-          <position> 1 </position>
-          <time>     5 </time>
-       </setting>
-     </traverse>
-     <output>gear/gear-pos-norm</output>
-   </kinematic>
+		</channel> <!-- End Flight Control System by Joshua Davidson (it0uchpods) -->
 
-  </channel>
+		<channel name="Flaps">
 
-  <channel name="Speedbrake">
-   <kinematic name="Speedbrake Control">
-     <input>fcs/speedbrake-cmd-norm</input>
-     <traverse>
-       <setting>
-          <position> 0 </position>
-          <time>     0 </time>
-       </setting>
-       <setting>
-          <position> 30 </position>
-          <time>     3 </time>
-       </setting>
-     </traverse>
-     <output>fcs/speedbrake-pos-norm</output>
-   </kinematic>
+			<kinematic name="Flaps Control">
+				<input>fcs/flap-cmd-norm</input>
+				<traverse>
+					<setting>
+						<position>  0 </position>
+						<time>      0 </time>
+					</setting>
+					<setting>
+						<position> 15 </position>
+						<time>      4 </time>
+					</setting>
+					<setting>
+						<position> 30 </position>
+						<time>      3 </time>
+					</setting>
+				</traverse>
+				<output>fcs/flap-pos-deg</output>
+			</kinematic>
 
-  </channel>
+			<aerosurface_scale name="flap normalization">
+				<input>fcs/flap-pos-deg</input>
+					<domain>
+						<min>  0 </min>
+						<max> 30 </max>
+					</domain>
+					<range>
+						<min> 0 </min>
+						<max> 1 </max>
+					</range>
+				<output>fcs/flap-pos-norm</output>
+			</aerosurface_scale>
 
- </flight_control>
+		</channel>
+
+		<channel name="Landing Gear">
+
+			<kinematic name="rubbish/gear-pos-norm">
+			<input>gear/gear-cmd-norm</input>
+			<traverse>
+				<setting>
+					<position> 0 </position>
+					<time>     0 </time>
+				</setting>
+				<setting>
+					<position> 1 </position>
+					<time>     5 </time>
+				</setting>
+			</traverse>
+			<output>gear/gear-pos-norm</output>
+		</kinematic>
+
+		</channel>
+
+		<channel name="Speedbrake">
+
+			<kinematic name="rubbish/speedbrake-pos-nrom">
+				<input>fcs/speedbrake-cmd-norm</input>
+				<traverse>
+					<setting>
+						<position> 0 </position>
+						<time>     0 </time>
+					</setting>
+					<setting>
+						<position> 30 </position>
+						<time>      3 </time>
+					</setting>
+				</traverse>
+				<output>fcs/speedbrake-pos-norm</output>
+			</kinematic>
+
+		</channel>
+
+	</flight_control>
 
  <aerodynamics>
 
@@ -634,7 +632,7 @@
        <product>
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
-	   <property>fcs/elevator-pos-norm</property>
+	   <property>fcs/elevator-deg</property>
 	   <table>
 		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 		   <tableData>
@@ -788,7 +786,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <value>0.04</value>
-           <abs><property>fcs/elevator-pos-rad</property></abs>
+           <abs><toradians><property>fcs/elevator-deg</property></toradians></abs>
        </product>
     </function>
 
@@ -838,7 +836,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <value>-0.000167</value>
-            <property>fcs/aileron-pos-norm</property>
+            <property>fcs/aileron-deg</property>
         </product>
     </function>
 
@@ -849,7 +847,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <value>-0.00006</value>
-            <property>fcs/spoiler-pos-norm</property>
+            <property>fcs/spoiler-deg</property>
         </product>
     </function>
 
@@ -859,7 +857,7 @@
         <product>
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
-            <property>fcs/rudder-pos-norm</property>
+            <property>fcs/rudder-deg</property>
             <table>
                 <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
@@ -1039,58 +1037,85 @@
        </product>
     </function>
 
-<!-- Reference: ADA101648, page 26 -->
-    <function name="aero/coefficient/CR/CRDA">
-       <description>CRDA (aileron position)</description>
-       <product>
-          <property>aero/qbar-psf</property>
-          <property>metrics/Sw-sqft</property>
-	         <property>metrics/bw-ft</property>
-	         <property>fcs/aileron-pos-norm</property>
-		    <table>
-			    <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
-			    <tableData>
-    			    0    0.000448
-    			    5    0.000459
-    			    10   0.000431
-    			    15   0.000405
-    			    20   0.000379
-    			    25   0.000354
-              30   0.000312
-              35   0.000210
-              40   0.000105
-              45   0.000000
-            </tableData>
-        </table>
+	<!-- Reference: ADA101648, page 26 -->
+	<function name="aero/coefficient/CR/CRDA">
+		<description>CRDA (aileron position)</description>
+		<product>
+			<property>aero/qbar-psf</property>
+			<property>metrics/Sw-sqft</property>
+			<property>metrics/bw-ft</property>
+			<sum> <!-- On purpose instead of fcs/aileron-deg -->
+				<property>fcs/aileron-left-deg</property>
+				<property>fcs/aileron-right-deg</property>
+			</sum>
+			<table>
+				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+				<tableData>
+					 0   0.000448
+					 5   0.000459
+					10   0.000431
+					15   0.000405
+					20   0.000379
+					25   0.000354
+					30   0.000312
+					35   0.000210
+					40   0.000105
+					45   0.000000
+				</tableData>
+			</table>
+		</product>
+	</function>
 
-    </product>
-</function>
-
-    <!-- Reference: ADA101648, page 26 -->
-    <function name="aero/coefficient/CR/CRDSP">
-	    <description>CRDSP (spoiler position)</description>
-	    <product>
-		    <property>aero/qbar-psf</property>
-		    <property>metrics/Sw-sqft</property>
-		    <property>metrics/Sw-sqft</property>
-		    <property>fcs/spoiler-pos-norm</property>
-		    <table>
-			    <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
-			    <tableData>
-  				    0   0.000130
-  				    5   0.000140
-  				    10  0.000093
-  				    15  0.000066
-  				    20  0.000054
-  				    25  0.000040
-  				    30  0.000030
-  				    35  0.000020
-  				    40  0.000010
-  				    45  0.000000
-			    </tableData>
-		    </table>
-	    </product>
-    </function>
+	<!-- Reference: ADA101648, page 26 -->
+	<function name="aero/coefficient/CR/CRDSP-L">
+		<description>CRDSP (left spoiler position)</description>
+		<product>
+			<property>aero/qbar-psf</property>
+			<property>metrics/Sw-sqft</property>
+			<property>metrics/Sw-sqft</property>
+			<property>fcs/spoiler-left-deg</property>
+			<table>
+				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+				<tableData>
+					 0 -0.000130
+					 5 -0.000140
+					10 -0.000093
+					15 -0.000066
+					20 -0.000054
+					25 -0.000040
+					30 -0.000030
+					35 -0.000020
+					40 -0.000010
+					45 -0.000000
+				</tableData>
+			</table>
+		</product>
+	</function>
+	
+	<function name="aero/coefficient/CR/CRDSP-R">
+		<description>CRDSP (right spoiler position)</description>
+		<product>
+			<property>aero/qbar-psf</property>
+			<property>metrics/Sw-sqft</property>
+			<property>metrics/Sw-sqft</property>
+			<property>fcs/spoiler-right-deg</property>
+			<table>
+				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+				<tableData>
+					 0  0.000130
+					 5  0.000140
+					10  0.000093
+					15  0.000066
+					20  0.000054
+					25  0.000040
+					30  0.000030
+					35  0.000020
+					40  0.000010
+					45  0.000000
+				</tableData>
+			</table>
+		</product>
+	</function>
 
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CR/CRDR">
@@ -1099,7 +1124,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/bw-ft</property>
-	   <property>fcs/rudder-pos-norm</property>
+	   <property>fcs/rudder-deg</property>
 	   <table>
 		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 		   <tableData>
@@ -1168,7 +1193,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/elevator-pos-deg</property>
+          <property>fcs/elevator-deg</property>
           <table>
             <independentVar lookup="row">aero/alpha-deg</independentVar>
             <tableData>
@@ -1263,7 +1288,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/aileron-pos-rad</property>
+		  <toradians><property>fcs/aileron-deg</property></toradians>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
@@ -1289,7 +1314,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/spoiler-pos-rad</property>
+          <toradians><property>fcs/spoiler-deg</property></toradians>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
@@ -1474,7 +1499,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <property>metrics/bw-ft</property>
-            <property>fcs/aileron-pos-norm</property>
+            <property>fcs/aileron-deg</property>
             <table>
                 <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
@@ -1500,20 +1525,20 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/bw-ft</property>
-           <property>fcs/rudder-pos-norm</property>
+           <property>fcs/rudder-deg</property>
            <table>
                <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                <tableData>
-                   0   -0.00090
-                   5   -0.00086
-                   10  -0.00078
-                   15  -0.00073
-                   20  -0.00065
-                   25  -0.00050
-                   30  -0.00032
-                   35  -0.00023
-                   40  -0.00014
-                   45  -0.00000
+                   0   0.00090
+                   5   0.00086
+                   10  0.00078
+                   15  0.00073
+                   20  0.00065
+                   25  0.00050
+                   30  0.00032
+                   35  0.00023
+                   40  0.00014
+                   45  0.00000
                </tableData>
            </table>
        </product>
@@ -1525,7 +1550,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <property>metrics/bw-ft</property>
-            <property>fcs/spoiler-pos-norm</property>
+            <property>fcs/spoiler-deg</property>
             <table>
                 <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
@@ -1567,7 +1592,7 @@
             <v>0.122</v>
                 <product>
                     <v>0.00300</v>
-                    <property>fcs/elevator-pos-norm</property>
+                    <property>fcs/elevator-deg</property>
                 </product>
         </sum>
     </product>
@@ -1660,7 +1685,7 @@
               <v>-0.547</v> <!-- CL_BASIC @ 110 AoA -->
               <product>
                   <v>0.00300</v> <!-- CL_STAB @ 110 AoA -->
-                  <p>fcs/elevator-pos-norm</p>
+                  <p>fcs/elevator-deg</p>
               </product>
           </sum>
 
@@ -1811,7 +1836,8 @@
         <p> aero/coefficient/CR/CRP1 </p>
         <p> aero/coefficient/CR/CRR </p>
         <p> aero/coefficient/CR/CRDA </p>
-        <p> aero/coefficient/CR/CRDSP </p>
+        <p> aero/coefficient/CR/CRDSP-L </p>
+        <p> aero/coefficient/CR/CRDSP-R </p>
         <p> aero/coefficient/CR/CRDR </p>
       </sum>
     </product>
