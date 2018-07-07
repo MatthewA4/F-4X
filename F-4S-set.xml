@@ -21,7 +21,7 @@ See LICENSE file for the GPL version 2 text.
 
 <PropertyList>
 	<sim>
-		<author>Matthew Anderson</author>
+		<author>Matthew Anderson, Joshua Davidson/it0uchpods (FCS)</author>
 		<description>F-4S Phantom II</description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
@@ -54,10 +54,20 @@ See LICENSE file for the GPL version 2 text.
         </fuel>
     </consumables>
 
-		<sound>
-			<path type="string">Aircraft/F-4X/Audio/audio.xml</path>
-			<enabled type="bool">true</enabled>
-		</sound>
+	<fdm n="0">
+		<jsbsim n="0">
+			<hydromech n="0">
+				<sas-pitch type="bool">1</sas-pitch>
+				<sas-roll type="bool">1</sas-roll>
+				<sas-yaw type="bool">1</sas-yaw>
+			</hydromech>
+		</jsbsim>
+	</fdm>
+
+	<sound>
+		<path type="string">Aircraft/F-4X/Audio/audio.xml</path>
+		<enabled type="bool">true</enabled>
+	</sound>
 
 	<nasal>
 		<electrical>

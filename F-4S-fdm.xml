@@ -328,6 +328,8 @@
 
  </propulsion>
 
+	<!--system file="hydromech"/-->
+
 	<flight_control name="FCS: F-4S"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) -->
 
 		<channel name="Pitch">
@@ -360,22 +362,23 @@
 
 		<channel name="Roll">
 
-			<summer name="fcs/roll-sum">
+			<summer name="fcs/aileron-sum">
 				<input>fcs/aileron-cmd-norm</input>
 				<input>fcs/roll-trim-cmd-norm</input>
+				<!--input>-hydromech/roll/delta-aileron</input--> <!-- Inverted for some reason -->
 				<clipto>
 					<min> -1 </min>
 					<max>  1 </max>
 				</clipto>
 			</summer>
 
-			<pure_gain name="fcs/roll-sum-deg">
-				<input>fcs/roll-sum</input>
+			<pure_gain name="fcs/aileron-sum-deg">
+				<input>fcs/aileron-sum</input>
 				<gain>30</gain>
 			</pure_gain>
 
 			<lag_filter name="fcs/aileron-left-deg">
-				<input>fcs/roll-sum-deg</input>
+				<input>fcs/aileron-sum-deg</input>
 				<c1> 23.7 </c1>
 				<!-- Reference: ADA101648, page 20 -->
 				<clipto>
@@ -386,7 +389,7 @@
 			</lag_filter>
 
 			<lag_filter name="fcs/aileron-right-deg">
-				<input>fcs/roll-sum-deg</input>
+				<input>fcs/aileron-sum-deg</input>
 				<c1> 23.7 </c1>
 				<!-- Reference: ADA101648, page 20 -->
 				<clipto>
@@ -401,13 +404,23 @@
 				<input>fcs/aileron-right-deg</input>
 			</summer>
 
-			<pure_gain name="fcs/roll-sum-inverted">
-				<input>fcs/roll-sum</input>
+			<summer name="fcs/spoiler-sum">
+				<input>fcs/aileron-cmd-norm</input>
+				<input>fcs/roll-trim-cmd-norm</input>
+				<!--input>-hydromech/roll/delta-spoiler</input--> <!-- Inverted for some reason -->
+				<clipto>
+					<min> -1 </min>
+					<max>  1 </max>
+				</clipto>
+			</summer>
+
+			<pure_gain name="fcs/spoiler-sum-inverted">
+				<input>fcs/spoiler-sum</input>
 				<gain> -1.0 </gain>
 			</pure_gain>
 
 			<aerosurface_scale name="fcs/spoiler-left-deg-a">
-				<input>fcs/roll-sum-inverted</input>
+				<input>fcs/spoiler-sum-inverted</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
 					<min>  0  </min>
@@ -422,7 +435,7 @@
 			</lag_filter>
 
 			<aerosurface_scale name="fcs/spoiler-right-deg-a">
-				<input>fcs/roll-sum</input>
+				<input>fcs/spoiler-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
 					<min>  0 </min>
