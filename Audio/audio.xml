@@ -25,9 +25,9 @@ See LICENSE file for the GPL version 2 text.
     <path>blowing3.wav</path>
     <mode>looped</mode>
 
-    <condition>
+  <!--  <condition>
       <property>/sim/sound/enabled</property>
-    </condition>
+    </condition> -->
 
     <volume>
       <property>/velocities/mach</property>
@@ -37,9 +37,11 @@ See LICENSE file for the GPL version 2 text.
       <offset>0.05</offset>
     </volume>
 
+<!--
     <pitch>
       <factor>1</factor>
     </pitch>
+-->
 
   </blowing>
 </fx>
