@@ -31,6 +31,9 @@ See LICENSE file for the GPL version 2 text.
 			<model type="int">0</model>
 		</rating>
 		<status>Alpha</status>
+		<startup>
+		<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
+	</startup>
 
 		<flight-model>jsb</flight-model>
 		<aero>F-4S-fdm</aero>
