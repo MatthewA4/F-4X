@@ -1174,7 +1174,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <property>metrics/cbarw-ft</property>
-           <property>aero/alpha-rad</property>
+           <property>aero/alpha-deg</property>
            <table>
                <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                <tableData>
@@ -1209,13 +1209,14 @@
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CM/CM_STAB">
        <description>Pitch moment due to elevator</description>
+       <sum>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/elevator-pos-rad</property>
+          <property>fcs/elevator-pos-deg</property>
           <table>
-            <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+            <independentVar lookup="row">aero/alpha-deg</independentVar>
             <tableData>
                 0   -0.01010
                 5   -0.01004
@@ -1243,6 +1244,8 @@
             </tableData>
           </table>
        </product>
+       <v> 0.00011 </v>
+     </sum>
     </function>
 
     <!-- Reference: ADA101648, page 27 -->
@@ -1974,6 +1977,26 @@
   </axis>
 
   <axis name="PITCH">
+    <function name="aero/pitch/ABS_ALPHA_45">
+      <description> 0 to 45 ABS AoA </description>
+      <product>
+        <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 45 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+        <sum>
+          <p> aero/coefficient/CM/CM_BASIC </p>
+          <p> aero/coefficient/CM/CM_STAB </p>
+          <p> aero/coefficient/CM/CMDA </p>
+          <p> aero/coefficient/CM/CMDSP </p>
+          <p> aero/coefficient/CM/CMAD </p>
+          <p> aero/coefficient/CM/CMQ </p>
+        </sum>
+
+      </product>
+    </function>
   </axis>
 
   <axis name="YAW">
