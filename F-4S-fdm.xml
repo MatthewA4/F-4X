@@ -451,7 +451,7 @@
 		</channel>
 
 		<property value="1">fcs/yaw-damper-enable</property>
-		
+
 		<channel name="Yaw">
 
 			<summer name="fcs/rudder-sum"> <!-- For some reason, the default ones in JSB are inverted -->
@@ -571,6 +571,11 @@
       <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
+          <ifthen>
+            <le> <p> aero/alpha-deg </p> <v> 0 </v> </le>
+            <v> -1.00 </v>
+            <v> 1.00 </v>
+          </ifthen>
           <table>
             <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
             <tableData>
@@ -1085,7 +1090,7 @@
 			</table>
 		</product>
 	</function>
-	
+
 	<function name="aero/coefficient/CR/CRDSP-R">
 		<description>CRDSP (right spoiler position)</description>
 		<product>
