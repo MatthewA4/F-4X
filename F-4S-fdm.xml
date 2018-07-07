@@ -376,74 +376,42 @@
       </clipto>
    </summer>
 
-   <aerosurface_scale name="Left Aileron Control">
+   <aerosurface_scale name="Aileron Control">
       <input>fcs/roll-trim-sum</input>
       <range>
-        <min>  0.00 </min>
+        <min>  -0.35 </min>
         <max>  0.35 </max>
       </range>
-      <output>fcs/left-aileron-pos-rad</output>
+      <output>fcs/aileron-pos-rad</output>
    </aerosurface_scale>
 
-   <aerosurface_scale name="Right Aileron Control">
-      <input>-fcs/roll-trim-sum</input>
-      <range>
-        <min>  0.00 </min>
-        <max>  0.35 </max>
-      </range>
-      <output>fcs/right-aileron-pos-rad</output>
-   </aerosurface_scale>
 
-   <aerosurface_scale name="left aileron normalization">
-      <input>fcs/left-aileron-pos-rad</input>
+
+   <aerosurface_scale name="aileron normalization">
+      <input>fcs/aileron-pos-rad</input>
       <domain>
-        <min>  0.00 </min>
+        <min>  -0.35 </min>
         <max>  0.35 </max>
       </domain>
       <!-- Reference: ADA101648, page 20 -->
       <range>
-        <min>  0 </min>
+        <min>  -30 </min>
         <max>  30 </max>
       </range>
-      <output>fcs/left-aileron-pos-norm</output>
+      <output>fcs/aileron-pos-norm</output>
    </aerosurface_scale>
 
-   <aerosurface_scale name="right aileron normalization">
-      <input>fcs/right-aileron-pos-rad</input>
-      <domain>
-        <min>  0.00 </min>
-        <max>  0.35 </max>
-      </domain>
-      <!-- Reference: ADA101648, page 20 -->
-      <range>
-        <min>   0 </min>
-	    <max>   30 </max>
-      </range>
-      <output>fcs/right-aileron-pos-norm</output>
-   </aerosurface_scale>
-
-   <aerosurface_scale name="Left spoiler control">
+   <aerosurface_scale name="spoiler control">
        <input>fcs/roll-trim-sum</input>
        <range>
            <min> 0 </min>
            <max> 0.750491 </max>
        </range>
-       <output>fcs/left-spoiler-pos-rad</output>
+       <output>fcs/spoiler-pos-rad</output>
    </aerosurface_scale>
 
-   <aerosurface_scale name="Right spoiler control">
-       <input>-fcs/roll-trim-sum</input>
-       <range>
-           <min> 0 </min>
-           <max> 0.750491 </max>
-       </range>
-       <output>fcs/right-spoiler-pos-rad</output>
-   </aerosurface_scale>
-
-
-
-   <aerosurface_scale name="Left spoiler normalization">
-	   <input>fcs/left-spoiler-pos-rad</input>
+   <aerosurface_scale name="spoiler normalization">
+	   <input>fcs/spoiler-pos-rad</input>
 	   <domain>
 		   <min>  0.00 </min>
 		   <max>  0.750491 </max>
@@ -453,21 +421,7 @@
 		   <min>  0  </min>
 		   <max>  43 </max>
 	   </range>
-	   <output>fcs/left-spoiler-pos-norm</output>
-   </aerosurface_scale>
-
-   <aerosurface_scale name="Right spoiler normalization">
-	   <input>fcs/right-spoiler-pos-rad</input>
-	   <domain>
-		   <min> 0 </min>
-		   <max> 0.750491 </max>
-	   </domain>
-	   <!-- Reference: ADA101648, page 20 -->
-	   <range>
-		   <min> 0 </min>
-		   <max> 43 </max>
-	   </range>
-	   <output>fcs/right-spoiler-pos-norm</output>
+	   <output>fcs/spoiler-pos-norm</output>
    </aerosurface_scale>
 
   </channel>
@@ -884,7 +838,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <value>-0.000167</value>
-            <property>fcs/left-aileron-pos-norm</property>
+            <property>fcs/aileron-pos-norm</property>
         </product>
     </function>
 
@@ -895,7 +849,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <value>-0.00006</value>
-            <property>fcs/left-spoiler-pos-norm</property>
+            <property>fcs/spoiler-pos-norm</property>
         </product>
     </function>
 
@@ -1092,7 +1046,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
 	         <property>metrics/bw-ft</property>
-	         <property>fcs/left-aileron-pos-norm</property>
+	         <property>fcs/aileron-pos-norm</property>
 		    <table>
 			    <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 			    <tableData>
@@ -1119,7 +1073,7 @@
 		    <property>aero/qbar-psf</property>
 		    <property>metrics/Sw-sqft</property>
 		    <property>metrics/Sw-sqft</property>
-		    <property>fcs/left-spoiler-pos-norm</property>
+		    <property>fcs/spoiler-pos-norm</property>
 		    <table>
 			    <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 			    <tableData>
@@ -1309,7 +1263,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/left-aileron-pos-rad</property>
+          <property>fcs/aileron-pos-rad</property>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
@@ -1335,7 +1289,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <property>fcs/left-spoiler-pos-rad</property>
+          <property>fcs/spoiler-pos-rad</property>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
@@ -1520,7 +1474,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <property>metrics/bw-ft</property>
-            <property>fcs/left-aileron-pos-norm</property>
+            <property>fcs/aileron-pos-norm</property>
             <table>
                 <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
@@ -1571,7 +1525,7 @@
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
             <property>metrics/bw-ft</property>
-            <property>fcs/left-spoiler-pos-norm</property>
+            <property>fcs/spoiler-pos-norm</property>
             <table>
                 <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                 <tableData>
@@ -1778,21 +1732,9 @@
                     <property>aero/coefficient/CY/CYB</property>
                     <property>aero/beta-deg</property>
                 </product>
-
-                <product>
                   <p> aero/coefficient/CY/CYDA </p>
-                  <p> fcs/right-aileron-pos-norm </p>
-                </product>
-
-                <product>
                   <p> aero/coefficient/CY/CYDSP </p>
-                  <p> fcs/right-aileron-pos-norm </p>
-                </product>
-
-                <product>
                   <p> aero/coefficient/CY/CYDR </p>
-                  <p> fcs/rudder-pos-norm </p>
-                </product>
           </sum>
         </product>
     </function>
@@ -1816,15 +1758,8 @@
                     <property>aero/coefficient/CY/CYB</property>
                     <property>aero/beta-deg</property>
                 </product>
-                <product>
                   <p> aero/coefficient/CY/CYDA </p>
-                  <p> fcs/right-aileron-pos-norm </p>
-                </product>
-
-                <product>
                   <p> aero/coefficient/CY/CYDSP </p>
-                  <p> fcs/right-aileron-pos-norm </p>
-                </product>
               </sum>
           </product>
     </function>
@@ -1849,17 +1784,8 @@
             <v> 0.0030 </v>
             <p> aero/beta-deg </p>
           </product>
-
-          <product>
             <p> aero/coefficient/CY/CYDA </p>
-            <p> fcs/right-aileron-pos-norm </p>
-          </product>
-
-          <product>
             <p> aero/coefficient/CY/CYDSP </p>
-            <p> fcs/right-aileron-pos-norm </p>
-          </product>
-
         </sum>
     </product>
     </function>
@@ -1988,6 +1914,7 @@
 
         <sum>
           <p> aero/coefficient/CM/CM_BASIC </p>
+          <p> aero/coefficient/CM/DCM1 </p>
           <p> aero/coefficient/CM/CM_STAB </p>
           <p> aero/coefficient/CM/CMDA </p>
           <p> aero/coefficient/CM/CMDSP </p>
@@ -1997,6 +1924,26 @@
 
       </product>
     </function>
+
+    <function name="aero/pitch/ABS_ALPHA_45_110">
+      <description> 45 to 110 abs AoA </description>
+      <product>
+        <ifthen>
+          <ge> <p> aero/alpha-deg-abs </p> <v> 45 </v> </ge>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+        <ifthen>
+          <le> <p> aero/alpha-deg-abs </p> <v> 110 </v> </le>
+          <v> 1.00 </v>
+          <v> 0.00 </v>
+        </ifthen>
+
+      </product>
+    </function>
+
+
   </axis>
 
   <axis name="YAW">
