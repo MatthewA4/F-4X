@@ -85,7 +85,7 @@ See LICENSE file for the GPL version 2 text.
 	<animation>
 		<name>MoveRightWingSpoiler1</name>
 		<type>rotate</type>
-		<object-name>RightWingSpoiler1</object-name>
+		<object-name>RightWingSpoiler</object-name>
 		<property>surface-positions/spoiler-right</property>
 		<factor>-1</factor>
 		<axis>
@@ -100,7 +100,7 @@ See LICENSE file for the GPL version 2 text.
 	<animation>
 		<name>MoveRightWingSpoiler2</name>
 		<type>rotate</type>
-		<object-name>RightWingSpoiler2</object-name>
+		<object-name>RightWingSpoiler</object-name>
 		<property>surface-positions/spoiler-right</property>
 		<factor>-1</factor>
 		<axis>
@@ -116,7 +116,7 @@ See LICENSE file for the GPL version 2 text.
 	<animation>
 		<name>MoveLeftWingSpoiler1</name>
 		<type>rotate</type>
-		<object-name>LeftWingSpoiler1</object-name>
+		<object-name>LeftWingSpoiler</object-name>
 		<property>surface-positions/spoiler-left</property>
 		<factor>-1</factor>
 		<axis>
@@ -131,7 +131,7 @@ See LICENSE file for the GPL version 2 text.
 	<animation>
 		<name>MoveLeftWingSpoiler2</name>
 		<type>rotate</type>
-		<object-name>LeftWingSpoiler2</object-name>
+		<object-name>LeftWingSpoiler</object-name>
 		<property>surface-positions/spoiler-left</property>
 		<factor>-1</factor>
 		<axis>
