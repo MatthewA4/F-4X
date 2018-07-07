@@ -373,8 +373,8 @@
 				<input>fcs/roll-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
-					<min> -30 </min>
-					<max>   1 </max>
+					<min> -1 </min>
+					<max> 30 </max>
 				</range>
 			</aerosurface_scale>
 
@@ -388,8 +388,8 @@
 				<input>fcs/roll-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
-					<min> -1 </min>
-					<max> 30 </max>
+					<min> -30 </min>
+					<max>   1 </max>
 				</range>
 			</aerosurface_scale>
 
