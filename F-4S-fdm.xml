@@ -352,7 +352,7 @@
 
 			<lag_filter name="fcs/elevator-deg">
 				<input>fcs/elevator-deg-a</input>
-				<c1>16.2</c1>
+				<c1> 19.3 </c1>
 				<output>/surface-positions/elevator</output>
 			</lag_filter>
 
@@ -369,33 +369,30 @@
 				</clipto>
 			</summer>
 
-			<aerosurface_scale name="fcs/aileron-left-deg-a">
+			<pure_gain name="fcs/roll-sum-deg">
 				<input>fcs/roll-sum</input>
-				<!-- Reference: ADA101648, page 20 -->
-				<range>
-					<min> -1 </min>
-					<max> 30 </max>
-				</range>
-			</aerosurface_scale>
+				<gain>30</gain>
+			</pure_gain>
 
 			<lag_filter name="fcs/aileron-left-deg">
-				<input>fcs/aileron-left-deg-a</input>
-				<c1>18.4</c1>
+				<input>fcs/roll-sum-deg</input>
+				<c1> 23.7 </c1>
+				<!-- Reference: ADA101648, page 20 -->
+				<clipto>
+					<min> -1 </min>
+					<max> 30 </max>
+				</clipto>
 				<output>/surface-positions/aileron-left</output>
 			</lag_filter>
 
-			<aerosurface_scale name="fcs/aileron-right-deg-a">
-				<input>fcs/roll-sum</input>
+			<lag_filter name="fcs/aileron-right-deg">
+				<input>fcs/roll-sum-deg</input>
+				<c1> 23.7 </c1>
 				<!-- Reference: ADA101648, page 20 -->
-				<range>
+				<clipto>
 					<min> -30 </min>
 					<max>   1 </max>
-				</range>
-			</aerosurface_scale>
-
-			<lag_filter name="fcs/aileron-right-deg">
-				<input>fcs/aileron-right-deg-a</input>
-				<c1>18.4</c1>
+				</clipto>
 				<output>/surface-positions/aileron-right</output>
 			</lag_filter>
 
@@ -420,7 +417,7 @@
 
 			<lag_filter name="fcs/spoiler-left-deg">
 				<input>fcs/spoiler-left-deg-a</input>
-				<c1>27.8</c1>
+				<c1> 25.1 </c1>
 				<output>/surface-positions/spoiler-left</output>
 			</lag_filter>
 
@@ -428,14 +425,14 @@
 				<input>fcs/roll-sum</input>
 				<!-- Reference: ADA101648, page 20 -->
 				<range>
-					<min>  0  </min>
+					<min>  0 </min>
 					<max> 43 </max>
 				</range>
 			</aerosurface_scale>
 
 			<lag_filter name="fcs/spoiler-right-deg">
 				<input>fcs/spoiler-right-deg-a</input>
-				<c1>27.8</c1>
+				<c1> 25.1 </c1>
 				<output>/surface-positions/spoiler-right</output>
 			</lag_filter>
 
@@ -477,7 +474,7 @@
 
 			<lag_filter name="fcs/rudder-deg">
 				<input>fcs/rudder-deg-a</input>
-				<c1>19.1</c1>
+				<c1> 19.1 </c1>
 				<output>/surface-positions/rudder</output>
 			</lag_filter>
 
