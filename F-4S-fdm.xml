@@ -47,7 +47,7 @@
    <wingarea  unit="FT2">  538.34 </wingarea>
    <wingspan  unit="FT" >   38.41 </wingspan>
    <wing_incidence>          1.00 </wing_incidence>
-   <chord     unit="FT" >   14.02 </chord>
+   <chord     unit="FT" >   16.04 </chord>
    <htailarea unit="FT2">   94.70 </htailarea>
    <htailarm  unit="FT" >   17.70 </htailarm>
    <vtailarea unit="FT2">   67.50 </vtailarea>
