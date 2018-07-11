@@ -53,7 +53,7 @@
    <vtailarea unit="FT2">   67.50 </vtailarea>
    <vtailarm  unit="FT" >    6.38 </vtailarm>
    <location name="AERORP" unit="M">
-     <x>   0.80354  </x>
+     <x>   2.33354  </x>
      <y>   0.00 </y>
      <z>   0.37 </z>
    </location>
@@ -78,10 +78,10 @@
    <ixz unit="SLUG*FT2">    2210   </ixz>
    <!-- End Reference -->
    <emptywt unit="LBS" >     30770 </emptywt>
-   <location name="CG" unit="IN">
-     <x> 20.00 </x>
+   <location name="CG" unit="M">
+     <x> 2.27 </x>
      <y> 0.00 </y>
-     <z> 0.00 </z>
+     <z> 0.37 </z>
    </location>
    <!-- <pointmass name="Payload">
     <description> -636 LBS + full (7866 LBS) fuel should bring model up to entered max weight</description>
@@ -114,7 +114,8 @@
 
   <contact type="BOGEY" name="LEFT_MAIN">
    <location unit="M">
-     <x>  1.36855 </x>
+     <!-- <x>  1.36855 </x> -->
+     <x> 2.58 </x>
      <y> -2.75707 </y>
      <z> -2.25371 </z>
    </location>
@@ -130,7 +131,8 @@
 
   <contact type="BOGEY" name="RIGHT_MAIN">
    <location unit="M">
-     <x>  1.36855 </x>
+     <!-- <x>  1.36855 </x> -->
+     <x> 2.58 </x>
      <y>  2.75707 </y>
      <z> -2.25371 </z>
    </location>
@@ -161,6 +163,18 @@
      <x> 4.92865 </x>
      <y>  5.85857 </y>
      <z> -0.6969805 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
+  <contact type="STRUCTURE" name="FUSELAGE_REAR">
+    <location unit="M">
+     <x> 6.30525 </x>
+     <y> 0 </y>
+     <z> -0.923217 </z>
     </location>
     <static_friction>  1.00 </static_friction>
     <dynamic_friction> 1.00 </dynamic_friction>
@@ -1180,7 +1194,11 @@
            <property>metrics/Sw-sqft</property>
            <property>metrics/cbarw-ft</property>
            <property>aero/alpha-deg</property>
-           <value>0.15</value> <!-- Approximately the SGA constant multiplier -->
+           <ifthen>
+             <le> <p>aero/alpha-deg</p> <v> 0 </v> </le>
+             <v> -1 </v>
+             <v> 1 </v>
+           </ifthen>
            <table>
                <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
                <tableData>
