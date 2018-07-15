@@ -1237,6 +1237,21 @@
        </product>
     </function>
 
+    <function name="aero/coefficient/CM/KB_CM_STAB">
+      <description>correction factor for CM_STAB</description>
+      <product>
+        <property>aero/qbar-psf</property>
+        <property>metrics/Sw-sqft</property>
+        <property>metrics/cbarw-ft</property>
+        <property>fcs/elevator-deg</property>
+        <value>0.00011</value>
+        <abs>
+          <property>aero/beta-deg</property>
+        </abs>
+      </product>
+    </function>
+
+
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CM/CM_STAB">
        <description>Pitch moment due to elevator</description>
@@ -1247,7 +1262,7 @@
           <property>metrics/cbarw-ft</property>
           <property>fcs/elevator-deg</property>
           <table>
-            <independentVar lookup="row">aero/alpha-deg</independentVar>
+            <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
             <tableData>
                 0   -0.01010
                 5   -0.01004
@@ -1703,6 +1718,7 @@
         <p> aero/coefficient/CM/CM_BASIC </p>
         <p> aero/coefficient/CM/DCM1 </p>
         <p> aero/coefficient/CM/CM_STAB </p>
+        <p> aero/coefficient/CM/KB_CM_STAB </p>
         <p> aero/coefficient/CM/CMDA </p>
         <p> aero/coefficient/CM/CMDSP </p>
         <p> aero/coefficient/CM/CMAD </p>
