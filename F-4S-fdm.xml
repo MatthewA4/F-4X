@@ -1259,7 +1259,6 @@
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CM/CM_STAB">
        <description>Pitch moment due to elevator</description>
-       <sum>
        <product>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
@@ -1295,8 +1294,6 @@
             </tableData>
           </table>
        </product>
-       <v> 0.00011 </v>
-     </sum>
     </function>
 
     <!-- Reference: ADA101648, page 27 -->
