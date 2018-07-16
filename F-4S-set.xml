@@ -49,6 +49,11 @@ See LICENSE file for the GPL version 2 text.
 		<model>
 			<path>Models/F-4S.xml</path>
 		</model>
+		
+		<hud n="0">
+			<enable3d n="0">false</enable3d>
+			<enable3d n="1">false</enable3d>
+		</hud>
 	</sim>
 
     <consumables>

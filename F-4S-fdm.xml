@@ -342,127 +342,162 @@
 
  </propulsion>
 
-	<!--system file="hydromech"/-->
-
-	<flight_control name="FCS: F-4S"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) -->
-
-		<channel name="Pitch">
-
-			<summer name="fcs/pitch-sum">
-				<input>fcs/elevator-cmd-norm</input>
-				<input>fcs/pitch-trim-cmd-norm</input>
-				<clipto>
-					<min> -1 </min>
-					<max>  1 </max>
-				</clipto>
-			</summer>
-
-			<aerosurface_scale name="fcs/elevator-deg-a">
-				<input>fcs/pitch-sum</input>
-				<!-- Reference: ADA101648, page 20 -->
-				<range>
-					<min> -21 </min>
-					<max>   9 </max>
-				</range>
-			</aerosurface_scale>
-
-			<lag_filter name="fcs/elevator-deg">
-				<input>fcs/elevator-deg-a</input>
-				<c1> 19.3 </c1>
-				<output>/surface-positions/elevator</output>
-			</lag_filter>
-
-		</channel>
-
-		<channel name="Roll">
-
-			<summer name="fcs/aileron-sum">
-				<input>fcs/aileron-cmd-norm</input>
-				<input>fcs/roll-trim-cmd-norm</input>
-				<!--input>-hydromech/roll/delta-aileron</input--> <!-- Inverted for some reason -->
-				<clipto>
-					<min> -1 </min>
-					<max>  1 </max>
-				</clipto>
-			</summer>
-
-			<pure_gain name="fcs/aileron-sum-deg">
-				<input>fcs/aileron-sum</input>
-				<gain>30</gain>
+	<flight_control name="FCS: F-4"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) -->
+		
+		<channel name="Gains">
+			
+			<switch name="hydromech/roll/KDA">
+				<default value="8.08"/>
+				<test value="4.0">
+					hydromech/sas-roll eq 1
+				</test>
+			</switch>
+			
+			<switch name="hydromech/roll/L1">
+				<default value="0"/>
+				<test value="15">
+					hydromech/sas-roll eq 1
+				</test>
+			</switch>
+			
+			<pure_gain name="hydromech/roll/L1n">
+				<input>hydromech/roll/L1</input>
+				<gain>-1.0</gain>
 			</pure_gain>
-
+		
+		</channel>
+		
+		<channel name="Hydromech: Roll">
+			
+			<pure_gain name="hydromech/roll/p-rad-gain">
+				<input>-velocities/p-rad_sec</input>
+				<gain>15.2</gain>
+			</pure_gain>
+			
+			<pure_gain name="hydromech/roll/force">
+				<input>fcs/aileron-cmd-norm</input>
+				<gain>6.0</gain>
+			</pure_gain>
+			
+			<deadband name="hydromech/roll/feel-limit">
+				<input>hydromech/roll/force</input>
+				<width>0.1</width>
+				<clipto>
+					<min>-6.0</min>
+					<max>6.0</max>
+				</clipto>
+			</deadband>
+			
+			<pure_gain name="hydromech/roll/delta-stick">
+				<input>hydromech/roll/feel-limit</input>
+				<gain>0.6666666666666667</gain> <!-- 4 inches, guess -->
+			</pure_gain>
+			
+			<lag_filter name="hydromech/roll/stick-lag">
+				<input>hydromech/roll/delta-stick</input>
+				<c1>9.5</c1>
+			</lag_filter>
+			
+			<summer name="hydromech/roll/p-stick-suml">
+				<input>hydromech/roll/p-rad-gain</input>
+				<input>hydromech/roll/stick-lag</input>
+				<clipto>
+					<min>hydromech/roll/L1n</min>
+					<max>hydromech/roll/L1</max>
+				</clipto>
+			</summer>
+			
+			<pure_gain name="hydromech/roll/a-stick-gain">
+				<input>hydromech/roll/delta-stick</input>
+				<gain>hydromech/roll/KDA</gain>
+			</pure_gain>
+			
+			<summer name="hydromech/roll/delta-aileron">
+				<input>hydromech/roll/p-stick-suml</input>
+				<input>hydromech/roll/a-stick-gain</input>
+				<clipto>
+					<min>-30</min>
+					<max>30</max>
+				</clipto>
+			</summer>
+			
+			<pure_gain name="hydromech/roll/delta-spoiler">
+				<input>hydromech/roll/delta-stick</input>
+				<gain>11.58</gain>
+				<clipto>
+					<min>-43</min>
+					<max>43</max>
+				</clipto>
+			</pure_gain>
+			
+			<pure_gain name="hydromech/roll/delta-spoiler-inverted">
+				<input>hydromech/roll/delta-spoiler</input>
+				<gain>-1.0</gain>
+			</pure_gain>
+		
+		</channel>
+		
+		<channel name="Roll">
+			
 			<lag_filter name="fcs/aileron-left-deg">
-				<input>fcs/aileron-sum-deg</input>
-				<c1> 23.7 </c1>
+				<input>hydromech/roll/delta-aileron</input>
+				<c1>23.7</c1>
 				<!-- Reference: ADA101648, page 20 -->
 				<clipto>
-					<min> -1 </min>
-					<max> 30 </max>
+					<min>-1</min>
+					<max>30</max>
 				</clipto>
 				<output>/surface-positions/aileron-left</output>
 			</lag_filter>
-
+			
 			<lag_filter name="fcs/aileron-right-deg">
-				<input>fcs/aileron-sum-deg</input>
-				<c1> 23.7 </c1>
+				<input>hydromech/roll/delta-aileron</input>
+				<c1>23.7</c1>
 				<!-- Reference: ADA101648, page 20 -->
 				<clipto>
-					<min> -30 </min>
-					<max>   1 </max>
+					<min>-30</min>
+					<max>1</max>
 				</clipto>
 				<output>/surface-positions/aileron-right</output>
 			</lag_filter>
-
+			
 			<summer name="fcs/aileron-deg">
 				<input>fcs/aileron-left-deg</input>
 				<input>fcs/aileron-right-deg</input>
 			</summer>
-
-			<summer name="fcs/spoiler-sum">
-				<input>fcs/aileron-cmd-norm</input>
-				<input>fcs/roll-trim-cmd-norm</input>
-				<!--input>-hydromech/roll/delta-spoiler</input--> <!-- Inverted for some reason -->
-				<clipto>
-					<min> -1 </min>
-					<max>  1 </max>
-				</clipto>
-			</summer>
-
-			<pure_gain name="fcs/spoiler-sum-inverted">
-				<input>fcs/spoiler-sum</input>
-				<gain> -1.0 </gain>
-			</pure_gain>
-
-			<aerosurface_scale name="fcs/spoiler-left-deg-a">
-				<input>fcs/spoiler-sum-inverted</input>
+			
+			<pure_gain name="fcs/spoiler-left-deg-a">
+				<input>hydromech/roll/delta-spoiler-inverted</input>
+				<gain>1.0</gain>
 				<!-- Reference: ADA101648, page 20 -->
-				<range>
-					<min>  0  </min>
-					<max> 43 </max>
-				</range>
-			</aerosurface_scale>
-
+				<clipto>
+					<min>0</min>
+					<max>43</max>
+				</clipto>
+			</pure_gain>
+			
 			<lag_filter name="fcs/spoiler-left-deg">
 				<input>fcs/spoiler-left-deg-a</input>
-				<c1> 25.1 </c1>
+				<c1>25.1</c1>
 				<output>/surface-positions/spoiler-left</output>
 			</lag_filter>
-
-			<aerosurface_scale name="fcs/spoiler-right-deg-a">
-				<input>fcs/spoiler-sum</input>
+			
+			<pure_gain name="fcs/spoiler-right-deg-a">
+				<input>hydromech/roll/delta-spoiler</input>
+				<gain>1.0</gain>
 				<!-- Reference: ADA101648, page 20 -->
-				<range>
-					<min>  0 </min>
-					<max> 43 </max>
-				</range>
-			</aerosurface_scale>
-
+				<clipto>
+					<min>0</min>
+					<max>43</max>
+				</clipto>
+			</pure_gain>
+			
 			<lag_filter name="fcs/spoiler-right-deg">
 				<input>fcs/spoiler-right-deg-a</input>
-				<c1> 25.1 </c1>
+				<c1>25.1</c1>
 				<output>/surface-positions/spoiler-right</output>
 			</lag_filter>
-
+			
 			<fcs_function name="fcs/spoiler-deg">
 				<function>
 					<product>
@@ -474,115 +509,141 @@
 					</product>
 				</function>
 			</fcs_function>
-
+		
 		</channel>
+		
+		<channel name="Pitch">
 
-		<property value="1">fcs/yaw-damper-enable</property>
+			<summer name="fcs/pitch-sum">
+				<input>fcs/elevator-cmd-norm</input>
+				<input>fcs/pitch-trim-cmd-norm</input>
+				<clipto>
+					<min>-1</min>
+					<max>1</max>
+				</clipto>
+			</summer>
+			
+			<aerosurface_scale name="fcs/elevator-deg-a">
+				<input>fcs/pitch-sum</input>
+				<!-- Reference: ADA101648, page 20 -->
+				<range>
+					<min>-21</min>
+					<max>9</max>
+				</range>
+			</aerosurface_scale>
 
+			<lag_filter name="fcs/elevator-deg">
+				<input>fcs/elevator-deg-a</input>
+				<c1>19.3</c1>
+				<output>/surface-positions/elevator</output>
+			</lag_filter>
+		
+		</channel>
+		
 		<channel name="Yaw">
-
+			
 			<summer name="fcs/rudder-sum"> <!-- For some reason, the default ones in JSB are inverted -->
 				<input>/controls/flight/rudder</input>
 				<input>/controls/flight/rudder-trim</input>
 				<clipto>
-					<min> -1.0 </min>
-					<max>  1.0 </max>
+					<min>-1.0</min>
+					<max>1.0</max>
 				</clipto>
 			</summer>
-
+			
 			<aerosurface_scale name="fcs/rudder-deg-a">
 				<input>fcs/rudder-sum</input>
 				<!-- Reference: ADA101648, page 20-->
 				<range>
-					<min> -30 </min>
-					<max>  30 </max>
+					<min>-30</min>
+					<max>30</max>
 				</range>
 			</aerosurface_scale>
-
+			
 			<lag_filter name="fcs/rudder-deg">
 				<input>fcs/rudder-deg-a</input>
-				<c1> 19.1 </c1>
+				<c1>19.1</c1>
 				<output>/surface-positions/rudder</output>
 			</lag_filter>
-
+		
 		</channel> <!-- End Flight Control System by Joshua Davidson (it0uchpods) -->
-
+		
 		<channel name="Flaps">
-
+			
 			<kinematic name="Flaps Control">
 				<input>fcs/flap-cmd-norm</input>
 				<traverse>
 					<setting>
-						<position>  0 </position>
-						<time>      0 </time>
+						<position>0</position>
+						<time>0</time>
 					</setting>
 					<setting>
-						<position> 15 </position>
-						<time>      4 </time>
+						<position>15</position>
+						<time>4</time>
 					</setting>
 					<setting>
-						<position> 30 </position>
-						<time>      3 </time>
+						<position>30</position>
+						<time>3</time>
 					</setting>
 				</traverse>
 				<output>fcs/flap-pos-deg</output>
 			</kinematic>
-
+			
 			<aerosurface_scale name="flap normalization">
 				<input>fcs/flap-pos-deg</input>
 					<domain>
-						<min>  0 </min>
-						<max> 30 </max>
+						<min>0</min>
+						<max>30</max>
 					</domain>
 					<range>
-						<min> 0 </min>
-						<max> 1 </max>
+						<min>0</min>
+						<max>1</max>
 					</range>
 				<output>fcs/flap-pos-norm</output>
 			</aerosurface_scale>
-
+		
 		</channel>
-
+		
 		<channel name="Landing Gear">
-
+			
 			<kinematic name="rubbish/gear-pos-norm">
-			<input>gear/gear-cmd-norm</input>
-			<traverse>
-				<setting>
-					<position> 0 </position>
-					<time>     0 </time>
-				</setting>
-				<setting>
-					<position> 1 </position>
-					<time>     5 </time>
-				</setting>
-			</traverse>
-			<output>gear/gear-pos-norm</output>
-		</kinematic>
-
+				<input>gear/gear-cmd-norm</input>
+				<traverse>
+					<setting>
+						<position>0</position>
+						<time>0</time>
+					</setting>
+					<setting>
+						<position>1</position>
+						<time>5</time>
+					</setting>
+				</traverse>
+				<output>gear/gear-pos-norm</output>
+			</kinematic>
+		
 		</channel>
-
+		
 		<channel name="Speedbrake">
-
+			
 			<kinematic name="rubbish/speedbrake-pos-nrom">
 				<input>fcs/speedbrake-cmd-norm</input>
 				<traverse>
 					<setting>
-						<position> 0 </position>
-						<time>     0 </time>
+						<position>0</position>
+						<time>0</time>
 					</setting>
 					<setting>
-						<position> 30 </position>
-						<time>      3 </time>
+						<position>30</position>
+						<time>3</time>
 					</setting>
 				</traverse>
 				<output>fcs/speedbrake-pos-norm</output>
 			</kinematic>
-
+		
 		</channel>
-
+	
 	</flight_control>
-
+	
  <aerodynamics>
 
      <!-- alpha absolute value -->
@@ -1091,17 +1152,17 @@
 			<table>
 				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 				<tableData>
-					 0   0.000448
-					 5   0.000459
-					10   0.000431
-					15   0.000405
-					20   0.000379
-					25   0.000354
-					30   0.000312
-					35   0.000210
-					40   0.000105
-					45   0.000000
-          180  0.000000
+                    0    0.000448
+                    5    0.000459
+                    10   0.000431
+                    15   0.000405
+                    20   0.000379
+                    25   0.000354
+                    30   0.000312
+                    35   0.000210
+                    40   0.000105
+                    45   0.000000
+                    180  0.000000
 				</tableData>
 			</table>
 		</product>
@@ -1118,17 +1179,17 @@
 			<table>
 				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 				<tableData>
-					 0 -0.000130
-					 5 -0.000140
-					10 -0.000093
-					15 -0.000066
-					20 -0.000054
-					25 -0.000040
-					30 -0.000030
-					35 -0.000020
-					40 -0.000010
-					45 -0.000000
-          180 -0.000000
+                    0   -0.0000650
+                    5   -0.0000700
+                    10  -0.0000465
+                    15  -0.0000330
+                    20  -0.0000270
+                    25  -0.0000200
+                    30  -0.0000150
+                    35  -0.0000100
+                    40  -0.0000050
+                    45  -0.0000000
+                    180 -0.0000000
 				</tableData>
 			</table>
 		</product>
@@ -1144,17 +1205,17 @@
 			<table>
 				<independentVar lookup="row">aero/alpha-deg-abs</independentVar>
 				<tableData>
-					 0  0.000130
-					 5  0.000140
-					10  0.000093
-					15  0.000066
-					20  0.000054
-					25  0.000040
-					30  0.000030
-					35  0.000020
-					40  0.000010
-					45  0.000000
-          180 0.000000
+                    0   0.0000650
+                    5   0.0000700
+                    10  0.0000465
+                    15  0.0000330
+                    20  0.0000270
+                    25  0.0000200
+                    30  0.0000150
+                    35  0.0000100
+                    40  0.0000050
+                    45  0.0000000
+                    180 0.0000000
 				</tableData>
 			</table>
 		</product>
@@ -1162,29 +1223,29 @@
 
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CR/CRDR">
-       <description>rudder position</description>
-       <product>
-           <property>aero/qbar-psf</property>
-           <property>metrics/Sw-sqft</property>
-           <property>metrics/bw-ft</property>
-	   <property>fcs/rudder-deg</property>
-	   <table>
-		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
-		   <tableData>
-			   0    0.000199
-			   5    0.000165
-			   10   0.000135
-			   15   0.000116
-			   20   0.000092
-			   25   0.000069
-			   30   0.000052
-			   35   0.000035
-			   40   0.000017
-			   45   0.000000
-         180  0.000000
-		   </tableData>
-	   </table>
-       </product>
+        <description>rudder position</description>
+        <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <property>metrics/bw-ft</property>
+	        <property>fcs/rudder-deg</property>
+	        <table>
+		        <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+		        <tableData>
+                    0    0.000199
+                    5    0.000165
+                    10   0.000135
+                    15   0.000116
+                    20   0.000092
+                    25   0.000069
+                    30   0.000052
+                    35   0.000035
+                    40   0.000017
+                    45   0.000000
+                    180  0.000000
+		        </tableData>
+	        </table>
+        </product>
     </function>
 
 
