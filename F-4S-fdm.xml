@@ -822,7 +822,7 @@
            <property>aero/qbar-psf</property>
            <property>metrics/Sw-sqft</property>
            <value>0.04</value>
-           <abs><toradians><property>fcs/elevator-deg</property></toradians></abs>
+           <abs><property>fcs/elevator-deg</property></abs>
        </product>
     </function>
 
@@ -1362,7 +1362,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-		  <toradians><property>fcs/aileron-deg</property></toradians>
+		      <property>fcs/aileron-deg</property>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
@@ -1389,7 +1389,7 @@
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <property>metrics/cbarw-ft</property>
-          <toradians><property>fcs/spoiler-deg</property></toradians>
+          <property>fcs/spoiler-deg</property>
           <table>
               <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
               <tableData>
