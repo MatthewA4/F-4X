@@ -664,12 +664,12 @@
     <function name="aero/coefficient/CL/CL_STAB">
        <description>CL_STAB</description>
        <product>
-           <property>aero/qbar-psf</property>
-           <property>metrics/Sw-sqft</property>
-	   <property>fcs/elevator-deg</property>
-	   <table>
-		   <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
-		   <tableData>
+         <property>aero/qbar-psf</property>
+         <property>metrics/Sw-sqft</property>
+	       <property>fcs/elevator-deg</property>
+	       <table>
+		     <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
+		     <tableData>
     			0     0.00699
     			5     0.00694
     			10    0.00676
@@ -694,9 +694,8 @@
     			105   0.00300
     			110   0.00300
           180   0.00300
-		</tableData>
-	</table>
-
+		      </tableData>
+	       </table>
        </product>
     </function>
 
