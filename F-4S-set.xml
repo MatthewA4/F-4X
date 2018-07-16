@@ -33,7 +33,15 @@ See LICENSE file for the GPL version 2 text.
 		<status>Alpha</status>
 		<startup>
 		<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
+		<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
 	</startup>
+	<previews>
+		<preview>
+			<type>exterior</type>
+			<splash type="bool">true</splash>
+			<path>thumbnail.jpg</path>
+		</preview>
+	</previews>
 
 		<flight-model>jsb</flight-model>
 		<aero>F-4S-fdm</aero>
