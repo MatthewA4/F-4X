@@ -1659,7 +1659,7 @@
   <axis name="LIFT">
 
    <function name="aero/lift/total">
-     <description>Lift from 0 to 110 degrees Alpha</description>
+     <description>Total lift</description>
               <!-- If Alpha greater than or equal to 0 -->
       <sum>
           <property>aero/coefficient/CL/CL_BASIC</property>
