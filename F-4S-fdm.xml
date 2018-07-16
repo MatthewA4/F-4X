@@ -355,7 +355,7 @@
 			
 			<switch name="hydromech/roll/L1">
 				<default value="0"/>
-				<test value="15">
+				<test value="15.0">
 					hydromech/sas-roll eq 1
 				</test>
 			</switch>
@@ -364,10 +364,38 @@
 				<input>hydromech/roll/L1</input>
 				<gain>-1.0</gain>
 			</pure_gain>
+			
+			<switch name="hydromech/yaw/L2">
+				<default value="0"/>
+				<test value="30.0">
+					hydromech/sas-yaw eq 1
+				</test>
+			</switch>
+			
+			<pure_gain name="hydromech/yaw/L2n">
+				<input>hydromech/yaw/L2</input>
+				<gain>-1.0</gain>
+			</pure_gain>
+			
+			<switch name="hydromech/yaw/KXF">
+				<default value="0"/>
+				<test value="14.0">
+					hydromech/sas-roll eq 1
+				</test>
+			</switch>
 		
 		</channel>
 		
 		<channel name="Hydromech: Roll">
+			
+			<summer name="hydromech/roll/aileron-sum">
+				<input>/controls/flight/aileron</input>
+				<input>/controls/flight/aileron-trim</input>
+				<clipto>
+					<min>-1.0</min>
+					<max>1.0</max>
+				</clipto>
+			</summer>
 			
 			<pure_gain name="hydromech/roll/p-rad-gain">
 				<input>-velocities/p-rad_sec</input>
@@ -375,22 +403,22 @@
 			</pure_gain>
 			
 			<pure_gain name="hydromech/roll/force">
-				<input>fcs/aileron-cmd-norm</input>
-				<gain>6.0</gain>
+				<input>hydromech/roll/aileron-sum</input>
+				<gain>17.0</gain>
 			</pure_gain>
 			
 			<deadband name="hydromech/roll/feel-limit">
 				<input>hydromech/roll/force</input>
 				<width>0.1</width>
 				<clipto>
-					<min>-6.0</min>
-					<max>6.0</max>
+					<min>-17.0</min>
+					<max>17.0</max>
 				</clipto>
 			</deadband>
 			
 			<pure_gain name="hydromech/roll/delta-stick">
 				<input>hydromech/roll/feel-limit</input>
-				<gain>0.6666666666666667</gain> <!-- 4 inches, guess -->
+				<gain>0.2352941176470588</gain> <!-- 4 inches, guess -->
 			</pure_gain>
 			
 			<lag_filter name="hydromech/roll/stick-lag">
@@ -398,9 +426,17 @@
 				<c1>9.5</c1>
 			</lag_filter>
 			
+			<lead_lag_filter name="hydromech/roll/stick-leadlag">
+				<input>hydromech/roll/delta-stick</input>
+				<c1>4.0</c1>
+				<c2>0.0</c2>
+				<c3>0.1</c3>
+				<c4>1.0</c4>
+			</lead_lag_filter>
+			
 			<summer name="hydromech/roll/p-stick-suml">
 				<input>hydromech/roll/p-rad-gain</input>
-				<input>hydromech/roll/stick-lag</input>
+				<input>hydromech/roll/stick-leadlag</input>
 				<clipto>
 					<min>hydromech/roll/L1n</min>
 					<max>hydromech/roll/L1</max>
@@ -434,6 +470,57 @@
 				<input>hydromech/roll/delta-spoiler</input>
 				<gain>-1.0</gain>
 			</pure_gain>
+		
+		</channel>
+		
+		<channel name="Hydromech: Yaw">
+			
+			<summer name="hydromech/yaw/rudder-sum">
+				<input>/controls/flight/rudder</input>
+				<input>/controls/flight/rudder-trim</input>
+				<clipto>
+					<min>-1.0</min>
+					<max>1.0</max>
+				</clipto>
+			</summer>
+			
+			<pure_gain name="hydromech/yaw/force">
+				<input>hydromech/yaw/rudder-sum</input>
+				<gain>120.0</gain>
+			</pure_gain>
+			
+			<deadband name="hydromech/yaw/feel-limit">
+				<input>hydromech/yaw/force</input>
+				<width>0.1</width>
+				<clipto>
+					<min>-120.0</min>
+					<max>120.0</max>
+				</clipto>
+			</deadband>
+			
+			<pure_gain name="hydromech/yaw/delta-pedal">
+				<input>hydromech/yaw/feel-limit</input>
+				<gain>0.075</gain> <!-- 9 inches, guess -->
+			</pure_gain>
+			
+			<pure_gain name="hydromech/yaw/pedal-gain">
+				<input>hydromech/yaw/delta-pedal</input>
+				<gain>3.0</gain> <!-- Diagram says 10, but that doesn't make sense -->
+			</pure_gain>
+			
+			<lag_filter name="hydromech/yaw/pedal-lag">
+				<input>hydromech/yaw/delta-pedal</input>
+				<c1>7.3</c1>
+			</lag_filter>
+			
+			<summer name="hydromech/yaw/delta-rudder">
+				<!--input>hydromech/yaw/something</input-->
+				<input>hydromech/yaw/pedal-gain</input>
+				<clipto>
+					<min>-30</min>
+					<max>30</max>
+				</clipto>
+			</summer>
 		
 		</channel>
 		
@@ -542,23 +629,15 @@
 		
 		<channel name="Yaw">
 			
-			<summer name="fcs/rudder-sum"> <!-- For some reason, the default ones in JSB are inverted -->
-				<input>/controls/flight/rudder</input>
-				<input>/controls/flight/rudder-trim</input>
-				<clipto>
-					<min>-1.0</min>
-					<max>1.0</max>
-				</clipto>
-			</summer>
-			
-			<aerosurface_scale name="fcs/rudder-deg-a">
-				<input>fcs/rudder-sum</input>
+			<pure_gain name="fcs/rudder-deg-a">
+				<input>hydromech/yaw/delta-rudder</input>
+				<gain>1.0</gain>
 				<!-- Reference: ADA101648, page 20-->
 				<range>
 					<min>-30</min>
 					<max>30</max>
 				</range>
-			</aerosurface_scale>
+			</pure_gain>
 			
 			<lag_filter name="fcs/rudder-deg">
 				<input>fcs/rudder-deg-a</input>
