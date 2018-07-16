@@ -53,7 +53,7 @@
    <vtailarea unit="FT2">   67.50 </vtailarea>
    <vtailarm  unit="FT" >    6.38 </vtailarm>
    <location name="AERORP" unit="M">
-     <x>   1.15  </x>
+     <x>   2.33354  </x>
      <y>   0.00 </y>
      <z>   0.37 </z>
    </location>
@@ -79,7 +79,7 @@
    <!-- End Reference -->
    <emptywt unit="LBS" >     30770 </emptywt>
    <location name="CG" unit="M">
-     <x> 1.13 </x>
+     <x> 2.27 </x>
      <y> 0.00 </y>
      <z> 0.37 </z>
    </location>
