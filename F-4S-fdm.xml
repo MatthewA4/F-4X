@@ -1338,7 +1338,8 @@
            <property>metrics/cbarw-ft</property>
            <property>aero/alpha-deg</property>
            <ifthen>
-             <le> <p>aero/alpha-deg</p> <v> 0 </v> </le>
+             <!-- SGA -->
+            <le> <p>aero/alpha-deg</p> <v> 0 </v> </le>
              <v> -1 </v>
              <v> 1 </v>
            </ifthen>
