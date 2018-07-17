@@ -399,11 +399,6 @@
 				</clipto>
 			</summer>
 			
-			<pure_gain name="hydromech/roll/p-rad-gain">
-				<input>-velocities/p-rad_sec</input>
-				<gain>15.2</gain>
-			</pure_gain>
-			
 			<pure_gain name="hydromech/roll/force">
 				<input>hydromech/roll/aileron-sum</input>
 				<gain>17.0</gain>
@@ -423,9 +418,23 @@
 				<gain>0.2352941176470588</gain> <!-- 4 inches, guess -->
 			</pure_gain>
 			
+			<switch name="hydromech/roll/p-rad_sec">
+				<default value="0"/>
+				<test logic="AND" value="velocities/p-rad_sec"> <!-- Disable SAS if switch off or stick force applied -->
+					hydromech/sas-roll eq 1
+					hydromech/roll/feel-limit gt -1
+					hydromech/roll/feel-limit lt 1
+				</test>
+			</switch>
+			
+			<pure_gain name="hydromech/roll/p-rad-gain">
+				<input>-hydromech/roll/p-rad_sec</input>
+				<gain>15.2</gain>
+			</pure_gain>
+			
 			<summer name="hydromech/roll/p-stick-suml">
-				<input>hydromech/roll/p-rad-gain</input>
 				<input>hydromech/roll/delta-stick</input>
+				<input>hydromech/roll/p-rad-gain</input>
 				<clipto>
 					<min>hydromech/roll/L1n</min>
 					<max>hydromech/roll/L1</max>
@@ -462,7 +471,7 @@
 		
 		</channel>
 		
-		<channel name="Hydromech: Pitch">
+		<channel name="Hydromech: Pitch"> <!-- Can't find good schematics for this axis, so, much of this is a guess -->
 			
 			<pure_gain name="hydromech/pitch/force">
 				<input>/controls/flight/elevator</input>
@@ -480,18 +489,34 @@
 			
 			<pure_gain name="hydromech/pitch/delta-stick">
 				<input>hydromech/pitch/feel-limit</input>
-				<gain>0.5882352941176471</gain> <!-- 10 inches, guess -->
+				<gain>0.5941176470588235</gain> <!-- 10.1 inches, guess -->
 			</pure_gain>
 			
-			<pure_gain name="hydromech/pitch/delta-elevator-direct">
+			<pure_gain name="hydromech/pitch/delta-offset"> <!-- I need schematics to make the proper trim system -->
+				<input>/controls/flight/elevator-trim</input>
+				<gain>5.05</gain>
+			</pure_gain>
+			
+			<summer name="hydromech/pitch/delta-input-sum">
 				<input>hydromech/pitch/delta-stick</input>
+				<input>hydromech/pitch/delta-offset</input>
+				<clipto>
+					<min>-10.1</min>
+					<max>10.1</max>
+				</clipto>
+			</summer>
+			
+			<pure_gain name="hydromech/pitch/delta-elevator-direct">
+				<input>hydromech/pitch/delta-input-sum</input>
 				<gain>2.08</gain> <!-- Half of 4.16, because it is positive and negative -->
 			</pure_gain>
 			
 			<switch name="hydromech/pitch/q-rad_sec">
 				<default value="0"/>
-				<test value="velocities/q-rad_sec">
-					hydromech/sas-roll eq 1
+				<test logic="AND" value="velocities/q-rad_sec"> <!-- Disable SAS if switch off or stick force applied -->
+					hydromech/sas-pitch eq 1
+					hydromech/pitch/feel-limit gt -1
+					hydromech/pitch/feel-limit lt 1
 				</test>
 			</switch>
 			
@@ -508,61 +533,6 @@
 		</channel>
 		
 		<channel name="Hydromech: Yaw">
-			
-			<lead_lag_filter name="hydromech/yaw/stick-leadlag">
-				<input>hydromech/roll/delta-stick</input>
-				<c1>hydromech/yaw/KXF</c1>
-				<c2>0.000</c2>
-				<c3>0.055</c3>
-				<c4>1.000</c4>
-			</lead_lag_filter>
-			
-			<!-- Can't find it's data... stupid -->
-			<!--fcs_function name="hydromech/yaw/stick-alpha">
-				<function>
-					<table>
-						<independentVar lookup="row">hydromech/yaw/stick-leadlag</independentVar>
-						<independentVar lookup="column">aero/alpha-deg</independentVar>
-						<tableData>
-							   10  20
-							0
-							1
-						</tableData>
-					</table>
-				</function>
-			</fcs_function-->
-			
-			<lead_lag_filter name="hydromech/yaw/r-leadlag">
-				<input>velocities/r-rad_sec</input>
-				<c1>-344.0</c1>
-				<c2>0.0</c2>
-				<c3>2.0</c3>
-				<c4>1.0</c4>
-			</lead_lag_filter>
-			
-			<pure_gain name="hydromech/yaw/ny-ft_sec2">
-				<input>accelerations/Ny</input>
-				<gain>32.174</gain>
-			</pure_gain>
-			
-			<pure_gain name="hydromech/yaw/ny-gain">
-				<input>hydromech/yaw/ny-ft_sec2</input>
-				<gain>-0.963</gain>
-			</pure_gain>
-			
-			<summer name="hydromech/yaw/r-ny-sum">
-				<input>hydromech/yaw/r-leadlag</input>
-				<input>hydromech/yaw/ny-gain</input>
-			</summer>
-			
-			<summer name="hydromech/yaw/sa-r-ny-sum">
-				<!--input>-hydromech/yaw/stick-alpha</input-->
-				<input>-hydromech/yaw/r-ny-sum</input>
-				<clipto>
-					<min>hydromech/yaw/L2n</min>
-					<max>hydromech/yaw/L2</max>
-				</clipto>
-			</summer>
 			
 			<summer name="hydromech/yaw/rudder-sum">
 				<input>/controls/flight/rudder</input>
@@ -597,9 +567,82 @@
 				<gain>3.0</gain> <!-- Diagram says 10, but that doesn't make sense -->
 			</pure_gain>
 			
+			<lead_lag_filter name="hydromech/yaw/stick-leadlag">
+				<input>hydromech/roll/delta-stick</input>
+				<c1>hydromech/yaw/KXF</c1>
+				<c2>0.000</c2>
+				<c3>0.055</c3>
+				<c4>1.000</c4>
+			</lead_lag_filter>
+			
+			<!-- Can't find it's data... stupid -->
+			<!--fcs_function name="hydromech/yaw/stick-alpha">
+				<function>
+					<table>
+						<independentVar lookup="row">hydromech/yaw/stick-leadlag</independentVar>
+						<independentVar lookup="column">aero/alpha-deg</independentVar>
+						<tableData>
+							   10  20
+							0
+							1
+						</tableData>
+					</table>
+				</function>
+			</fcs_function-->
+			
+			<switch name="hydromech/yaw/r-rad_sec">
+				<default value="0"/>
+				<test logic="AND" value="velocities/r-rad_sec"> <!-- Disable SAS if switch off or stick force applied -->
+					hydromech/sas-yaw eq 1
+					hydromech/yaw/feel-limit gt -7
+					hydromech/yaw/feel-limit lt 7
+				</test>
+			</switch>
+			
+			<lead_lag_filter name="hydromech/yaw/r-leadlag">
+				<input>hydromech/yaw/r-rad_sec</input>
+				<c1>-344.0</c1>
+				<c2>0.0</c2>
+				<c3>2.0</c3>
+				<c4>1.0</c4>
+			</lead_lag_filter>
+			
+			<pure_gain name="hydromech/yaw/ny-ft_sec2">
+				<input>accelerations/Ny</input>
+				<gain>32.174</gain>
+			</pure_gain>
+			
+			<switch name="hydromech/yaw/ny-gain-gain">
+				<default value="0"/>
+				<test logic="AND" value="-0.963"> <!-- Disable SAS if switch off or stick force applied -->
+					hydromech/sas-yaw eq 1
+					hydromech/yaw/feel-limit gt -7
+					hydromech/yaw/feel-limit lt 7
+				</test>
+			</switch>
+			
+			<pure_gain name="hydromech/yaw/ny-gain">
+				<input>hydromech/yaw/ny-ft_sec2</input>
+				<gain>hydromech/yaw/ny-gain-gain</gain>
+			</pure_gain>
+			
+			<summer name="hydromech/yaw/r-ny-sum">
+				<input>hydromech/yaw/r-leadlag</input>
+				<input>hydromech/yaw/ny-gain</input>
+			</summer>
+			
+			<summer name="hydromech/yaw/sa-r-ny-sum">
+				<!--input>-hydromech/yaw/stick-alpha</input-->
+				<input>-hydromech/yaw/r-ny-sum</input>
+				<clipto>
+					<min>hydromech/yaw/L2n</min>
+					<max>hydromech/yaw/L2</max>
+				</clipto>
+			</summer>
+			
 			<summer name="hydromech/yaw/delta-rudder">
-				<input>-hydromech/yaw/sa-r-ny-sum</input>
 				<input>hydromech/yaw/pedal-gain</input> <!-- Diagram says negative, but that doesn't make sense -->
+				<input>-hydromech/yaw/sa-r-ny-sum</input>
 				<clipto>
 					<min>-30</min>
 					<max>30</max>
