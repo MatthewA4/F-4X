@@ -52,10 +52,12 @@
    <htailarm  unit="FT" >   17.70 </htailarm>
    <vtailarea unit="FT2">   67.50 </vtailarea>
    <vtailarm  unit="FT" >    6.38 </vtailarm>
+
+   <!-- 5% MAC behind CG -->
    <location name="AERORP" unit="M">
-     <x>   1.15  </x>
+     <x>   1.3732  </x>
      <y>   0.00 </y>
-     <z>   0.37 </z>
+     <z>   0.163423 </z>
    </location>
    <location name="EYEPOINT" unit="IN">
      <x> 138.22 </x>
@@ -79,9 +81,9 @@
    <!-- End Reference -->
    <emptywt unit="LBS" >     30770 </emptywt>
    <location name="CG" unit="M">
-     <x> 1.13 </x>
+     <x> 1.13321 </x>
      <y> 0.00 </y>
-     <z> 0.37 </z>
+     <z> 0.163423 </z>
    </location>
    <!-- <pointmass name="Payload">
     <description> -636 LBS + full (7866 LBS) fuel should bring model up to entered max weight</description>
@@ -1442,12 +1444,6 @@
                    100 -0.658
                    105 -0.695
                    110 -0.729
-                   120 -0.729
-                   130 -0.729
-                   140 -0.729
-                   150 -0.729
-                   160 -0.729
-                   170 -0.729
                    180 -0.729
                </tableData>
            </table>
