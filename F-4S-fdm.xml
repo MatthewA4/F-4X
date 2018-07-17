@@ -57,7 +57,7 @@
    <location name="AERORP" unit="M">
      <x>   1.3732  </x>
      <y>   0.00 </y>
-     <z>   0.163423 </z>
+     <z>   0.00 </z>
    </location>
    <location name="EYEPOINT" unit="IN">
      <x> 138.22 </x>
@@ -83,7 +83,7 @@
    <location name="CG" unit="M">
      <x> 1.13321 </x>
      <y> 0.00 </y>
-     <z> 0.163423 </z>
+     <z> 0.00 </z>
    </location>
    <!-- <pointmass name="Payload">
     <description> -636 LBS + full (7866 LBS) fuel should bring model up to entered max weight</description>
