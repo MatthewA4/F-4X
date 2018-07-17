@@ -421,14 +421,9 @@
 				<gain>0.2352941176470588</gain> <!-- 4 inches, guess -->
 			</pure_gain>
 			
-			<lag_filter name="hydromech/roll/stick-lag"> <!-- Should be lead_lag, but it didn't work well in sim -->
-				<input>hydromech/roll/delta-stick</input>
-				<c1>9.7</c1>
-			</lag_filter>
-			
 			<summer name="hydromech/roll/p-stick-suml">
 				<input>hydromech/roll/p-rad-gain</input>
-				<input>hydromech/roll/stick-lag</input>
+				<input>hydromech/roll/delta-stick</input>
 				<clipto>
 					<min>hydromech/roll/L1n</min>
 					<max>hydromech/roll/L1</max>
@@ -465,6 +460,51 @@
 		
 		</channel>
 		
+		<channel name="Hydromech: Pitch">
+			
+			<pure_gain name="hydromech/pitch/force">
+				<input>/controls/flight/elevator</input>
+				<gain>17.0</gain>
+			</pure_gain>
+			
+			<deadband name="hydromech/pitch/feel-limit">
+				<input>hydromech/pitch/force</input>
+				<width>0.1</width>
+				<clipto>
+					<min>-17.0</min>
+					<max>17.0</max>
+				</clipto>
+			</deadband>
+			
+			<pure_gain name="hydromech/pitch/delta-stick">
+				<input>hydromech/pitch/feel-limit</input>
+				<gain>0.5882352941176471</gain> <!-- 10 inches, guess -->
+			</pure_gain>
+			
+			<pure_gain name="hydromech/pitch/delta-elevator-direct">
+				<input>hydromech/pitch/delta-stick</input>
+				<gain>2.08</gain> <!-- Half of 4.16, because it is positive and negative -->
+			</pure_gain>
+			
+			<switch name="hydromech/pitch/q-rad_sec">
+				<default value="0"/>
+				<test value="velocities/q-rad_sec">
+					hydromech/sas-roll eq 1
+				</test>
+			</switch>
+			
+			<pure_gain name="hydromech/pitch/q-final">
+				<input>hydromech/pitch/q-rad_sec</input>
+				<gain>8.59437</gain> <!-- Rad to Deg * 0.15 -->
+			</pure_gain>
+			
+			<summer name="hydromech/pitch/delta-elevator">
+				<input>hydromech/pitch/delta-elevator-direct</input>
+				<input>hydromech/pitch/q-final</input>
+			</summer>
+		
+		</channel>
+		
 		<channel name="Hydromech: Yaw">
 			
 			<lead_lag_filter name="hydromech/yaw/stick-leadlag">
@@ -475,17 +515,20 @@
 				<c4>1.000</c4>
 			</lead_lag_filter>
 			
-			<fcs_function name="hydromech/yaw/stick-alpha"> <!-- WIP, unused atm -->
+			<!-- Can't find it's data... stupid -->
+			<!--fcs_function name="hydromech/yaw/stick-alpha">
 				<function>
 					<table>
-						<independentVar lookup="row">aero/alpha-deg</independentVar> <!-- Should really be indicated -->
+						<independentVar lookup="row">hydromech/yaw/stick-leadlag</independentVar>
+						<independentVar lookup="column">aero/alpha-deg</independentVar>
 						<tableData>
-							10  0
-							20  1
+							   10  20
+							0
+							1
 						</tableData>
 					</table>
 				</function>
-			</fcs_function>
+			</fcs_function-->
 			
 			<lead_lag_filter name="hydromech/yaw/r-leadlag">
 				<input>velocities/r-rad_sec</input>
@@ -552,14 +595,9 @@
 				<gain>3.0</gain> <!-- Diagram says 10, but that doesn't make sense -->
 			</pure_gain>
 			
-			<lag_filter name="hydromech/yaw/pedal-lag">
-				<input>hydromech/yaw/pedal-gain</input>
-				<c1>7.3</c1>
-			</lag_filter>
-			
 			<summer name="hydromech/yaw/delta-rudder">
 				<input>-hydromech/yaw/sa-r-ny-sum</input>
-				<input>hydromech/yaw/pedal-lag</input> <!-- Diagram says negative, but that doesn't make sense -->
+				<input>hydromech/yaw/pedal-gain</input> <!-- Diagram says negative, but that doesn't make sense -->
 				<clipto>
 					<min>-30</min>
 					<max>30</max>
@@ -645,23 +683,14 @@
 		
 		<channel name="Pitch">
 
-			<summer name="fcs/pitch-sum">
-				<input>fcs/elevator-cmd-norm</input>
-				<input>fcs/pitch-trim-cmd-norm</input>
-				<clipto>
-					<min>-1</min>
-					<max>1</max>
-				</clipto>
-			</summer>
-			
-			<aerosurface_scale name="fcs/elevator-deg-a">
-				<input>fcs/pitch-sum</input>
+			<pure_gain name="fcs/elevator-deg-a">
+				<input>hydromech/pitch/delta-elevator</input>
 				<!-- Reference: ADA101648, page 20 -->
-				<range>
+				<clipto>
 					<min>-21</min>
 					<max>9</max>
-				</range>
-			</aerosurface_scale>
+				</clipto>
+			</pure_gain>
 
 			<lag_filter name="fcs/elevator-deg">
 				<input>fcs/elevator-deg-a</input>
