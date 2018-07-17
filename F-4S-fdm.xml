@@ -1345,7 +1345,7 @@
 
     <!-- Reference: ADA101648, page 26 -->
     <function name="aero/coefficient/CR/CRDR">
-        <description>rudder position</description>
+        <description>Roll moment due to rudder position</description>
         <product>
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
@@ -1811,6 +1811,7 @@
 
     <!-- Reference: ADA101648, page 27 -->
     <function name="aero/coefficient/CN/CNDSP">
+	<description>Yaw moment due to spoiler position</description>
         <product>
             <property>aero/qbar-psf</property>
             <property>metrics/Sw-sqft</property>
