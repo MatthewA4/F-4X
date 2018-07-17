@@ -23,6 +23,9 @@ See LICENSE file for the GPL version 2 text.
 	<sim>
 		<author>Matthew Anderson, Joshua Davidson/it0uchpods (FCS)</author>
 		<description>F-4S Phantom II</description>
+		<long-description>
+			The F-4S Phantom II is Cold War era twin-seat interceptor/fighter bomber.
+		</long-description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
 			<FDM type="int">0</FDM>
@@ -49,7 +52,7 @@ See LICENSE file for the GPL version 2 text.
 		<model>
 			<path>Models/F-4S.xml</path>
 		</model>
-		
+
 		<hud n="0">
 			<enable3d n="0">false</enable3d>
 			<enable3d n="1">false</enable3d>
