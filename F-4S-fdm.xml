@@ -342,7 +342,7 @@
 
  </propulsion>
 
-	<flight_control name="FCS: F-4"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) -->
+	<flight_control name="FCS: F-4"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) --> <!-- Resource: ADA101648 -->
 		
 		<channel name="Gains">
 			
@@ -421,22 +421,14 @@
 				<gain>0.2352941176470588</gain> <!-- 4 inches, guess -->
 			</pure_gain>
 			
-			<lag_filter name="hydromech/roll/stick-lag">
+			<lag_filter name="hydromech/roll/stick-lag"> <!-- Should be lead_lag, but it didn't work well in sim -->
 				<input>hydromech/roll/delta-stick</input>
-				<c1>9.5</c1>
+				<c1>9.7</c1>
 			</lag_filter>
-			
-			<lead_lag_filter name="hydromech/roll/stick-leadlag">
-				<input>hydromech/roll/delta-stick</input>
-				<c1>4.0</c1>
-				<c2>0.0</c2>
-				<c3>0.1</c3>
-				<c4>1.0</c4>
-			</lead_lag_filter>
 			
 			<summer name="hydromech/roll/p-stick-suml">
 				<input>hydromech/roll/p-rad-gain</input>
-				<input>hydromech/roll/stick-leadlag</input>
+				<input>hydromech/roll/stick-lag</input>
 				<clipto>
 					<min>hydromech/roll/L1n</min>
 					<max>hydromech/roll/L1</max>
@@ -475,6 +467,58 @@
 		
 		<channel name="Hydromech: Yaw">
 			
+			<lead_lag_filter name="hydromech/yaw/stick-leadlag">
+				<input>hydromech/roll/delta-stick</input>
+				<c1>hydromech/yaw/KXF</c1>
+				<c2>0.000</c2>
+				<c3>0.055</c3>
+				<c4>1.000</c4>
+			</lead_lag_filter>
+			
+			<fcs_function name="hydromech/yaw/stick-alpha"> <!-- WIP, unused atm -->
+				<function>
+					<table>
+						<independentVar lookup="row">aero/alpha-deg</independentVar> <!-- Should really be indicated -->
+						<tableData>
+							10  0
+							20  1
+						</tableData>
+					</table>
+				</function>
+			</fcs_function>
+			
+			<lead_lag_filter name="hydromech/yaw/r-leadlag">
+				<input>velocities/r-rad_sec</input>
+				<c1>-344.0</c1>
+				<c2>0.0</c2>
+				<c3>2.0</c3>
+				<c4>1.0</c4>
+			</lead_lag_filter>
+			
+			<pure_gain name="hydromech/yaw/ny-ft_sec2">
+				<input>accelerations/Ny</input>
+				<gain>32.174</gain>
+			</pure_gain>
+			
+			<pure_gain name="hydromech/yaw/ny-gain">
+				<input>hydromech/yaw/ny-ft_sec2</input>
+				<gain>-0.963</gain>
+			</pure_gain>
+			
+			<summer name="hydromech/yaw/r-ny-sum">
+				<input>hydromech/yaw/r-leadlag</input>
+				<input>hydromech/yaw/ny-gain</input>
+			</summer>
+			
+			<summer name="hydromech/yaw/sa-r-ny-sum">
+				<!--input>-hydromech/yaw/stick-alpha</input-->
+				<input>-hydromech/yaw/r-ny-sum</input>
+				<clipto>
+					<min>hydromech/yaw/L2n</min>
+					<max>hydromech/yaw/L2</max>
+				</clipto>
+			</summer>
+			
 			<summer name="hydromech/yaw/rudder-sum">
 				<input>/controls/flight/rudder</input>
 				<input>/controls/flight/rudder-trim</input>
@@ -509,13 +553,13 @@
 			</pure_gain>
 			
 			<lag_filter name="hydromech/yaw/pedal-lag">
-				<input>hydromech/yaw/delta-pedal</input>
+				<input>hydromech/yaw/pedal-gain</input>
 				<c1>7.3</c1>
 			</lag_filter>
 			
 			<summer name="hydromech/yaw/delta-rudder">
-				<!--input>hydromech/yaw/something</input-->
-				<input>hydromech/yaw/pedal-gain</input>
+				<input>-hydromech/yaw/sa-r-ny-sum</input>
+				<input>hydromech/yaw/pedal-lag</input> <!-- Diagram says negative, but that doesn't make sense -->
 				<clipto>
 					<min>-30</min>
 					<max>30</max>
