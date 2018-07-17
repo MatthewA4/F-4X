@@ -25,6 +25,7 @@ See LICENSE file for the GPL version 2 text.
 		<description>F-4S Phantom II</description>
 		<long-description>
 			The F-4S Phantom II is Cold War era twin-seat interceptor/fighter bomber.
+			This is one of the most advanced Naval variants.
 		</long-description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
