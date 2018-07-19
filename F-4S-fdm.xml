@@ -59,10 +59,10 @@
      <y>   0.00 </y>
      <z>   0.00 </z>
    </location>
-   <location name="EYEPOINT" unit="IN">
-     <x> 138.22 </x>
+   <location name="EYEPOINT" unit="M">
+     <x> -3.5415 </x>
      <y>   0.00 </y>
-     <z>  38.00 </z>
+     <z>  0.7966 </z>
    </location>
    <location name="VRP" unit="IN">
      <x>0</x>

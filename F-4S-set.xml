@@ -36,17 +36,19 @@ See LICENSE file for the GPL version 2 text.
 			<model type="int">0</model>
 		</rating>
 		<status>Alpha</status>
+
 		<startup>
-		<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
-		<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
-	</startup>
-	<previews>
-		<preview>
-			<type>exterior</type>
-			<splash type="bool">true</splash>
-			<path>thumbnail.jpg</path>
-		</preview>
-	</previews>
+			<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
+			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
+		</startup>
+		
+		<previews>
+			<preview>
+				<type>exterior</type>
+				<splash type="bool">true</splash>
+				<path>thumbnail.jpg</path>
+			</preview>
+		</previews>
 
 		<flight-model>jsb</flight-model>
 		<aero>F-4S-fdm</aero>
@@ -59,6 +61,20 @@ See LICENSE file for the GPL version 2 text.
 			<enable3d n="0">false</enable3d>
 			<enable3d n="1">false</enable3d>
 		</hud>
+
+		<view>
+			<name>Cockpit View</name>
+			<type>lookfrom</type>
+			<internal type="bool">true</internal>
+			<config>
+				<from-model type="bool">true</from-model>
+				<from-model-idx type="int">0</from-model-idx>
+				<x-offset-m type="double">0</x-offset-m>
+				<y-offset-m type="double">0.79</y-offset-m>
+				<z-offset-m type="double">-3.5415</z-offset-m>
+
+			</config>
+		</view>
 	</sim>
 
     <consumables>
