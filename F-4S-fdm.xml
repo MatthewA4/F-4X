@@ -148,6 +148,66 @@
    <retractable>1</retractable>
   </contact>
 
+ <contact type="STRUCTURE" name="NOSE">
+    <location unit="M">
+     <x> -7.6275 </x>
+     <y> 0.0 </y>
+     <z> -0.46045 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
+ <contact type="STRUCTURE" name="NOSE_BOTTOM">
+    <location unit="M">
+     <x> -5.8964 </x>
+     <y> 0.0 </y>
+     <z> -0.85496 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
+<contact type="STRUCTURE" name="CANOPY">
+    <location unit="M">
+     <x> -2.8919 </x>
+     <y> 0.0 </y>
+     <z> 1.2327 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
+ <contact type="STRUCTURE" name="TAIL_TOP">
+    <location unit="M">
+     <x> 8.8852 </x>
+     <y> 0.0 </y>
+     <z> 2.7615 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
+   <contact type="STRUCTURE" name="FUSELAGE_CENTER_BOTTOM">
+    <location unit="M">
+     <x> 1.9271 </x>
+     <y> 0.0 </y>
+     <z> -0.75783 </z>
+    </location>
+    <static_friction>  1.00 </static_friction>
+    <dynamic_friction> 1.00 </dynamic_friction>
+    <spring_coeff unit="LBS/FT">      38000.00 </spring_coeff>
+    <damping_coeff unit="LBS/FT/SEC"> 38000.00 </damping_coeff>
+  </contact>
+
   <contact type="STRUCTURE" name="LEFT_WING">
     <location unit="M">
      <x> 4.92865 </x>
@@ -161,7 +221,7 @@
   </contact>
 
   <contact type="STRUCTURE" name="RIGHT_WING">
-    <location unit="IN">
+    <location unit="M">
      <x> 4.92865 </x>
      <y>  5.85857 </y>
      <z> -0.6969805 </z>
