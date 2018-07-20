@@ -77,6 +77,16 @@ See LICENSE file for the GPL version 2 text.
 		</view>
 	</sim>
 
+	<fdm>
+		<jsbsim>
+			<misc>
+				<stores>
+					<onboard type="double">0.0</onboard>
+				</stores>
+			</misc>
+		</jsbsim>
+	</fdm>
+
     <consumables>
         <fuel>
             <tank n="0"><name>Fuel Cell #1</name></tank>

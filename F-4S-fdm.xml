@@ -1093,7 +1093,8 @@
     <function name="aero/coefficient/CD/CD_Stores">
         <description>Drag due to stores constant (delta)</description>
         <product>
-          <property>aero/qbar-psf</property>
+          <property>misc/stores/onboard</property>
+	  <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <value>0.0037</value>
         </product>
@@ -1127,7 +1128,7 @@
          </product>
     </function>
 
-    <function name="aero/force/Drag_gear">
+    <function name="aero/coefficient/CD/Drag_gear">
        <description>Drag due to gear</description>
          <product>
            <property>aero/qbar-psf</property>
@@ -1137,7 +1138,7 @@
          </product>
     </function>
 
-    <function name="aero/force/Drag_speedbrake">
+    <function name="aero/coefficient/CD/Drag_speedbrake">
        <description>Drag due to speedbrakes</description>
          <product>
            <property>aero/qbar-psf</property>
@@ -1145,24 +1146,6 @@
            <property>fcs/speedbrake-pos-norm</property>
            <value>0.024</value>
          </product>
-    </function>
-
-    <function name="aero/coefficient/CD/CDB">
-       <description>Drag due to sideslip</description>
-       <product>
-          <property>aero/qbar-psf</property>
-          <property>metrics/Sw-sqft</property>
-          <table>
-            <independentVar lookup="row">aero/beta-rad</independentVar>
-            <tableData>
-              -1.57    1.230
-              -0.26    0.050
-               0.00    0.000
-               0.26    0.050
-               1.57    1.230
-            </tableData>
-          </table>
-       </product>
     </function>
 
     <function name="aero/coefficient/CD/CD_STAB">
@@ -1758,7 +1741,7 @@
     <function name="aero/coefficient/CM/DCM1">
         <description>delta pitch moment #1</description>
         <product>
-             <property>aero/qbar-psf</property>
+                <property>aero/qbar-psf</property>
                 <property>metrics/Sw-sqft</property>
                 <property>metrics/cbarw-ft</property>
                 <table>
@@ -1776,7 +1759,7 @@
                         35 0.000   0.000    0.0000   -0.0025  -0.0087  -0.0106  -0.0125 -0.0125
                         40 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000  0.0000
                         45 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000  0.0000
-                        180 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000 0.0000
+                       180 0.000   0.000    0.0000    0.0000   0.0000   0.0000   0.0000 0.0000
                     </tableData>
                 </table>
             </product>
@@ -2021,7 +2004,10 @@
               <sum>
                   <property>aero/coefficient/CD/CD_BASIC</property>
                   <property>aero/coefficient/CD/CDM </property>
-                  <v> 0.0037 </v> <!-- delta CD -->
+	          <property>aero/coefficient/CD/CDDF </property>
+		  <property>aero/coefficient/CD/Drag_gear</property>
+		  <property>aero/coefficient/CD/Drag_speedbrake</property>
+                  <property>aero/coefficient/CD/CD_Stores</property>
               </sum>
           </function>
         </axis>
