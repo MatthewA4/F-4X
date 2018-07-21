@@ -85,16 +85,7 @@
      <y> 0.00 </y>
      <z> 0.00 </z>
    </location>
-   <!-- <pointmass name="Payload">
-    <description> -636 LBS + full (7866 LBS) fuel should bring model up to entered max weight</description>
-    <weight unit="LBS">   -318.0 </weight>
-    <location name="POINTMASS" unit="IN">
-      <x>   0.00 </x>
-      <y>   0.00 </y>
-      <z>   0.00 </z>
-    </location>
-    </pointmass> -->
- </mass_balance>
+  </mass_balance>
 
  <ground_reactions>
 
