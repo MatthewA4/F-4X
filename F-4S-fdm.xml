@@ -918,6 +918,20 @@
 			</kinematic>
 		
 		</channel>
+		
+		<channel name="Brakes">
+			
+			<pure_gain name="rubbish/left-brake-cmd-norm">
+				<input>/controls/gear/brake-left</input>
+				<output>fcs/left-brake-cmd-norm</output>
+			</pure_gain>
+			
+			<pure_gain name="rubbish/right-brake-cmd-norm">
+				<input>/controls/gear/brake-right</input>
+				<output>fcs/right-brake-cmd-norm</output>
+			</pure_gain>
+		
+		</channel>
 	
 	</flight_control>
 	
