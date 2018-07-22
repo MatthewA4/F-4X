@@ -91,7 +91,9 @@
  
 <propulsion file="Systems/Propulsion"/>
 
-<flight_control file="Systems/FCS"/>
+<system file="FCS"/>
+
+<flight_control name="none"/>
 	
  <aerodynamics>
 
