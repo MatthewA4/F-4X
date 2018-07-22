@@ -1,0 +1,159 @@
+<propulsion>
+
+   <engine file="J79-GE-10">
+    <location unit="M">
+      <x> 3.98235 </x>
+      <y> -0.731923 </y>
+      <z> -0.158145 </z>
+    </location>
+    <orient unit="DEG">
+      <pitch> 0.00 </pitch>
+      <roll>  0.00 </roll>
+      <yaw>   0.00 </yaw>
+    </orient>
+    <feed>7</feed>
+    <thruster file="direct">
+     <location unit="M">
+       <x> 5.85124 </x>
+       <y> -0.621589 </y>
+       <z> -0.434733 </z>
+     </location>
+     <orient unit="DEG">
+	<!-- Reference: ADA101648, page 35 -->
+       <pitch> 5.75 </pitch>
+       <roll>  0.00 </roll>
+       <yaw>   0.00 </yaw>
+     </orient>
+    </thruster>
+  </engine>
+
+   <engine file="J79-GE-10">
+    <location unit="M">
+      <x> 3.98235 </x>
+      <y> 0.731923 </y>
+      <z> -0.158145 </z>
+    </location>
+    <orient unit="DEG">
+     <pitch>  0.00 </pitch>
+      <roll>  0.00 </roll>
+      <yaw>   0.00 </yaw>
+    </orient>
+    <feed>8</feed>
+    <thruster file="direct">
+     <location unit="M">
+       <x> 5.85124 </x>
+       <y> 0.621589 </y>
+       <z>-0.434733 </z>
+     </location>
+     <orient unit="DEG">
+    <!-- Reference: ADA101648, page 35 -->
+       <pitch> 5.75 </pitch>
+       <roll>  0.00 </roll>
+       <yaw>   0.00 </yaw>
+     </orient>
+    </thruster>
+  </engine>
+
+  <!-- Fuel tank quanities come from the NAVAIR 01-245FDD-1, Change 2 -->
+
+  <!-- Fuel Cell #1 -->
+  <tank type="FUEL" n="0">
+      <location unit="M">
+          <x> -1.20 </x>
+          <y>  0.00000 </y>
+          <z>  0.37889 </z>
+      </location>
+      <capacity unit="LBS"> 1571 </capacity>
+      <contents unit="LBS"> 1571 </contents>
+  </tank>
+
+  <!-- Fuel Cell #2 -->
+  <tank type="FUEL" n="1">
+      <location unit="M">
+       <x> -0.8 </x>
+       <y>   0.00 </y>
+       <z>  0.7575 </z>
+     </location>
+     <capacity unit="LBS"> 1503 </capacity>
+     <contents unit="LBS"> 1503 </contents>
+  </tank>
+
+  <!-- Fuel Cell #3 -->
+  <tank type="FUEL" n="2">
+      <location unit="M">
+       <x> 0.703104 </x>
+       <y>   0.00 </y>
+       <z> 0.8 </z>
+     </location>
+     <capacity unit="LBS"> 1115 </capacity>
+     <contents unit="LBS"> 1115 </contents>
+  </tank>
+
+  <!-- Fuel Cell #4 -->
+  <tank type="FUEL" n="3">
+      <location unit="M">
+          <x> 2.15 </x>
+          <y> 0.0000 </y>
+          <z> 0.8075 </z>
+      </location>
+      <capacity unit="LBS"> 1503 </capacity>
+      <contents unit="LBS"> 1503 </contents>
+  </tank>
+
+  <!-- Fuel Cell #5 -->
+  <tank type="FUEL" n="4">
+      <location unit="M">
+       <x> 2.5 </x>
+       <y> 0.00 </y>
+       <z> 0.65 </z>
+     </location>
+     <capacity unit="LBS"> 1367 </capacity>
+     <contents unit="LBS"> 1367 </contents>
+  </tank>
+
+  <!-- Fuel Cell #6 -->
+  <tank type="FUEL" n="5">
+      <location unit="M">
+       <x> 4.6 </x>
+       <y> 0.00 </y>
+       <z> 0.65 </z>
+     </location>
+     <capacity unit="LBS"> 1598 </capacity>
+     <contents unit="LBS"> 1598 </contents>
+  </tank>
+
+  <tank type="FUEL" n="6">
+      <location unit="M">
+       <x> 5.4 </x>
+       <y> 0.00 </y>
+       <z> 0.75 </z>
+     </location>
+     <capacity unit="LBS"> 646 </capacity>
+     <contents unit="LBS"> 646 </contents>
+  </tank>
+
+  <!-- Left Wing Fuel Tank -->
+  <tank type="FUEL" n="7">
+      <location unit="M">
+          <x> 0.8 </x>
+          <y> -1.8 </y>
+          <z> 0.57 </z>
+      </location>
+      <capacity unit="LBS"> 2142 </capacity>
+      <contents unit="LBS"> 2142 </contents>
+  </tank>
+
+  <!-- Right Wing Fuel Tank -->
+  <tank type="FUEL" n="8">
+      <location unit="M">
+          <x> 0.8 </x>
+          <y> 1.8 </y>
+          <z> 0.57 </z>
+      </location>
+      <capacity unit="LBS"> 2142 </capacity>
+      <contents unit="LBS"> 2142 </contents>
+  </tank>
+
+ </propulsion>
+
+
