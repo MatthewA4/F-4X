@@ -22,11 +22,11 @@ See LICENSE file for the GPL version 2 text.
 <PropertyList>
 	<sim>
 		<author>Matthew Anderson, Joshua Davidson/it0uchpods (FCS)</author>
-		<description>F-4S Phantom II</description>
+		<description>F-4J/S Phantom II</description>
 		<long-description>
-		The F-4S Phantom II is Cold War era, twin-seat interceptor/fighter bomber.
-		The S model is an upgraded F-4J, with slats and upgraded avionics being the key upgrades.
-		This is the most advanced Naval Phantom II ever produced and first flew in 1977.
+		The F-4J/S Phantom II is Cold War era, twin-seat interceptor/fighter bomber.
+		The S model is an upgraded F-4J, with upgraded avionics being the key upgrades.
+		The J/S model is an F-4S without the slat upgrades; not many produced. First flew in 1977.
 		</long-description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
