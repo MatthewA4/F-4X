@@ -13,8 +13,8 @@ var viewAntiCheat = func()
     {
         if(getprop("/sim/current-view/view-number") != 0)
         {
-            setprop("/sim/current-view/view-number", 0);
-        }
+	    setprop("/sim/current-view/view-number", 0);
+	}
     }
 } _setlistener("/sim/current-view/view-number", viewAntiCheat);
 
@@ -25,7 +25,7 @@ var setPilotView = func()
     {
        if(getprop("/sim/current-view/view-number") != 0)
        {
-           setprop("/sim/current-view/view-number", 0);
+	   setprop("/sim/current-view/view-number", 0);
        }
     }
 } _setlistener("/nasal/views/enabled", setPilotView);
