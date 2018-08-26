@@ -93,6 +93,12 @@ See LICENSE file for the GPL version 2 text.
 		</view>
 	</sim>
 
+	<controls>
+		<flight>
+			<elevator-trim type="double">-0.05</elevator-trim>
+		</flight>
+	</controls>
+
 	<fdm>
 	  <jsbsim>
 	    <misc>

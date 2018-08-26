@@ -125,7 +125,7 @@
 	
 	</channel>
 	
-	<channel name="Hydromech: Pitch"> <!-- Can't find good schematics for this axis, so, much of this is a guess -->
+	<channel name="Hydromech: Pitch"> <!-- Can't find good schematics for this axis, so much of this is a guess -->
 		
 		<pure_gain name="hydromech/pitch/force">
 			<input>/controls/flight/elevator</input>
@@ -146,10 +146,50 @@
 			<gain>0.5941176470588235</gain> <!-- 10.1 inches, guess -->
 		</pure_gain>
 		
-		<pure_gain name="hydromech/pitch/delta-offset"> <!-- I need schematics to make the correct trim system -->
-			<input>/controls/flight/elevator-trim</input>
-			<gain>5.05</gain>
-		</pure_gain>
+		<switch name="forces/load-factor-fixed">
+			<default value="-1"/>
+			<test logic="AND" value="forces/load-factor">
+				gear/unit[0]/WOW eq 0
+				gear/unit[1]/WOW eq 0
+				gear/unit[2]/WOW eq 0
+			</test>
+		</switch>
+		
+		<fcs_function name="hydromech/pitch/delta-offset"> <!-- Guess of belows and bobweights -->
+			<function>
+				<sum>
+					<product>
+						<property>velocities/vc-kts</property>
+						<value>-0.0015</value>
+					</product>
+					<sum>
+						<product>
+							<min>
+								<max>
+									<product>
+										<property>forces/load-factor-fixed</property>
+										<value>-5</value>
+									</product>
+									<value>5</value>
+								</max>
+								<value>12</value>
+							</min>
+							<table>
+								<independentVar lookup="row">velocities/mach</independentVar>
+								<tableData>
+									0.0  0.100
+									2.4  0.025
+								</tableData>
+							</table>
+						</product>
+						<product>
+							<property>/controls/flight/elevator-trim</property>
+							<value>5.05</value>
+						</product>
+					</sum>
+				</sum>
+			</function>
+		</fcs_function>
 		
 		<summer name="hydromech/pitch/delta-input-sum">
 			<input>hydromech/pitch/delta-stick</input>
@@ -408,6 +448,7 @@
 
 		<pure_gain name="fcs/elevator-deg-a">
 			<input>hydromech/pitch/delta-elevator</input>
+			<gain>1.0</gain>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
 				<min>-21</min>
@@ -441,7 +482,7 @@
 			<output>/surface-positions/rudder</output>
 		</lag_filter>
 	
-	</channel> <!-- End Flight Control System by Joshua Davidson (it0uchpods) -->
+	</channel>
 	
 	<channel name="Flaps">
 		
@@ -527,4 +568,4 @@
 	
 	</channel>
 
-</system>
+</system> <!-- End Flight Control System by Joshua Davidson (it0uchpods) -->

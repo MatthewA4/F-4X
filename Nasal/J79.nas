@@ -40,4 +40,14 @@ var init = func ()
 
         settimer(openFuelCutoff, 5);
 
-} _setlistener("/nasal/J79/loaded", init);
+}
+
+var magicStartup = func {
+	setprop("/controls/engines/engine[0]/cutoff", 0);
+	setprop("/controls/engines/engine[1]/cutoff", 0);
+
+	setprop("/fdm/jsbsim/propulsion/set-running", 0);
+	setprop("/fdm/jsbsim/propulsion/set-running", 1);
+}
+
+setlistener("/sim/signals/fdm-initialized", magicStartup);
