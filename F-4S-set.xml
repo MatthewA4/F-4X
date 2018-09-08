@@ -21,7 +21,7 @@ See LICENSE file for the GPL version 2 text.
 
 <PropertyList>
 	<sim>
-		<author>Matthew Anderson, Joshua Davidson/it0uchpods (FCS)</author>
+		<author>Matthew Anderson(3D,FDM), Joshua Davidson/it0uchpods (FCS)</author>
 		<description>F-4J/S Phantom II</description>
 		<long-description>
 		The F-4J/S Phantom II is Cold War era, twin-seat interceptor/fighter bomber.
@@ -41,7 +41,7 @@ See LICENSE file for the GPL version 2 text.
 		  <z-offset-dec-step type="double">0.0</z-offset-dec-step>
 		  <z-offset-inc-step type="double">0.0</z-offset-inc-step>
 		  <can-change-z-offset type="bool">false</can-change-z-offset>
-		  
+
 		  <z-offset-default type="float">30.0</z-offset-default>
 		  <z-offset-min-m type="float">10.0</z-offset-min-m>
 		  <z-offset-max-m type="float">200.0</z-offset-max-m>
@@ -51,7 +51,7 @@ See LICENSE file for the GPL version 2 text.
 			<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
 			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
 		</startup>
-		
+
 		<previews>
 			<preview>
 				<type>exterior</type>
