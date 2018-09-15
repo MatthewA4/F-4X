@@ -91,9 +91,9 @@
 
  <contact type="STRUCTURE" name="TAIL_TOP">
     <location unit="M">
-     <x> 8.8852 </x>
+     <x> 17.1875 </x>
      <y> 0.0 </y>
-     <z> 2.7615 </z>
+     <z> 2.8897 </z>
     </location>
     <static_friction>  1.00 </static_friction>
     <dynamic_friction> 1.00 </dynamic_friction>
