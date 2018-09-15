@@ -2,9 +2,9 @@
 
    <engine file="J79-GE-10">
     <location unit="M">
-      <x> 3.98235 </x>
+      <x> 10 </x>
       <y> -0.731923 </y>
-      <z> -0.158145 </z>
+      <z> -0.3989 </z>
     </location>
     <orient unit="DEG">
       <pitch> 0.00 </pitch>
@@ -14,7 +14,7 @@
     <feed>7</feed>
     <thruster file="direct">
      <location unit="M">
-       <x> 5.85124 </x>
+       <x> 13.14 </x>
        <y> -0.621589 </y>
        <z> -0.434733 </z>
      </location>
@@ -29,7 +29,7 @@
 
    <engine file="J79-GE-10">
     <location unit="M">
-      <x> 3.98235 </x>
+      <x> 10 </x>
       <y> 0.731923 </y>
       <z> -0.158145 </z>
     </location>
@@ -41,7 +41,7 @@
     <feed>8</feed>
     <thruster file="direct">
      <location unit="M">
-       <x> 5.85124 </x>
+       <x> 13.14 </x>
        <y> 0.621589 </y>
        <z>-0.434733 </z>
      </location>
@@ -59,9 +59,9 @@
   <!-- Fuel Cell #1 -->
   <tank type="FUEL" n="0">
       <location unit="M">
-          <x> -1.20 </x>
+          <x>  6.69109 </x>
           <y>  0.00000 </y>
-          <z>  0.37889 </z>
+          <z>  0.893999 </z>
       </location>
       <capacity unit="LBS"> 1571 </capacity>
       <contents unit="LBS"> 1571 </contents>
@@ -70,7 +70,7 @@
   <!-- Fuel Cell #2 -->
   <tank type="FUEL" n="1">
       <location unit="M">
-       <x> -0.8 </x>
+       <x> 6.8 </x>
        <y>   0.00 </y>
        <z>  0.7575 </z>
      </location>
@@ -81,8 +81,8 @@
   <!-- Fuel Cell #3 -->
   <tank type="FUEL" n="2">
       <location unit="M">
-       <x> 0.703104 </x>
-       <y>   0.00 </y>
+       <x> 7.5 </x>
+       <y> 0.00 </y>
        <z> 0.8 </z>
      </location>
      <capacity unit="LBS"> 1115 </capacity>
@@ -92,7 +92,7 @@
   <!-- Fuel Cell #4 -->
   <tank type="FUEL" n="3">
       <location unit="M">
-          <x> 2.15 </x>
+          <x> 8.2 </x>
           <y> 0.0000 </y>
           <z> 0.8075 </z>
       </location>
@@ -103,7 +103,7 @@
   <!-- Fuel Cell #5 -->
   <tank type="FUEL" n="4">
       <location unit="M">
-       <x> 2.5 </x>
+       <x> 9 </x>
        <y> 0.00 </y>
        <z> 0.65 </z>
      </location>
@@ -114,7 +114,7 @@
   <!-- Fuel Cell #6 -->
   <tank type="FUEL" n="5">
       <location unit="M">
-       <x> 4.6 </x>
+       <x> 10 </x>
        <y> 0.00 </y>
        <z> 0.65 </z>
      </location>
@@ -124,7 +124,7 @@
 
   <tank type="FUEL" n="6">
       <location unit="M">
-       <x> 5.4 </x>
+       <x> 11.5 </x>
        <y> 0.00 </y>
        <z> 0.75 </z>
      </location>
@@ -135,9 +135,9 @@
   <!-- Left Wing Fuel Tank -->
   <tank type="FUEL" n="7">
       <location unit="M">
-          <x> 0.8 </x>
+          <x> 8.8 </x>
           <y> -1.8 </y>
-          <z> 0.57 </z>
+          <z> -0.5 </z>
       </location>
       <capacity unit="LBS"> 2142 </capacity>
       <contents unit="LBS"> 2142 </contents>
@@ -146,9 +146,9 @@
   <!-- Right Wing Fuel Tank -->
   <tank type="FUEL" n="8">
       <location unit="M">
-          <x> 0.8 </x>
+          <x> 8.8 </x>
           <y> 1.8 </y>
-          <z> 0.57 </z>
+          <z> -0.5 </z>
       </location>
       <capacity unit="LBS"> 2142 </capacity>
       <contents unit="LBS"> 2142 </contents>

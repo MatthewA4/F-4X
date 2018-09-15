@@ -55,7 +55,7 @@
 
    <!-- 5% MAC behind CG -->
    <location name="AERORP" unit="M">
-     <x>   1.3732  </x>
+     <x>   8.88  </x>
      <y>   0.00 </y>
      <z>   0.00 </z>
    </location>
@@ -64,8 +64,8 @@
      <y>   0.00 </y>
      <z>  0.7966 </z>
    </location>
-   <location name="VRP" unit="IN">
-     <x>0</x>
+   <location name="VRP" unit="M">
+     <x>9.04</x>
      <y>0</y>
      <z>0</z>
    </location>
@@ -81,7 +81,7 @@
    <!-- End Reference -->
    <emptywt unit="LBS" >     30770 </emptywt>
    <location name="CG" unit="M">
-     <x> 1.13321 </x>
+     <x> 8.78 </x>
      <y> 0.00 </y>
      <z> 0.00 </z>
    </location>
