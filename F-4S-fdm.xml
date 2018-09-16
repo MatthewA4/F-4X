@@ -60,9 +60,9 @@
      <z>   0.00 </z>
    </location>
    <location name="EYEPOINT" unit="M">
-     <x> -3.5415 </x>
+     <x>   3.92196 </x>
      <y>   0.00 </y>
-     <z>  0.7966 </z>
+     <z>  0.54 </z>
    </location>
    <location name="VRP" unit="M">
      <x>9.04</x>
@@ -88,13 +88,13 @@
   </mass_balance>
 
 <ground_reactions file="Systems/GroundReactions.xml"/>
- 
+
 <propulsion file="Systems/Propulsion"/>
 
 <system file="FCS"/>
 
 <flight_control name="none"/>
-	
+
  <aerodynamics>
 
      <!-- alpha absolute value -->
