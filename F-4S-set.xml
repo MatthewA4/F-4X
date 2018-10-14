@@ -45,6 +45,7 @@ See LICENSE file for the GPL version 2 text.
 
 		<startup>
 			<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
+			<splash-texture>Aircraft/F-4X/splash-2.png</splash-texture>
 			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
 		</startup>
 
