@@ -9,7 +9,7 @@ var FALSE = 0;
 # much simplier solution, doesn't toggle enabled view sim-wide anymore.
 var viewAntiCheat = func()
 {
-    if(getprop("/nasal/views/enabled") == TRUE)
+    if(getprop("/nasal/libraries/view-enabled") == TRUE)
     {
         if(getprop("/sim/current-view/view-number") != 0)
         {
@@ -21,11 +21,11 @@ var viewAntiCheat = func()
 
 var setPilotView = func()
 {
-    if(getprop("/nasal/views/enabled") == TRUE)
+    if(getprop("/nasal/libraries/view-enabled") == TRUE)
     {
        if(getprop("/sim/current-view/view-number") != 0)
        {
 	   setprop("/sim/current-view/view-number", 0);
        }
     }
-} _setlistener("/nasal/views/enabled", setPilotView);
+} _setlistener("/nasal/libraries/view-enabled", setPilotView);

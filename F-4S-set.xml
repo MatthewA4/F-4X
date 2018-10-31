@@ -38,9 +38,9 @@ See LICENSE file for the GPL version 2 text.
 		<status>Alpha</status>
 
 		<current-view>
-		  <z-offset-default type="float">25.0</z-offset-default>
-		  <z-offset-min-m type="float">10.0</z-offset-min-m>
-		  <z-offset-max-m type="float">200.0</z-offset-max-m>
+			<z-offset-default type="float">25.0</z-offset-default>
+			<z-offset-min-m type="float">10.0</z-offset-min-m>
+			<z-offset-max-m type="float">200.0</z-offset-max-m>
 		</current-view>
 
 		<startup>
@@ -90,16 +90,6 @@ See LICENSE file for the GPL version 2 text.
 		</flight>
 	</controls>
 
-	<fdm>
-	  <jsbsim>
-	    <misc>
-	      <stores>
-		<onboard type="double">0.0</onboard>
-	      </stores>
-	    </misc>
-	  </jsbsim>
-	</fdm>
-
 	<consumables>
           <fuel>
             <tank n="0"><name>Fuel Cell #1</name></tank>
@@ -121,6 +111,11 @@ See LICENSE file for the GPL version 2 text.
 				<sas-roll type="bool">1</sas-roll>
 				<sas-yaw type="bool">1</sas-yaw>
 			</hydromech>
+			<misc n="0">
+				<stores n="0">
+					<onboard type="double">0.0</onboard>
+				</stores>
+			</misc>
 		</jsbsim>
 	</fdm>
 
@@ -140,7 +135,7 @@ See LICENSE file for the GPL version 2 text.
 								</and>
 							</condition>
 							<command>nasal</command>
-							<script>views.fovZoom(-1);</script>
+							<script>libraries.fovZoom(-1);</script>
 						</binding>
 					</button>
 					<button n="4">
@@ -155,7 +150,7 @@ See LICENSE file for the GPL version 2 text.
 								</and>
 							</condition>
 							<command>nasal</command>
-							<script>views.fovZoom(1);</script>
+							<script>libraries.fovZoom(1);</script>
 						</binding>
 					</button>
 				</mode>
@@ -167,7 +162,7 @@ See LICENSE file for the GPL version 2 text.
 				<desc>Reset zoom to default</desc>
 				<binding>
 					<command>nasal</command>
-					<script>views.fovZoom(0);</script>
+					<script>libraries.fovZoom(0);</script>
 				</binding>
 			</key>
 			<key n="88">
@@ -176,7 +171,7 @@ See LICENSE file for the GPL version 2 text.
 				<repeatable type="bool">true</repeatable>
 				<binding>
 					<command>nasal</command>
-					<script>views.fovZoom(1);</script>
+					<script>libraries.fovZoom(1);</script>
 				</binding>
 			</key>
 			<key n="120">
@@ -185,7 +180,7 @@ See LICENSE file for the GPL version 2 text.
 				<repeatable type="bool">true</repeatable>
 				<binding>
 					<command>nasal</command>
-					<script>views.fovZoom(-1);</script>
+					<script>libraries.fovZoom(-1);</script>
 				</binding>
 			</key>
 		</keyboard>
@@ -197,18 +192,16 @@ See LICENSE file for the GPL version 2 text.
 	</sound>
 
 	<nasal>
+		<libraries>
+            <view-enabled type="bool">false</view-enabled>
+            <file>Aircraft/F-4X/Nasal/views.nas</file>
+            <file>Aircraft/F-4X/Nasal/zoom-views.nas</file>
+		</libraries>
 		<electrical>
 			<file>Aircraft/F-4X/Nasal/electrical.nas</file>
 		</electrical>
-
 		<J79>
 			<file>Aircraft/F-4X/Nasal/J79.nas</file>
 		</J79>
-
-		<views>
-            <enabled type="bool">false</enabled>
-            <file>Aircraft/F-4X/Nasal/views.nas</file>
-            <file>Aircraft/F-4X/Nasal/zoom-views.nas</file>
-		</views>
 	</nasal>
 </PropertyList>
