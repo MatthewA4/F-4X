@@ -205,6 +205,10 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/Nasal/J79.nas</file>
 		</J79>
 
+		<damage>
+				<file>Aircraft/F-4X/Nasal/damage.nas</file>
+		</damage>
+
 		<views>
             <enabled type="bool">false</enabled>
             <file>Aircraft/F-4X/Nasal/views.nas</file>
