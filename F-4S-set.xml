@@ -30,10 +30,10 @@ See LICENSE file for the GPL version 2 text.
 		</long-description>
 		<aircraft-version>0.1</aircraft-version>
 		<rating>
-			<FDM type="int">0</FDM>
+			<FDM type="int">5</FDM>
 			<systems type="int">0</systems>
 			<cockpit type="int">0</cockpit>
-			<model type="int">0</model>
+			<model type="int">2</model>
 		</rating>
 		<status>Alpha</status>
 
