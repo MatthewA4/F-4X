@@ -28,14 +28,18 @@ See LICENSE file for the GPL version 2 text.
 		The S model is an upgraded F-4J, with upgraded avionics being the key upgrades.
 		The J/S model is an F-4S without the slat upgrades; not many produced. First flew in 1977.
 		</long-description>
-		<aircraft-version>0.1</aircraft-version>
+		<aircraft-version>0.11</aircraft-version>
 		<rating>
-			<FDM type="int">0</FDM>
+			<FDM type="int">5</FDM>
 			<systems type="int">0</systems>
 			<cockpit type="int">0</cockpit>
-			<model type="int">0</model>
+			<model type="int">2</model>
 		</rating>
 		<status>Alpha</status>
+
+		<version>
+			<number type="float">0.11</number>
+		</version>
 
 		<current-view>
 			<z-offset-default type="float">25.0</z-offset-default>
@@ -48,6 +52,12 @@ See LICENSE file for the GPL version 2 text.
 			<splash-texture>Aircraft/F-4X/splash-2.png</splash-texture>
 			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
 		</startup>
+
+		<multiplay>
+			<generic>
+					<float n="1" alias="/sim/version/number"/>
+			</generic>
+		</multiplay>
 
 		<previews>
 			<preview>
@@ -203,5 +213,8 @@ See LICENSE file for the GPL version 2 text.
 		<J79>
 			<file>Aircraft/F-4X/Nasal/J79.nas</file>
 		</J79>
+		<damage>
+				<file>Aircraft/F-4X/Nasal/damage.nas</file>
+		</damage>
 	</nasal>
 </PropertyList>
