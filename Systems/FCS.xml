@@ -1,4 +1,7 @@
-<system name="FCS: F-4"> <!-- Begin Flight Control System by Joshua Davidson (it0uchpods) --> <!-- Resource: ADA101648 -->
+<!-- McDonnell Douglas F-4 Flight Control/Augmentation System -->
+<!-- Copyright (c) 2018 Joshua Davidson (it0uchpods) -->
+
+<system name="FCS: F-4"> <!-- Resource: ADA101648 -->
 	
 	<channel name="Gains">
 		
@@ -122,11 +125,6 @@
 				<max>43</max>
 			</clipto>
 		</pure_gain>
-		
-		<pure_gain name="hydromech/roll/delta-spoiler-inverted">
-			<input>hydromech/roll/delta-spoiler</input>
-			<gain>-1.0</gain>
-		</pure_gain>
 	
 	</channel>
 	
@@ -244,26 +242,26 @@
 		
 		<pure_gain name="hydromech/yaw/force">
 			<input>hydromech/yaw/rudder-sum</input>
-			<gain>120.0</gain>
+			<gain>75.0</gain>
 		</pure_gain>
 		
 		<deadband name="hydromech/yaw/feel-limit">
 			<input>hydromech/yaw/force</input>
 			<width>0.1</width>
 			<clipto>
-				<min>-120.0</min>
-				<max>120.0</max>
+				<min>-75.0</min>
+				<max>75.0</max>
 			</clipto>
 		</deadband>
 		
 		<pure_gain name="hydromech/yaw/delta-pedal">
 			<input>hydromech/yaw/feel-limit</input>
-			<gain>0.075</gain> <!-- 9 inches, guess -->
+			<gain>0.04</gain> <!-- 3 inches, guess - I would think it would be more, but then the diagram no longer makes sense -->
 		</pure_gain>
 		
 		<pure_gain name="hydromech/yaw/pedal-gain">
 			<input>hydromech/yaw/delta-pedal</input>
-			<gain>3.0</gain> <!-- Diagram says 10, but that doesn't make sense -->
+			<gain>10.0</gain>
 		</pure_gain>
 		
 		<lag_filter name="hydromech/yaw/stick-lag">
@@ -380,27 +378,29 @@
 	
 	<channel name="Roll">
 		
-		<lag_filter name="fcs/aileron-left-deg">
+		<actuator name="fcs/aileron-left-deg">
 			<input>hydromech/roll/delta-aileron</input>
-			<c1>23.7</c1>
+			<rate_limit>1980</rate_limit> <!-- 66 * 30 degrees -->
+			<lag>26.7</lag>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
 				<min>-1</min>
 				<max>30</max>
 			</clipto>
 			<output>/surface-positions/aileron-left</output>
-		</lag_filter>
+		</actuator>
 		
-		<lag_filter name="fcs/aileron-right-deg">
+		<actuator name="fcs/aileron-right-deg">
 			<input>hydromech/roll/delta-aileron</input>
-			<c1>23.7</c1>
+			<rate_limit>1980</rate_limit> <!-- 66 * 30 degrees -->
+			<lag>26.7</lag>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
 				<min>-30</min>
 				<max>1</max>
 			</clipto>
 			<output>/surface-positions/aileron-right</output>
-		</lag_filter>
+		</actuator>
 		
 		<summer name="fcs/aileron-deg">
 			<input>fcs/aileron-left-deg</input>
@@ -408,8 +408,8 @@
 		</summer>
 		
 		<pure_gain name="fcs/spoiler-left-deg-a">
-			<input>hydromech/roll/delta-spoiler-inverted</input>
-			<gain>1.0</gain>
+			<input>hydromech/roll/delta-spoiler</input>
+			<gain>-1.0</gain>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
 				<min>0</min>
@@ -417,11 +417,12 @@
 			</clipto>
 		</pure_gain>
 		
-		<lag_filter name="fcs/spoiler-left-deg">
+		<actuator name="fcs/spoiler-left-deg">
 			<input>fcs/spoiler-left-deg-a</input>
-			<c1>25.1</c1>
+			<rate_limit>1677</rate_limit> <!-- 39 * 43 degrees -->
+			<lag>25.1</lag>
 			<output>/surface-positions/spoiler-left</output>
-		</lag_filter>
+		</actuator>
 		
 		<pure_gain name="fcs/spoiler-right-deg-a">
 			<input>hydromech/roll/delta-spoiler</input>
@@ -433,11 +434,12 @@
 			</clipto>
 		</pure_gain>
 		
-		<lag_filter name="fcs/spoiler-right-deg">
+		<actuator name="fcs/spoiler-right-deg">
 			<input>fcs/spoiler-right-deg-a</input>
-			<c1>25.1</c1>
+			<rate_limit>1677</rate_limit> <!-- 39 * 43 degrees -->
+			<lag>25.1</lag>
 			<output>/surface-positions/spoiler-right</output>
-		</lag_filter>
+		</actuator>
 		
 		<fcs_function name="fcs/spoiler-deg">
 			<function>
@@ -465,11 +467,12 @@
 			</clipto>
 		</pure_gain>
 
-		<lag_filter name="fcs/elevator-deg">
+		<actuator name="fcs/elevator-deg">
 			<input>fcs/elevator-deg-a</input>
-			<c1>19.3</c1>
+			<rate_limit>1148</rate_limit> <!-- 41 * 28 degrees -->
+			<lag>22.3</lag>
 			<output>/surface-positions/elevator</output>
-		</lag_filter>
+		</actuator>
 	
 	</channel>
 	
@@ -485,11 +488,12 @@
 			</clipto>
 		</pure_gain>
 		
-		<lag_filter name="fcs/rudder-deg">
+		<actuator name="fcs/rudder-deg">
 			<input>fcs/rudder-deg-a</input>
-			<c1>19.1</c1>
+			<rate_limit>2310</rate_limit> <!-- 77 * 30 degrees -->
+			<lag>22.1</lag>
 			<output>/surface-positions/rudder</output>
-		</lag_filter>
+		</actuator>
 	
 	</channel>
 	
@@ -577,4 +581,4 @@
 	
 	</channel>
 
-</system> <!-- End Flight Control System by Joshua Davidson (it0uchpods) -->
+</system>
