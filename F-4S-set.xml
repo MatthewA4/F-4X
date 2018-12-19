@@ -43,7 +43,7 @@ See LICENSE file for the GPL version 2 text.
 
 		<current-view>
 			<z-offset-default type="float">25.0</z-offset-default>
-			<z-offset-min-m type="float">10.0</z-offset-min-m>
+			<z-offset-min-m type="float">0.1</z-offset-min-m>
 			<z-offset-max-m type="float">200.0</z-offset-max-m>
 		</current-view>
 
