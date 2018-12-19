@@ -1,0 +1,57 @@
+<!--
+Copyright (C) 2017  Matthew Anderson
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+See LICENSE file for the GPL version 2 text.
+-->
+
+<system name="Audio">
+  <channel name="Audio Systems" execrate="10">
+    <fcs_function name="systems/sound/engine-augmentation-left-volume">
+      <function>
+        <description>left augmentation audio</description>
+        <table>
+          <independentVar lookup="row">velocities/mach</independentVar>
+          <tableData>
+            0.0 1.0
+            0.3 0.7
+            0.5 0.6
+            0.8 0.5
+            0.95 0.4
+            1.02 0
+          </tableData>
+        </table>
+      </function>
+    </fcs_function>
+
+  <fcs_function name="systems/sound/engine-augmentation-right-volume">
+    <function>
+      <description>right augmentation audio</description>
+      <table>
+        <independentVar lookup="row">velocities/mach</independentVar>
+        <tableData>
+          0.0 1.0
+          0.3 0.7
+          0.5 0.6
+          0.8 0.5
+          0.95 0.4
+          1.02 0
+        </tableData>
+      </table>
+    </function>
+  </fcs_function>
+</channel>
+</system>
