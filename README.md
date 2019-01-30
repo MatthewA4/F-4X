@@ -13,3 +13,5 @@ Offical repository link (Report bugs here in Issues):
 https://github.com/MatthewA4/F-4X
 
 For those not Git-inclined, download the ZIP, and remove "-master" from folder name.
+
+Released under GPLv2+
