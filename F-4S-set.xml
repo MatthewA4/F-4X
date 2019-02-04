@@ -30,7 +30,7 @@ See LICENSE file for the GPL version 2 text.
 		</long-description>
 		<aircraft-version>0.11</aircraft-version>
 		<rating>
-			<FDM type="int">5</FDM>
+			<FDM type="int">4</FDM>
 			<systems type="int">0</systems>
 			<cockpit type="int">0</cockpit>
 			<model type="int">2</model>
@@ -214,7 +214,7 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/Nasal/J79.nas</file>
 		</J79>
 		<damage>
-				<file>Aircraft/F-4X/Nasal/damage.nas</file>
+			<file>Aircraft/F-4X/Nasal/damage.nas</file>
 		</damage>
 	</nasal>
 </PropertyList>

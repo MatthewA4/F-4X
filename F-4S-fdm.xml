@@ -155,7 +155,7 @@
           		    100  -0.257
           		    105  -0.402
           		    110  -0.547
-                  180  -0.547
+                            180  -0.547
                 </tableData>
               </table>
             </product>
@@ -217,7 +217,7 @@
     			100   0.00300
     			105   0.00300
     			110   0.00300
-          180   0.00300
+                        180   0.00300
 		      </tableData>
 	       </table>
        </product>
@@ -234,7 +234,7 @@
           <property>metrics/Sw-sqft</property>
           <table>
             <independentVar lookup="row">aero/alpha-deg-abs</independentVar>
-          	    <tableData>
+             <tableData>
               		0    0.035
               		5    0.066
               		10   0.130
@@ -258,8 +258,8 @@
               		100  1.600
               		105  1.583
               		110  1.567
-                  180  1.567
-          		</tableData>
+                        180  1.567
+          	</tableData>
           </table>
        </product>
     </function>
