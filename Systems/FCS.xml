@@ -1,5 +1,5 @@
 <!-- McDonnell Douglas F-4 Flight Control/Augmentation System -->
-<!-- Copyright (c) 2018 Joshua Davidson (it0uchpods) -->
+<!-- Copyright (c) 2019 Joshua Davidson (it0uchpods) -->
 
 <system name="FCS: F-4"> <!-- Resource: ADA101648 -->
 	
@@ -75,10 +75,13 @@
 			<gain>0.2352941176470588</gain> <!-- 4 inches, guess -->
 		</pure_gain>
 		
-		<lag_filter name="hydromech/roll/stick-lag">
+		<lead_lag_filter name="hydromech/roll/stick-leadlag">
 			<input>hydromech/roll/delta-stick</input>
-			<c1>4.0</c1>
-		</lag_filter>
+			<c1>0.0</c1>
+			<c2>4.0</c2>
+			<c3>0.1</c3>
+			<c4>1.0</c4>
+		</lead_lag_filter>
 		
 		<switch name="hydromech/roll/p-rad_sec">
 			<default value="0"/>
@@ -95,7 +98,7 @@
 		</pure_gain>
 		
 		<summer name="hydromech/roll/p-stick-suml">
-			<input>hydromech/roll/stick-lag</input>
+			<input>hydromech/roll/stick-leadlag</input>
 			<input>hydromech/roll/p-rad-gain</input>
 			<clipto>
 				<min>hydromech/roll/L1n</min>
@@ -264,15 +267,18 @@
 			<gain>10.0</gain>
 		</pure_gain>
 		
-		<lag_filter name="hydromech/yaw/stick-lag">
+		<lead_lag_filter name="hydromech/yaw/stick-leadlag">
 			<input>hydromech/roll/delta-stick</input>
-			<c1>hydromech/yaw/KXF</c1>
-		</lag_filter>
+			<c1>0.0</c1>
+			<c2>hydromech/yaw/KXF</c2>
+			<c3>0.55</c3>
+			<c4>1.0</c4>
+		</lead_lag_filter>
 		
 		<fcs_function name="hydromech/yaw/stick-alpha">
 			<function>
 				<product>
-					<property>hydromech/yaw/stick-lag</property>
+					<property>hydromech/yaw/stick-leadlag</property>
 					<table>
 						<independentVar lookup="row">aero/alpha-deg</independentVar>
 						<tableData>
@@ -380,7 +386,7 @@
 		
 		<actuator name="fcs/aileron-left-deg">
 			<input>hydromech/roll/delta-aileron</input>
-			<rate_limit>1980</rate_limit> <!-- 66 * 30 degrees -->
+			<rate_limit>66</rate_limit>
 			<lag>26.7</lag>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
@@ -392,7 +398,7 @@
 		
 		<actuator name="fcs/aileron-right-deg">
 			<input>hydromech/roll/delta-aileron</input>
-			<rate_limit>1980</rate_limit> <!-- 66 * 30 degrees -->
+			<rate_limit>66</rate_limit>
 			<lag>26.7</lag>
 			<!-- Reference: ADA101648, page 20 -->
 			<clipto>
@@ -419,8 +425,8 @@
 		
 		<actuator name="fcs/spoiler-left-deg">
 			<input>fcs/spoiler-left-deg-a</input>
-			<rate_limit>1677</rate_limit> <!-- 39 * 43 degrees -->
-			<lag>25.1</lag>
+			<rate_limit>39</rate_limit>
+			<lag>26.7</lag>
 			<output>/surface-positions/spoiler-left</output>
 		</actuator>
 		
@@ -436,8 +442,8 @@
 		
 		<actuator name="fcs/spoiler-right-deg">
 			<input>fcs/spoiler-right-deg-a</input>
-			<rate_limit>1677</rate_limit> <!-- 39 * 43 degrees -->
-			<lag>25.1</lag>
+			<rate_limit>39</rate_limit>
+			<lag>26.7</lag>
 			<output>/surface-positions/spoiler-right</output>
 		</actuator>
 		
@@ -469,8 +475,8 @@
 
 		<actuator name="fcs/elevator-deg">
 			<input>fcs/elevator-deg-a</input>
-			<rate_limit>1148</rate_limit> <!-- 41 * 28 degrees -->
-			<lag>22.3</lag>
+			<rate_limit>41</rate_limit>
+			<lag>26.7</lag>
 			<output>/surface-positions/elevator</output>
 		</actuator>
 	
@@ -490,8 +496,8 @@
 		
 		<actuator name="fcs/rudder-deg">
 			<input>fcs/rudder-deg-a</input>
-			<rate_limit>2310</rate_limit> <!-- 77 * 30 degrees -->
-			<lag>22.1</lag>
+			<rate_limit>77</rate_limit>
+			<lag>22.7</lag>
 			<output>/surface-positions/rudder</output>
 		</actuator>
 	
