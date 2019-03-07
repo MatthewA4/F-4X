@@ -47,11 +47,13 @@ See LICENSE file for the GPL version 2 text.
 			<z-offset-max-m type="float">200.0</z-offset-max-m>
 		</current-view>
 
-		<startup>
+		<!--
+        <startup>
 			<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
 			<splash-texture>Aircraft/F-4X/splash-2.png</splash-texture>
 			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
 		</startup>
+        -->
 
 		<multiplay>
 			<generic>
