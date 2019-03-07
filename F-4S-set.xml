@@ -61,6 +61,7 @@ See LICENSE file for the GPL version 2 text.
 			</generic>
 		</multiplay>
 
+        <!--
 		<previews>
 			<preview>
 				<type>exterior</type>
@@ -68,6 +69,7 @@ See LICENSE file for the GPL version 2 text.
 				<path>thumbnail.jpg</path>
 			</preview>
 		</previews>
+        -->
 
 		<flight-model>jsb</flight-model>
 		<aero>F-4S-fdm</aero>
