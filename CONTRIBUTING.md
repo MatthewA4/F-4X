@@ -1,10 +1,10 @@
-Contributing to this repository should be fairly straightforward.
+#Contributing to this repository should be fairly straightforward.
 
-Making Pull Requests:
+##Making Pull Requests:
 
 1. Fork the repository.
 
-2. Make necessary changes, push to your own repo.
+2. Push to your own repo.
 
 3. Confirm your commits work properly. Make sure to add your copyright line to files
    that have significant changes.
