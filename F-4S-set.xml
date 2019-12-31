@@ -196,7 +196,7 @@ See LICENSE file for the GPL version 2 text.
 	</input>
 
 	<sound>
-		<path type="string">Aircraft/F-4X/Audio/audio.xml</path>
+		<path type="string">Aircraft/F-4X/afx/audio.xml</path>
 		<enabled type="bool">true</enabled>
 	</sound>
 
