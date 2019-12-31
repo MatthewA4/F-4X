@@ -1,0 +1,14 @@
+<system name="Fuel">
+
+  <channel name"Fuel" execrate="8">
+
+    <!-- Can we gravity feed fuel from tanks or not? -->
+    <switch name="fuel/feed-lock">
+        <default value="0"/>
+        <test logic="OR" value="1">
+          /
+        </test>
+    </switch>
+
+  </channel>
+</system>

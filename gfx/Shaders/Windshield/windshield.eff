@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<small>
+  <modelProjection>
+    <use>
+      <
+    </use>
+  </modelProjection>
+</small>
+
+<program>
+  <vertex-shader>windshield.vert</vertex-shader>
+  <fragment-shader>windshield.frag</vertex-shader>
+</program>

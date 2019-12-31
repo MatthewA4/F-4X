@@ -1,0 +1,11 @@
+<system name="Electrical">
+  <channel name="Electrical Systems" execrate="1">
+
+    <switch name="electrical/right-generator-relay">
+
+    </switch name="electrical/left-generator-relay">
+
+    </switch>
+
+  </channel>
+</system>

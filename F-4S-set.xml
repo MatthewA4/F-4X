@@ -48,9 +48,8 @@ See LICENSE file for the GPL version 2 text.
 		</current-view>
 
 		<startup>
-			<splash-texture>Aircraft/F-4X/splash-1.png</splash-texture>
-			<splash-texture>Aircraft/F-4X/splash-2.png</splash-texture>
-			<splash-texture>Aircraft/F-4X/thumbnail.jpg</splash-texture>
+			<splash-texture>Aircraft/F-4X/gfx/splash-1.png</splash-texture>
+			<splash-texture>Aircraft/F-4X/gfx/splash-2.png</splash-texture>
 		</startup>
 
 		<multiplay>
@@ -71,7 +70,7 @@ See LICENSE file for the GPL version 2 text.
 		<aero>F-4S-fdm</aero>
 
 		<model>
-			<path>Aircraft/F-4X/Models/F-4S.xml</path>
+			<path>Aircraft/F-4X/gfx/Models/F-4S.xml</path>
 		</model>
 
 		<hud n="0">
@@ -204,17 +203,17 @@ See LICENSE file for the GPL version 2 text.
 	<nasal>
 		<libraries>
             <view-enabled type="bool">false</view-enabled>
-            <file>Aircraft/F-4X/Nasal/views.nas</file>
-            <file>Aircraft/F-4X/Nasal/zoom-views.nas</file>
+            <file>Aircraft/F-4X/src/Nasal/views.nas</file>
+            <file>Aircraft/F-4X/src/Nasal/zoom-views.nas</file>
 		</libraries>
 		<electrical>
-			<file>Aircraft/F-4X/Nasal/electrical.nas</file>
+			<file>Aircraft/F-4X/src/Nasal/electrical.nas</file>
 		</electrical>
 		<J79>
-			<file>Aircraft/F-4X/Nasal/J79.nas</file>
+			<file>Aircraft/F-4X/src/Nasal/J79.nas</file>
 		</J79>
 		<damage>
-			<file>Aircraft/F-4X/Nasal/damage.nas</file>
+			<file>Aircraft/F-4X/src/Nasal/damage.nas</file>
 		</damage>
 	</nasal>
 </PropertyList>
