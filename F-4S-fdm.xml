@@ -173,6 +173,18 @@
        </product>
     </function>
 
+    <function name="aero/coefficient/CL/Lift_BLC">
+	<description>Delta Lift due to Boundary Layer Control</description>
+	<product>
+		<property>aero/qbar-psf</property>
+		<property>metrics/Sw-sqft</property>
+		<property>propulsion/engine/n1</property>
+		<value> 0.024 </value>
+		<property>gear/gear-pos-norm</property>
+	</product>
+    </function>
+	
+
     <function name="aero/coefficient/CL/Lift_speedbrake">
        <description>Delta Lift due to speedbrake</description>
        <product>
@@ -1167,6 +1179,7 @@
       <sum>
           <property>aero/coefficient/CL/CL_BASIC</property>
           <property>aero/coefficient/CL/CL_STAB</property>
+	  <property>aero/coefficient/CL/Lift_BLC</property>
       </sum>
     </function>
   </axis>
