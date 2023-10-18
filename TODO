@@ -2,6 +2,9 @@ Priorities:
 
 Major sections (precentage status):
 1. FDM -- 90%
+	-- BLC
+	-- Mach Tables
+
 2. Hydromechanical FCS -- 80%
 3. Fuel System -- 10%
 4. External Model -- 75%

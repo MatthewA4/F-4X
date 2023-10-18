@@ -7,7 +7,6 @@ Thumbnail from here: https://flic.kr/p/qsxzGi
 Early alpha stage as of current (See TODO).
 
 Follow the development here:
-https://sites.google.com/site/mattanderson3d/blog
 
 Offical repository link (Report bugs here in Issues):
 https://github.com/MatthewA4/F-4X
