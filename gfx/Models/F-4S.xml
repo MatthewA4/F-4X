@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 See LICENSE file for the GPL version 2 text.
 -->
 <PropertyList>
-	<path>Aircraft/F-4X/Models/F-4S.ac</path>
+	<path>Aircraft/F-4X/gfx/Models/f-4high.ac</path>
 	<animation>
 		<name>MoveRudder</name>
 		<type>rotate</type>
