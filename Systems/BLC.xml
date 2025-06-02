@@ -1,0 +1,25 @@
+<system name="BLC">
+  <property>gear/gear-pos-norm</property>
+  <property>fcs/flap-pos-deg</property>
+  <property>propulsion/engine[0]/n1</property>
+  <property>propulsion/engine[1]/n1</property>
+  <property>fcs/blc-active</property>
+  <logic>
+    <if>
+      <and>
+        <gt><property>gear/gear-pos-norm</property><value>0.9</value></gt>
+        <gt><property>fcs/flap-pos-deg</property><value>0.1</value></gt>
+        <or>
+          <gt><property>propulsion/engine[0]/n1</property><value>0.5</value></gt>
+          <gt><property>propulsion/engine[1]/n1</property><value>0.5</value></gt>
+        </or>
+      </and>
+      <then>
+        <set><property>fcs/blc-active</property><value>1</value></set>
+      </then>
+      <else>
+        <set><property>fcs/blc-active</property><value>0</value></set>
+      </else>
+    </if>
+  </logic>
+</system>
