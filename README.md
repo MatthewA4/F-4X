@@ -1,6 +1,6 @@
 # F-4 Phantom II for FlightGear Flight Simulator
 
-![Splash-1](splash-1.png)
+![Splash-2](splash-2.png)
 
 > **Thumbnail credit:** [Flickr](https://flic.kr/p/qsxzGi)
 
