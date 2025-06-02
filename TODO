@@ -1,0 +1,16 @@
+Priorities:
+
+Major sections (precentage status):
+1. FDM -- 90%
+	-- BLC
+	-- Mach Tables
+
+2. Hydromechanical FCS -- 80%
+3. Fuel System -- 10%
+4. External Model -- 75%
+5. Cockpit model -- 00%
+6. Electrical -- 00%
+7. Armament -- 00%
+8. Dual Control -- 00%
+9. Sound simulation -- 05%
+10. Structural Failures -- 00%

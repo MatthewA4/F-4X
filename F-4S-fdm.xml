@@ -3,39 +3,7 @@
 <fdm_config name="F-4S" version="2.0" release="ALPHA"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:noNamespaceSchemaLocation="http://jsbsim.sourceforge.net/JSBSim.xsd">
-<!--
 
-       ___i__i_,
-       :vnvvnvvvvi,
-        IIIIlIllIvvs|
-        vvilIllllllIvs|.
-        IlIIIlllIlIlllIv=,
-        IIliiilllllIlIIIvvi_
-        iiiilllllIlIlIIllllIv,
-        li|>illlIllIlIlIIIIlIvv,
-        IIIi|iIlllIllIlIlIIIIllvs(
-        vIIIi|IlIllIlIlIIlIIIIIIIvv>.
-        IIIIlilllIlIlIIIlIIIIvIIIIIvv>,
-        vIIIlllllIlIIlIIIIIIvlIIIvlIIvvs,
-        IIvlIllllIlIlIIIIIIvlIIIIIIIIIIlvs,                                                  _a,________,
-        IIlllIlillIlIIlIIIIllllllllllIIIIlIi______________,_________s)YY111vlliiiiiiiiiiviIvIvIvvnvvvvvvvvis(__
-        ~~~~^^^~<IIIvvvvvvvvvvvvvvvvvvvvvvvvnvnnnnnnnnnnnnnooooooooovvnvvnvvvvnvnvnvnvnvvvnvvnvnvvvnvvvnvvvvvvvvi_.
-          ._%%vvnnnvnvvnvnvnvnvvvvvvvvnvvnvnvnvvvvvvnvvnvnnvnvnvnnnnnvnvnvnnnnvnvnvnvnvnnvnvnvvvvnvvvvvvvvvvvvvvvvvi,
-        _aoonvvvvIi|vvnvvnvnvvnvnvnvnnvvnvvnvvnvnnnvnvnvnvvnvnvnvvvvvnvnvnvvvvnvvvvvnvvvvvvnvvnvnvvnvvvvvvvvvvvvvvvvvi,
-        {1}+||Ivlliiv|liIIvIvnvvnvvnvvvnvvnvvnvnvvvnvnvvvvvvIIIIlvllillllllllllllIlIlllllllliIIIIvlvIIIvvvvvvvvvvvvvvvvi_
-         +|iilIllIIIllllliiivvvvvvnvvnvvnvnvnvnvnnvnvvvvvvvvvvvvnvvnnvnvnvnvnvnvnvnvnvnvnnvnvnvvIIllIIIliilIvvIvvvvvvvvIv=.
-         :iiilllIIIlIIIliiiii|iiivvnnnnnvnvnvnvnvvvvvnvnvnnnvnnnvnnvnvnvnvvnvnvnvnvnvvvnvvvvvvvvvvvvvvvvsIiiiiiivvvvvvvvvvs=,
-         =liililllIIIi||+|+++|+||||I1nnnnnvnvnvnvnvnnnvnnvnvnvnvnvvvvvnvvvnvvvvvvvvvvvvvvvvvvIvvIIvIvIvIIliliiiivvvnvvvvvvvvIiii__.
-         iiililllIIi~||||+|||+|++|+||i{vnvnnnnvnvnnvnvnvvnvvvvvvvvvvvvvIvvIIvIvIIIIIlIIllllllllllIlllIlIliiiiilivvvvvvvvvvvvvvvvvvIiv_,
-        _iiiilllIi~`  -~||+|=++|++|++++|vnvnvnvvvvvvvvvvvlIvIIIIlllIllllllllllllIlIlIlIIlIllIlIlIllllllli|liliilIIvIvIvvvvvvvvnvvvvvvvli_
-        :iiillIi~        -<||||||||||++=vnvvvvIvIllilililllllllllllllllllllIlllIlllIllIllllIlllllllllllli|liiiilllllllllllIlIvIvvvvvvvvvIi_
-        %ilvI%+             ~+iliii|||||vvv>|+||||||||||||iiiililillillilllillililiiilillllllllllllililii|liliiiiiiiiiiiiiiiiiiliilililiIvIi_
-        vr"^>'                 -"~%|i||iiIll||+|+|||+||||||||+|||||||||||||||i||i||i|i|i|||||iiiiiiiiii|||liiiiii|i||i||||||i||||||||||||||||=
-                                   -|ilIiiiili||||+|||+|+|+|+||+|||||||ii|i||i|i|i|iii||i|i|||+||||+|+||=lliiii|+||+|+|++||||=|==+=========+-
-                                    =ivvc+|+|+||||||||||||||||||||+|+||svvvlvlIlIIIIli||+++|+|+<si=|+r-=|li||i||+||+||+||+|++|=|+|+|+|+|=~`
-                                    =Ivvi|+||+|+|+||=++|+~-~~111~-~11~ {vvvvvvvvvvvvvvvs__              "'            =`?'11~11~~-~1111
-                                    -~` 11~"^11`                       ~~~^~^^^iiiiiiiiii+^`                          ~
--->
  <fileheader>
   <author> Matthew Anderson </author>
   <filecreationdate>2017-10-08</filecreationdate>
@@ -92,7 +60,7 @@
 <propulsion file="Systems/Propulsion"/>
 
 <system file="FCS"/>
-
+<system file="Systems/BLC.xml"/>
 <flight_control name="none"/>
 
  <aerodynamics>
@@ -164,14 +132,38 @@
      </function>
 
     <function name="aero/coefficient/CL/Lift_flap">
-       <description>Delta Lift due to flaps</description>
-       <product>
-           <property>aero/qbar-psf</property>
-           <property>metrics/Sw-sqft</property>
-           <property>fcs/flap-pos-deg</property>
-           <value> 0.01167 </value>
-       </product>
+      <description>Delta Lift due to flaps, with BLC logic</description>
+      <sum>
+        <!-- Flap lift with BLC -->
+        <ifthen>
+          <eq><property>fcs/blc-active</property><value>1</value></eq>
+          <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <property>fcs/flap-pos-deg</property>
+            <value>0.013</value> <!-- Higher CL per deg with BLC -->
+          </product>
+          <!-- Flap lift without BLC -->
+          <product>
+            <property>aero/qbar-psf</property>
+            <property>metrics/Sw-sqft</property>
+            <property>fcs/flap-pos-deg</property>
+            <value>0.007</value> <!-- Lower CL per deg without BLC -->
+          </product>
+        </ifthen>
+      </sum>
     </function>
+
+    <function name="aero/coefficient/CL/Lift_BLC">
+	<description>Delta Lift due to Boundary Layer Control</description>
+	<product>
+		<property>aero/qbar-psf</property>
+		<property>metrics/Sw-sqft</property>
+		<property>fcs/blc-active</property>
+		<value> 0.024 </value>
+	</product>
+    </function>
+	
 
     <function name="aero/coefficient/CL/Lift_speedbrake">
        <description>Delta Lift due to speedbrake</description>
@@ -1167,6 +1159,7 @@
       <sum>
           <property>aero/coefficient/CL/CL_BASIC</property>
           <property>aero/coefficient/CL/CL_STAB</property>
+	  <property>aero/coefficient/CL/Lift_BLC</property>
       </sum>
     </function>
   </axis>
