@@ -1,10 +1,16 @@
 <system name="Electrical">
   <channel name="Electrical Systems" execrate="1">
 
-    <switch name="electrical/right-generator-relay">
+    <switch name="battery-relay">
+      <property>/controls/electrical/battery</property>
+    </switch>
 
-    </switch name="electrical/left-generator-relay">
+    <switch name="left-generator-relay">
+      <property>/controls/electrical/gen_left</property>
+    </switch>
 
+    <switch name="right-generator-relay">
+      <property>/controls/electrical/gen_right</property>
     </switch>
 
   </channel>
