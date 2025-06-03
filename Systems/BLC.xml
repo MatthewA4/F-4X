@@ -4,9 +4,11 @@
   <property>propulsion/engine[0]/n1</property>
   <property>propulsion/engine[1]/n1</property>
   <property>fcs/blc-active</property>
+  <property>fcs/blc-failed</property> <!-- Add this line -->
   <logic>
     <if>
       <and>
+        <eq><property>fcs/blc-failed</property><value>0</value></eq> <!-- Only allow BLC if not failed -->
         <gt><property>gear/gear-pos-norm</property><value>0.9</value></gt>
         <gt><property>fcs/flap-pos-deg</property><value>0.1</value></gt>
         <or>

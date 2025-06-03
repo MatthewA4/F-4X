@@ -2,21 +2,54 @@
 # F-4S Phantom II for FlightGear
 =======
 # F-4 Phantom II for FlightGear Flight Simulator
-![Splash-1](splash-1.png)
 
-Thumbnail from here: https://flic.kr/p/qsxzGi
+![Splash-2](splash-2.png)
 
-#Status
-Early alpha stage as of current (See TODO).
+> **Thumbnail credit:** [Flickr](https://flic.kr/p/qsxzGi)
 
+<<<<<<< HEAD
 Follow the development here:
 >>>>>>> origin/master
+=======
+---
+>>>>>>> master
 
-Offical repository link (Report bugs here in Issues):
-https://github.com/MatthewA4/F-4X
+## Project Status
 
-For those not Git-inclined, download the ZIP, and remove "-master" from folder name.
+**Early Alpha**  
+This project is in early alpha. See the [TODO](TODO) file for planned features and known issues.
 
+<<<<<<< HEAD
 Released under GPLv2+
 
 Thumbnail from here: https://flic.kr/p/qsxzGi
+=======
+---
+
+## About
+
+This repository contains a detailed simulation of the F-4 Phantom II for the [FlightGear Flight Simulator](https://www.flightgear.org/). The goal is to provide a realistic and immersive experience for users interested in this iconic aircraft.
+
+---
+
+## Getting Started
+
+- **Download:**  
+  - [Official GitHub Repository](https://github.com/MatthewA4/F-4X) (report bugs via Issues)
+  - For ZIP downloads: after extracting, remove `-master` from the folder name.
+
+- **Installation:**  
+  Place the extracted folder in your FlightGear `Aircraft` directory.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
+
+---
+
+## License
+
+Released under the [GNU General Public License v2 or later (GPLv2+)](LICENSE).
+>>>>>>> master
