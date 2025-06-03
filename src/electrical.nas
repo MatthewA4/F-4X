@@ -1,5 +1,5 @@
 #Copyright (C) Matthew A.
-// License: GPLv2+
+# License: GPLv2+
 
 # Switch states
 var battery_on = 0;
