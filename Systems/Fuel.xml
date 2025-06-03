@@ -86,6 +86,15 @@
     <sensor name="fuel/qty-wing" unit="lb"/>
     <sensor name="fuel/qty-external" unit="lb"/>
     <sensor name="fuel/qty-total" unit="lb"/>
+    <sensor name="fuel/qty-fuselage-fwd" unit="lb"/>
+    <sensor name="fuel/qty-fuselage-ctr" unit="lb"/>
+    <sensor name="fuel/qty-fuselage-aft" unit="lb"/>
+    <sensor name="fuel/qty-fuselage-feed" unit="lb"/>
+    <sensor name="fuel/qty-wing-left" unit="lb"/>
+    <sensor name="fuel/qty-wing-right" unit="lb"/>
+    <sensor name="fuel/qty-external-center" unit="lb"/>
+    <sensor name="fuel/qty-external-left" unit="lb"/>
+    <sensor name="fuel/qty-external-right" unit="lb"/>
 
     <!-- Engine feed logic -->
     <switch name="fuel/engine1-feed">
@@ -97,6 +106,25 @@
 
     <!-- CG shift property (to be set by Nasal) -->
     <property name="fuel/cg-shift" type="double">0.0</property>
+    <property name="engines/engine[0]/flameout-fuel" type="bool">0</property>
+    <property name="engines/engine[1]/flameout-fuel" type="bool">0</property>
+    <property name="fuel/air-trap" type="bool">0</property>
+
+    <!-- Sensor failure states -->
+    <switch name="fuel/sensor-fail-fuselage">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/sensor-fail-wing">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/sensor-fail-external">
+      <default value="0"/>
+    </switch>
+
+    <!-- Fuel dump switch -->
+    <switch name="fuel/dump">
+      <default value="0"/>
+    </switch>
 
   </channel>
 </system>
