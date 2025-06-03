@@ -1,14 +1,102 @@
 <system name="Fuel">
 
-  <channel name"Fuel" execrate="8">
+  <channel name="Fuel" execrate="8">
 
-    <!-- Can we gravity feed fuel from tanks or not? -->
+    <!-- Feed lock: disables feed if set -->
     <switch name="fuel/feed-lock">
-        <default value="0"/>
-        <test logic="OR" value="1">
-          /
-        </test>
+      <default value="0"/>
+      <test logic="OR" value="1">
+        /
+      </test>
     </switch>
+
+    <!-- Boost pumps for each tank group -->
+    <switch name="fuel/boost-pump-fuselage">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/boost-pump-wing">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/boost-pump-external">
+      <default value="1"/>
+    </switch>
+
+    <!-- Gravity feed mode (auto if all pumps fail) -->
+    <switch name="fuel/gravity-feed">
+      <default value="0"/>
+    </switch>
+
+    <!-- Crossfeed valve -->
+    <switch name="fuel/crossfeed">
+      <default value="0"/>
+    </switch>
+
+    <!-- Tank selectors (auto transfer logic in Nasal) -->
+    <selector name="fuel/tank-selector">
+      <default value="1"/>
+      <position n="1"><desc>Fuselage Tanks</desc></position>
+      <position n="2"><desc>Wing Tanks</desc></position>
+      <position n="3"><desc>External Tanks</desc></position>
+    </selector>
+
+    <!-- External tanks and jettison -->
+    <switch name="fuel/external-centerline-attached">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/external-wing-left-attached">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/external-wing-right-attached">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/external-centerline-jettison">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/external-wing-left-jettison">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/external-wing-right-jettison">
+      <default value="0"/>
+    </switch>
+
+    <!-- Refueling -->
+    <switch name="fuel/refuel-probe-extended">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/refuel-probe-connected">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/single-point-connected">
+      <default value="0"/>
+    </switch>
+
+    <!-- Fuel leaks/damage -->
+    <switch name="fuel/fuselage-leak">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/wing-leak">
+      <default value="0"/>
+    </switch>
+    <switch name="fuel/external-leak">
+      <default value="0"/>
+    </switch>
+
+    <!-- Fuel quantity sensors -->
+    <sensor name="fuel/qty-fuselage" unit="lb"/>
+    <sensor name="fuel/qty-wing" unit="lb"/>
+    <sensor name="fuel/qty-external" unit="lb"/>
+    <sensor name="fuel/qty-total" unit="lb"/>
+
+    <!-- Engine feed logic -->
+    <switch name="fuel/engine1-feed">
+      <default value="1"/>
+    </switch>
+    <switch name="fuel/engine2-feed">
+      <default value="1"/>
+    </switch>
+
+    <!-- CG shift property (to be set by Nasal) -->
+    <property name="fuel/cg-shift" type="double">0.0</property>
 
   </channel>
 </system>
