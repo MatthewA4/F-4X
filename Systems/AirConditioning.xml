@@ -1,0 +1,14 @@
+<system>
+  <name>AirConditioning</name>
+  <nasal>
+    <file>src/AirConditioning.nas</file>
+  </nasal>
+  <property>/systems/aircond/auto</property>
+  <property>/systems/aircond/bleed-left</property>
+  <property>/systems/aircond/bleed-right</property>
+  <property>/systems/aircond/leak</property>
+  <property>/systems/aircond/manual-cabin-alt</property>
+  <property>/systems/aircond/cabin-altitude</property>
+  <property>/systems/aircond/diff-pressure</property>
+  <property>/systems/aircond/cabin-pressure</property>
+</system>

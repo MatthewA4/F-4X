@@ -222,4 +222,23 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/src/damage.nas</file>
 		</damage>
 	</nasal>
+
+	<systems>
+    <system>
+        <path>Aircraft/F-4X/Systems/Fuel.xml</path>
+    </system>
+    <system>
+        <path>Aircraft/F-4X/Systems/FCS.xml</path>
+    </system>
+    <system>
+        <path>Aircraft/F-4X/Systems/Electrical.xml</path>
+    </system>
+    <system>
+        <path>Aircraft/F-4X/Systems/Hydraulics.xml</path>
+    </system>
+    <system>
+		<path>Aircraft/F-4X/Systems/AirConditioning.xml</path>
+	</system>
+</systems>
+
 </PropertyList>
