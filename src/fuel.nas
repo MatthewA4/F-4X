@@ -25,7 +25,7 @@ var engine_flow = 1.2;
 # Helper: get property or default
 var getp = func(p, d) { return getprop(p) != nil ? getprop(p) : d; }
 
-var draw_fuel = func(amount, fuselage_avail, wing_avail, external_avail) {
+var draw_fuel = func(amount, fuselage_avail, wing_avail, external_avail, ext_attached) {
     var drawn = 0.0;
     var left = amount;
 
@@ -134,7 +134,7 @@ var update_fuel = func {
             if (engine1_feed) engines_active += 1;
             if (engine2_feed) engines_active += 1;
             var total_needed = engines_active * engine_flow;
-            var drawn = draw_fuel(total_needed, fuselage_avail, wing_avail, external_avail);
+            var drawn = draw_fuel(total_needed, fuselage_avail, wing_avail, external_avail, ext_attached);
             total_flow += drawn;
         }
         # Crossfeed: if enabled, allow any available tank to feed both engines
@@ -143,7 +143,7 @@ var update_fuel = func {
             if (engine1_feed) engines_active += 1;
             if (engine2_feed) engines_active += 1;
             var total_needed = engines_active * engine_flow;
-            var drawn = draw_fuel(total_needed, fuselage_avail, wing_avail, external_avail);
+            var drawn = draw_fuel(total_needed, fuselage_avail, wing_avail, external_avail, ext_attached);
             total_flow += drawn;
         }
     }
