@@ -105,17 +105,8 @@ var update_hydraulics = func {
     }
 
     # Subsystem loads
-    if (flight_controls_active) {
-        hyd_a_psi = math.max(hyd_a_psi - flight_controls_drop, 0.0);
-        hyd_b_psi = math.max(hyd_b_psi - flight_controls_drop, 0.0);
-    }
-    if (gear_active) {
-        hyd_a_psi = math.max(hyd_a_psi - gear_drop, 0.0);
-        hyd_b_psi = math.max(hyd_b_psi - gear_drop, 0.0);
-    }
     if (brakes_active) {
         hyd_a_psi = math.max(hyd_a_psi - brakes_drop, 0.0);
-        hyd_b_psi = math.max(hyd_b_psi - brakes_drop, 0.0);
         brake_accumulator_psi = math.max(brake_accumulator_psi - brake_accumulator_discharge, 0.0);
     }
     if (probe_active) {
@@ -123,6 +114,14 @@ var update_hydraulics = func {
     }
     if (flaps_active) {
         hyd_b_psi = math.max(hyd_b_psi - flaps_drop, 0.0);
+    }
+    if (gear_active) {
+        hyd_a_psi = math.max(hyd_a_psi - gear_drop/2, 0.0);
+        hyd_b_psi = math.max(hyd_b_psi - gear_drop/2, 0.0);
+    }
+    if (flight_controls_active) {
+        hyd_a_psi = math.max(hyd_a_psi - flight_controls_drop/2, 0.0);
+        hyd_b_psi = math.max(hyd_b_psi - flight_controls_drop/2, 0.0);
     }
 
     # Emergency brake accumulator recharge
@@ -146,6 +145,10 @@ var update_hydraulics = func {
     setprop("/systems/hydraulics/crossfeed_open", crossfeed_open);
     setprop("/systems/hydraulics/a_isolated", a_isolated);
     setprop("/systems/hydraulics/b_isolated", b_isolated);
+    setprop("/systems/hydraulics/a_low_pressure", hyd_a_psi < 1500.0);
+    setprop("/systems/hydraulics/b_low_pressure", hyd_b_psi < 1500.0);
+    setprop("/systems/hydraulics/a_low_qty", hyd_a_qty < hyd_a_qty_min + 0.1);
+    setprop("/systems/hydraulics/b_low_qty", hyd_b_qty < hyd_b_qty_min + 0.1);
 };
 
 # Handlers for system state
@@ -172,3 +175,9 @@ var init = func {
     update_hydraulics();
 }
 _setlistener("/nasal/hydraulics/loaded", init);
+
+var periodic_update = func {
+    update_hydraulics();
+    settimer(periodic_update, 1); # update every second
+}
+periodic_update();
