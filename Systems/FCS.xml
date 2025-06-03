@@ -56,8 +56,17 @@
 			</clipto>
 		</summer>
 		
-		<pure_gain name="hydromech/roll/force">
+		<summer name="hydromech/roll/aileron-ap-sum">
 			<input>hydromech/roll/aileron-sum</input>
+			<input>/afcs/att/roll-cmd</input>
+			<clipto>
+				<min>-1.0</min>
+				<max>1.0</max>
+			</clipto>
+		</summer>
+		
+		<pure_gain name="hydromech/roll/force">
+			<input>hydromech/roll/aileron-ap-sum</input>
 			<gain>17.0</gain>
 		</pure_gain>
 		
@@ -206,8 +215,27 @@
 			</clipto>
 		</summer>
 		
-		<pure_gain name="hydromech/pitch/delta-elevator-direct">
+		<summer name="hydromech/pitch/delta-ap-sum">
 			<input>hydromech/pitch/delta-input-sum</input>
+			<input>
+				<switch>
+					<default value="0"/>
+					<test value="/afcs/att/pitch-cmd">
+						/afcs/ap-att-hold eq 1
+					</test>
+					<test value="/afcs/alt/pitch-cmd">
+						/afcs/ap-alt-hold eq 1
+					</test>
+				</switch>
+			</input>
+			<clipto>
+				<min>-10.1</min>
+				<max>10.1</max>
+			</clipto>
+		</summer>
+		
+		<pure_gain name="hydromech/pitch/delta-elevator-direct">
+			<input>hydromech/pitch/delta-ap-sum</input>
 			<gain>2.08</gain> <!-- Half of 4.16, because it is positive and negative -->
 		</pure_gain>
 		
@@ -243,8 +271,17 @@
 			</clipto>
 		</summer>
 		
-		<pure_gain name="hydromech/yaw/force">
+		<summer name="hydromech/yaw/rudder-ap-sum">
 			<input>hydromech/yaw/rudder-sum</input>
+			<input>/afcs/att/yaw-cmd</input>
+			<clipto>
+				<min>-1.0</min>
+				<max>1.0</max>
+			</clipto>
+		</summer>
+		
+		<pure_gain name="hydromech/yaw/force">
+			<input>hydromech/yaw/rudder-ap-sum</input>
 			<gain>75.0</gain>
 		</pure_gain>
 		
@@ -588,3 +625,22 @@
 	</channel>
 
 </system>
+
+<property-rule>
+  <property>hydromech/sas-roll</property>
+  <value-prop>/afcs/sas-roll-engaged</value-prop>
+</property-rule>
+<property-rule>
+  <property>hydromech/sas-pitch</property>
+  <value-prop>/afcs/sas-pitch-engaged</value-prop>
+</property-rule>
+<property-rule>
+  <property>hydromech/sas-yaw</property>
+  <value-prop>/afcs/sas-yaw-engaged</value-prop>
+</property-rule>
+
+<property name="controls/afcs/sas-roll" type="bool">1</property>
+<property name="controls/afcs/sas-pitch" type="bool">1</property>
+<property name="controls/afcs/sas-yaw" type="bool">1</property>
+<property name="controls/afcs/ap-att" type="bool">0</property>
+<property name="controls/afcs/ap-alt" type="bool">0</property>

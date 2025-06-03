@@ -206,6 +206,9 @@ See LICENSE file for the GPL version 2 text.
             <file>Aircraft/F-4X/src/views.nas</file>
             <file>Aircraft/F-4X/src/zoom-views.nas</file>
 		</libraries>
+		<afcs>
+        	<file>Aircraft/F-4X/src/AFCS.nas</file>
+    	</afcs>
 		<electrical>
 			<file>Aircraft/F-4X/src/electrical.nas</file>
 		</electrical>
@@ -242,6 +245,9 @@ See LICENSE file for the GPL version 2 text.
 	<system>
 		<path>Aircraft/F-4X/Systems/AirDataComputer.xml</path>
 	</system>
+	<system>
+        <path>Aircraft/F-4X/Systems/AFCS.xml</path>
+    </system>
 </systems>
 
 </PropertyList>

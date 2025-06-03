@@ -1,0 +1,12 @@
+<system>
+  <name>AFCS</name>
+  <nasal>
+    <file>src/AFCS.nas</file>
+  </nasal>
+  <property>afcs/sas-roll-engaged</property>
+  <property>afcs/sas-pitch-engaged</property>
+  <property>afcs/sas-yaw-engaged</property>
+  <property>afcs/ap-att-hold</property>
+  <property>afcs/ap-alt-hold</property>
+  <property>afcs/fail</property>
+</system>
