@@ -1,0 +1,10 @@
+<system>
+  <name>AirDataComputer</name>
+  <nasal>
+    <file>src/AirDataComputer.nas</file>
+  </nasal>
+  <property>/systems/adc/pressure-altitude-ft</property>
+  <property>/systems/adc/baro-altitude-ft</property>
+  <property>/systems/adc/indicated-airspeed-kt</property>
+  <property>/systems/adc/mach</property>
+</system>

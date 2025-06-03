@@ -239,6 +239,9 @@ See LICENSE file for the GPL version 2 text.
     <system>
 		<path>Aircraft/F-4X/Systems/AirConditioning.xml</path>
 	</system>
+	<system>
+		<path>Aircraft/F-4X/Systems/AirDataComputer.xml</path>
+	</system>
 </systems>
 
 </PropertyList>
