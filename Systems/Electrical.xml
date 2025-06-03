@@ -14,4 +14,61 @@
     </switch>
 
   </channel>
+
+  <property>
+    <name>systems/electrical/ac_main_bus_v</name>
+    <type>double</type>
+    <unit>V</unit>
+  </property>
+  <property>
+    <name>systems/electrical/ac_ess_bus_v</name>
+    <type>double</type>
+    <unit>V</unit>
+  </property>
+  <property>
+    <name>systems/electrical/dc_main_bus_v</name>
+    <type>double</type>
+    <unit>V</unit>
+  </property>
+  <property>
+    <name>systems/electrical/dc_ess_bus_v</name>
+    <type>double</type>
+    <unit>V</unit>
+  </property>
+  <property>
+    <name>systems/electrical/battery_bus_v</name>
+    <type>double</type>
+    <unit>V</unit>
+  </property>
+  <property>
+    <name>systems/electrical/dc_main_load_actual</name>
+    <type>double</type>
+    <unit>A</unit>
+  </property>
+  <property>
+    <name>systems/electrical/dc_ess_load_actual</name>
+    <type>double</type>
+    <unit>A</unit>
+  </property>
+  <property>
+    <name>systems/electrical/battery_bus_load_actual</name>
+    <type>double</type>
+    <unit>A</unit>
+  </property>
+  <property>
+    <name>systems/electrical/battery_low</name>
+    <type>bool</type>
+  </property>
+  <property>
+    <name>systems/electrical/ac_main_bus_fail</name>
+    <type>bool</type>
+  </property>
+  <property>
+    <name>systems/electrical/dc_main_bus_fail</name>
+    <type>bool</type>
+  </property>
+  <property>
+    <name>systems/electrical/dc_ess_bus_fail</name>
+    <type>bool</type>
+  </property>
 </system>
