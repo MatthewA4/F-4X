@@ -1,29 +1,15 @@
-<<<<<<< HEAD
-# F-4S Phantom II for FlightGear
-=======
 # F-4 Phantom II for FlightGear Flight Simulator
 
 ![Splash-2](splash-2.png)
 
-> **Thumbnail credit:** [Flickr](https://flic.kr/p/qsxzGi)
-
-<<<<<<< HEAD
-Follow the development here:
->>>>>>> origin/master
 =======
 ---
->>>>>>> master
 
 ## Project Status
 
 **Early Alpha**  
 This project is in early alpha. See the [TODO](TODO) file for planned features and known issues.
 
-<<<<<<< HEAD
-Released under GPLv2+
-
-Thumbnail from here: https://flic.kr/p/qsxzGi
-=======
 ---
 
 ## About
@@ -52,4 +38,5 @@ Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) fil
 ## License
 
 Released under the [GNU General Public License v2 or later (GPLv2+)](LICENSE).
->>>>>>> master
+
+> **Thumbnail credit:** [Flickr](https://flic.kr/p/qsxzGi)
