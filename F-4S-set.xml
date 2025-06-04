@@ -113,15 +113,15 @@ See LICENSE file for the GPL version 2 text.
           </fuel>
 	</consumables>
 
-	<fdm n="0">
-		<jsbsim n="0">
-			<hydromech n="0">
+	<fdm>
+		<jsbsim>
+			<hydromech>
 				<sas-pitch type="bool">1</sas-pitch>
 				<sas-roll type="bool">1</sas-roll>
 				<sas-yaw type="bool">1</sas-yaw>
 			</hydromech>
-			<misc n="0">
-				<stores n="0">
+			<misc>
+				<stores>
 					<onboard type="double">0.0</onboard>
 				</stores>
 			</misc>
