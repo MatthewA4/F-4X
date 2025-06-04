@@ -133,7 +133,6 @@
 
     <function name="aero/coefficient/CL/Lift_flap">
       <description>Delta Lift due to flaps, with BLC logic</description>
-      <sum>
         <!-- Flap lift with BLC -->
         <ifthen>
           <eq><property>fcs/blc-active</property><value>1</value></eq>
@@ -151,7 +150,6 @@
             <value>0.007</value> <!-- Lower CL per deg without BLC -->
           </product>
         </ifthen>
-      </sum>
     </function>
 
     <function name="aero/coefficient/CL/Lift_BLC">

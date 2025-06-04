@@ -1,46 +1,46 @@
 #Copyright (C) Matthew A.
 #F-4J Phantom II Hydraulics System (detailed simulation)
 
-// Engine-driven pump states
+# Engine-driven pump states
 var eng_left_running = 1;
 var eng_right_running = 1;
 
-// System specs (F-4J typical)
+# System specs (F-4J typical)
 var hyd_a_nominal = 3000.0; # psi
 var hyd_b_nominal = 3000.0; # psi
 var accumulator_a_nom = 1500.0; # psi
 var accumulator_b_nom = 1500.0; # psi
 var brake_accumulator_nom = 1200.0; # psi
 
-// Fluid quantity (gallons, F-4J: ~2.5 gal per system)
+# Fluid quantity (gallons, F-4J: ~2.5 gal per system)
 var hyd_a_qty = 2.5;
 var hyd_b_qty = 2.5;
 var hyd_a_qty_min = 0.5;
 var hyd_b_qty_min = 0.5;
 
-// System pressures
+# System pressures
 var hyd_a_psi = 0.0;
 var hyd_b_psi = 0.0;
 var accumulator_a_psi = accumulator_a_nom;
 var accumulator_b_psi = accumulator_b_nom;
 var brake_accumulator_psi = brake_accumulator_nom;
 
-// Failure simulation
+# Failure simulation
 var hyd_a_leak = 0; # 0 = no leak, 1 = leak
 var hyd_b_leak = 0;
 var hyd_a_pump_fail = 0;
 var hyd_b_pump_fail = 0;
 
-// Emergency RAT (Ram Air Turbine)
+# Emergency RAT (Ram Air Turbine)
 var rat_deployed = 0;
 var rat_pressure = 2000.0; # psi when deployed
 
-// Crossfeed/Isolation
+# Crossfeed/Isolation
 var crossfeed_open = 0; # If open, A & B can supply each other
 var a_isolated = 0;
 var b_isolated = 0;
 
-// Subsystem loads (psi drop per update if active)
+# Subsystem loads (psi drop per update if active)
 var flight_controls_active = 1; # always on
 var gear_active = 0;
 var brakes_active = 0;
@@ -53,11 +53,11 @@ var brakes_drop = 100.0;
 var probe_drop = 50.0;
 var flaps_drop = 30.0;
 
-// Accumulator discharge rates
+# Accumulator discharge rates
 var accumulator_discharge = 20.0;
 var brake_accumulator_discharge = 50.0;
 
-// Update logic for hydraulic system
+# Update logic for hydraulic system
 var update_hydraulics = func {
     # Leak simulation
     if (hyd_a_leak and hyd_a_qty > hyd_a_qty_min) hyd_a_qty -= 0.01;
