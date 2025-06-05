@@ -1,16 +1,6 @@
 <propulsion>
 
    <engine file="J79-GE-10">
-    <location unit="M">
-      <x> 10 </x>
-      <y> -0.731923 </y>
-      <z> -0.3989 </z>
-    </location>
-    <orient unit="DEG">
-      <pitch> 0.00 </pitch>
-      <roll>  0.00 </roll>
-      <yaw>   0.00 </yaw>
-    </orient>
     <feed>7</feed>
     <thruster file="direct">
      <location unit="M">
@@ -28,16 +18,6 @@
   </engine>
 
    <engine file="J79-GE-10">
-    <location unit="M">
-      <x> 10 </x>
-      <y> 0.731923 </y>
-      <z> -0.158145 </z>
-    </location>
-    <orient unit="DEG">
-     <pitch>  0.00 </pitch>
-      <roll>  0.00 </roll>
-      <yaw>   0.00 </yaw>
-    </orient>
     <feed>8</feed>
     <thruster file="direct">
      <location unit="M">
@@ -155,5 +135,3 @@
   </tank>
 
  </propulsion>
-
-

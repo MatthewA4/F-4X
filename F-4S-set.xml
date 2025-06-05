@@ -20,6 +20,13 @@ See LICENSE file for the GPL version 2 text.
 -->
 
 <PropertyList>
+	<afcs>
+		<att>
+			<roll-cmd>0</roll-cmd>
+			<pitch-cmd>0</pitch-cmd>
+			<yaw-cmd>0</yaw-cmd>
+		</att>
+	</afcs>
 	<sim>
 		<author>Matthew Anderson(3D,FDM), Joshua Davidson/it0uchpods (FCS)</author>
 		<description>F-4J/S Phantom II</description>

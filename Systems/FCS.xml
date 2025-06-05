@@ -615,32 +615,15 @@
 		<pure_gain name="rubbish/left-brake-cmd-norm">
 			<input>/controls/gear/brake-left</input>
 			<output>fcs/left-brake-cmd-norm</output>
+			<gain>1</gain>
 		</pure_gain>
 		
 		<pure_gain name="rubbish/right-brake-cmd-norm">
 			<input>/controls/gear/brake-right</input>
 			<output>fcs/right-brake-cmd-norm</output>
+			<gain>1</gain>
 		</pure_gain>
 	
 	</channel>
 
 </system>
-
-<property-rule>
-  <property>hydromech/sas-roll</property>
-  <value-prop>/afcs/sas-roll-engaged</value-prop>
-</property-rule>
-<property-rule>
-  <property>hydromech/sas-pitch</property>
-  <value-prop>/afcs/sas-pitch-engaged</value-prop>
-</property-rule>
-<property-rule>
-  <property>hydromech/sas-yaw</property>
-  <value-prop>/afcs/sas-yaw-engaged</value-prop>
-</property-rule>
-
-<property name="controls/afcs/sas-roll" type="bool">1</property>
-<property name="controls/afcs/sas-pitch" type="bool">1</property>
-<property name="controls/afcs/sas-yaw" type="bool">1</property>
-<property name="controls/afcs/ap-att" type="bool">0</property>
-<property name="controls/afcs/ap-alt" type="bool">0</property>

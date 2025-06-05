@@ -4,7 +4,7 @@ var TRUE = 1;
 var FALSE = 0;
 
 # Properties for AFCS state
-var props = {
+var properties = {
     sas_roll: "/afcs/sas-roll-engaged",
     sas_pitch: "/afcs/sas-pitch-engaged",
     sas_yaw: "/afcs/sas-yaw-engaged",
@@ -18,8 +18,9 @@ var props = {
 };
 
 # Read cockpit switches (to be mapped in cockpit/controls)
+# - returns either the property or the def value.
 var get_switch = func(name, def) {
-    return getprop("/controls/afcs/" ~ name, def);
+    return getprop("/controls/afcs/" ~ name) or def;
 }
 
 # PID controller utility
@@ -52,30 +53,30 @@ var alt_hold = { alt: 0, active: 0 };
 
 # SAS engagement logic (auto-disengage on stick force, failure, or switch off)
 var update_sas = func {
-    var fail = getprop(props.fail, 0);
+    var fail = getprop(properties.fail, 0);
 
     # Roll SAS
     var roll_switch = get_switch("sas-roll", 1);
     var roll_force = abs(getprop("/controls/flight/aileron", 0)) > 0.1;
-    setprop(props.sas_roll, roll_switch and !fail and !roll_force);
+    setprop(properties.sas_roll, roll_switch and !fail and !roll_force);
 
     # Pitch SAS
     var pitch_switch = get_switch("sas-pitch", 1);
     var pitch_force = abs(getprop("/controls/flight/elevator", 0)) > 0.1;
-    setprop(props.sas_pitch, pitch_switch and !fail and !pitch_force);
+    setprop(properties.sas_pitch, pitch_switch and !fail and !pitch_force);
 
     # Yaw SAS
     var yaw_switch = get_switch("sas-yaw", 1);
     var yaw_force = abs(getprop("/controls/flight/rudder", 0)) > 0.1;
-    setprop(props.sas_yaw, yaw_switch and !fail and !yaw_force);
+    setprop(properties.sas_yaw, yaw_switch and !fail and !yaw_force);
 
     # Annunciator
-    setprop(props.ann_sas, (getprop(props.sas_roll) or getprop(props.sas_pitch) or getprop(props.sas_yaw)) ? 1 : 0);
+    setprop(properties.ann_sas, (getprop(properties.sas_roll) or getprop(properties.sas_pitch) or getprop(properties.sas_yaw)) ? 1 : 0);
 };
 
 # Attitude hold logic (engages if switch on, no fail, and no stick force)
 var update_att_hold = func(dt) {
-    var fail = getprop(props.fail, 0);
+    var fail = getprop(properties.fail, 0);
     var att_switch = get_switch("ap-att", 0);
     var stick_force = abs(getprop("/controls/flight/aileron", 0)) > 0.1 or abs(getprop("/controls/flight/elevator", 0)) > 0.1;
 
@@ -96,20 +97,20 @@ var update_att_hold = func(dt) {
         setprop("/afcs/att/roll-cmd", roll_cmd);
         setprop("/afcs/att/pitch-cmd", pitch_cmd);
 
-        setprop(props.ap_att, 1);
-        setprop(props.ann_ap_att, 1);
+        setprop(properties.ap_att, 1);
+        setprop(properties.ann_ap_att, 1);
     } else {
         att_hold.active = 0;
         setprop("/afcs/att/roll-cmd", 0);
         setprop("/afcs/att/pitch-cmd", 0);
-        setprop(props.ap_att, 0);
-        setprop(props.ann_ap_att, 0);
+        setprop(properties.ap_att, 0);
+        setprop(properties.ann_ap_att, 0);
     }
 };
 
 # Altitude hold logic (engages if switch on, no fail, and no stick force)
 var update_alt_hold = func(dt) {
-    var fail = getprop(props.fail, 0);
+    var fail = getprop(properties.fail, 0);
     var alt_switch = get_switch("ap-alt", 0);
     var stick_force = abs(getprop("/controls/flight/elevator", 0)) > 0.1;
 
@@ -126,19 +127,19 @@ var update_alt_hold = func(dt) {
         # Inject command (add to trim, or use custom property for FCS input)
         setprop("/afcs/alt/pitch-cmd", alt_cmd);
 
-        setprop(props.ap_alt, 1);
-        setprop(props.ann_ap_alt, 1);
+        setprop(properties.ap_alt, 1);
+        setprop(properties.ann_ap_alt, 1);
     } else {
         alt_hold.active = 0;
         setprop("/afcs/alt/pitch-cmd", 0);
-        setprop(props.ap_alt, 0);
-        setprop(props.ann_ap_alt, 0);
+        setprop(properties.ap_alt, 0);
+        setprop(properties.ann_ap_alt, 0);
     }
 };
 
 # Failure annunciator
 var update_annunciators = func {
-    setprop(props.ann_fail, getprop(props.fail, 0));
+    setprop(properties.ann_fail, getprop(properties.fail) or 0);
 };
 
 # Main update loop

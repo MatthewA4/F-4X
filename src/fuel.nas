@@ -262,7 +262,7 @@ var update_fuel = func {
     # Crossfeed: if enabled, allow both engines to use any available feed tank (already handled above)
 
     # Simulate air trapping: if transfer fails, feed tank may run dry even if other tanks have fuel
-    if (fus_feed_qty <= unusable_fuselage && (fus_fwd_qty > unusable_fuselage or fus_ctr_qty > unusable_fuselage or fus_aft_qty > unusable_fuselage)) {
+    if (fus_feed_qty <= unusable_fuselage and (fus_fwd_qty > unusable_fuselage or fus_ctr_qty > unusable_fuselage or fus_aft_qty > unusable_fuselage)) {
         air_trap = 1;
     } else {
         air_trap = 0;
