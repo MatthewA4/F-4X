@@ -1,6 +1,6 @@
 # F-4 Phantom II for FlightGear Flight Simulator
 
-![Splash-2](https://github.com/MatthewA4/F-4X/blob/master/gfx/splash-2.png)
+![Splash-2](splash-2.png)
 
 =======
 ---

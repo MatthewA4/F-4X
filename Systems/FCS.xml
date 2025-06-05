@@ -593,7 +593,7 @@
 	
 	<channel name="Speedbrake">
 		
-		<kinematic name="rubbish/speedbrake-pos-norm">
+		<kinematic name="rubbish/speedbrake-pos-nrom">
 			<input>fcs/speedbrake-cmd-norm</input>
 			<traverse>
 				<setting>
@@ -624,27 +624,23 @@
 	
 	</channel>
 
-
-	<property-rule>
-	<property>hydromech/sas-roll</property>
-	<value-prop>/afcs/sas-roll-engaged</value-prop>
-	</property-rule>
-	<property-rule>
-	<property>hydromech/sas-pitch</property>
-	<value-prop>/afcs/sas-pitch-engaged</value-prop>
-	</property-rule>
-	<property-rule>
-	<property>hydromech/sas-yaw</property>
-	<value-prop>/afcs/sas-yaw-engaged</value-prop>
-	</property-rule>
-
-	<property name="controls/afcs/sas-roll" type="bool">1</property>
-	<property name="controls/afcs/sas-pitch" type="bool">1</property>
-	<property name="controls/afcs/sas-yaw" type="bool">1</property>
-	<property name="controls/afcs/ap-att" type="bool">0</property>
-	<property name="controls/afcs/ap-alt" type="bool">0</property>
-
-
 </system>
 
+<property-rule>
+  <property>hydromech/sas-roll</property>
+  <value-prop>/afcs/sas-roll-engaged</value-prop>
+</property-rule>
+<property-rule>
+  <property>hydromech/sas-pitch</property>
+  <value-prop>/afcs/sas-pitch-engaged</value-prop>
+</property-rule>
+<property-rule>
+  <property>hydromech/sas-yaw</property>
+  <value-prop>/afcs/sas-yaw-engaged</value-prop>
+</property-rule>
 
+<property name="controls/afcs/sas-roll" type="bool">1</property>
+<property name="controls/afcs/sas-pitch" type="bool">1</property>
+<property name="controls/afcs/sas-yaw" type="bool">1</property>
+<property name="controls/afcs/ap-att" type="bool">0</property>
+<property name="controls/afcs/ap-alt" type="bool">0</property>
