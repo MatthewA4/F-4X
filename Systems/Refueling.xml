@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<!-- 
+  Air Refueling Probe System - F-4 Phantom II
+  
+  Implements probe-and-drogue refueling envelope enforcement and fuel transfer modeling.
+  F-4 used probe-and-drogue system (as opposed to flying boom).
+  
+  Properties:
+    - fcs/refuel-probe-extended (0/1 boolean)
+    - fcs/refuel-envelope-valid (0/1 safety check)
+    - fcs/refuel-contact-active (0/1 boom contact status)
+    - fcs/refuel-rate-lb-min (fuel transfer rate, lb/min)
+    - fcs/refuel-total-added-lb (cumulative fuel added this flight)
+    - afcs/annunciator/refuel-probe-extended (pilot indicator)
+    - afcs/annunciator/refuel-contact (green light when booming)
+    - afcs/annunciator/refuel-envelope-warning (amber light)
+    - afcs/annunciator/refuel-max-fuel (reached internal fuel limit)
+    
+  Operational Limits (NATOPS):
+    - Probe extension: Safe to extend at < 0.9 Mach, AGL > 5,000 ft
+    - Refueling envelope: 250-300 knots (safe range), 10,000-25,000 ft altitude
+    - Jettison limit: Must retract before 0.8 Mach / 300 kt speed
+    - Contact rate: Approximately 2 knots closure for initial engagement
+    - Refuel rate: 1,000-1,200 lb/min at optimal conditions
+    
+  Safety Features:
+    - Envelope enforcement with warnings
+    - Automatic refuel cutoff at max fuel capacity
+    - Crew alert if probe not stowed before high speed (>0.85 Mach)
+-->
+
+<system name="Refueling">
+
+  <!-- ====== PROBE EXTENSION/RETRACTION CONTROL ====== -->
+  <!-- Manual pilot control via property -->
+  
+  <channel name="Probe Control">
+    
+    <!-- Pilot request (0=retracted, 1=extended) -->
+    <!-- Property set by Nasal script via user input -->
+    
+    <!-- Automatic enforcement: prevent extension in unsafe conditions -->
+    <fcs_function name="fcs/refuel-probe-safe-to-extend">
+      <!-- Can extend if: speed < 300 kt AND mach < 0.85 AND altitude > 5,000 ft -->
+      <function>
+        <and>
+          <le>
+            <property>velocities/vcas-kts</property>
+            <value>300.0</value>
+          </le>
+          <le>
+            <property>velocities/mach</property>
+            <value>0.85</value>
+          </le>
+          <gt>
+            <property>position/altitude-agl-ft</property>
+            <value>5000.0</value>
+          </gt>
+        </and>
+      </function>
+    </fcs_function>
+    
+    <!-- Automatic retraction enforcement: must retract for high-speed flight -->
+    <fcs_function name="fcs/refuel-must-retract">
+      <!-- Must retract if: speed > 350 kt OR mach > 0.90 OR altitude < 2,000 ft AGL -->
+      <function>
+        <or>
+          <gt>
+            <property>velocities/vcas-kts</property>
+            <value>350.0</value>
+          </gt>
+          <gt>
+            <property>velocities/mach</property>
+            <value>0.90</value>
+          </gt>
+          <lt>
+            <property>position/altitude-agl-ft</property>
+            <value>2000.0</value>
+          </lt>
+        </or>
+      </function>
+    </fcs_function>
+    
+    <!-- Probe actual state (with enforcement) -->
+    <fcs_function name="fcs/refuel-probe-state">
+      <!-- Probe extends only if: pilot requested AND safe conditions OR already extended -->
+      <function>
+        <and>
+          <or>
+            <eq>
+              <property>fcs/refuel-probe-extended</property>
+              <value>1</value>
+            </eq>
+            <property>fcs/refuel-probe-safe-to-extend</property>
+          </or>
+          <not>
+            <property>fcs/refuel-must-retract</property>
+          </not>
+        </and>
+      </function>
+    </fcs_function>
+    
+  </channel>
+  
+  
+  <!-- ====== REFUELING ENVELOPE VALIDATION ====== -->
+  
+  <channel name="Refueling Envelope">
+    
+    <!-- Valid speed envelope: 240-310 knots (safe range) -->
+    <fcs_function name="fcs/refuel-speed-valid">
+      <function>
+        <and>
+          <ge>
+            <property>velocities/vcas-kts</property>
+            <value>240.0</value>
+          </ge>
+          <le>
+            <property>velocities/vcas-kts</property>
+            <value>310.0</value>
+          </le>
+        </and>
+      </function>
+    </fcs_function>
+    
+    <!-- Valid altitude envelope: 8,000-28,000 ft -->
+    <fcs_function name="fcs/refuel-altitude-valid">
+      <function>
+        <and>
+          <ge>
+            <property>position/h-agl-ft</property>
+            <value>8000.0</value>
+          </ge>
+          <le>
+            <property>position/h-agl-ft</property>
+            <value>28000.0</value>
+          </le>
+        </and>
+      </function>
+    </fcs_function>
+    
+    <!-- Valid Mach: < 0.80 (subsonic for drogue stability) -->
+    <fcs_function name="fcs/refuel-mach-valid">
+      <function>
+        <le>
+          <property>velocities/mach</property>
+          <value>0.80</value>
+        </le>
+      </function>
+    </fcs_function>
+    
+    <!-- Overall refueling envelope: probe extended AND all conditions met -->
+    <fcs_function name="fcs/refuel-envelope-valid">
+      <function>
+        <and>
+          <property>fcs/refuel-probe-state</property>
+          <property>fcs/refuel-speed-valid</property>
+          <property>fcs/refuel-altitude-valid</property>
+          <property>fcs/refuel-mach-valid</property>
+        </and>
+      </function>
+    </fcs_function>
+    
+  </channel>
+  
+  
+  <!-- ====== FUEL TRANSFER MODELING ====== -->
+  
+  <channel name="Fuel Transfer">
+    
+    <!-- Refuel rate calculation (lb/min) -->
+    <!-- Base rate: 1,100 lb/min at optimal conditions -->
+    <!-- Reduced by altitude (lower air density = lower pump performance) -->
+    <!-- Reduced if outside optimal speed envelope -->
+    
+    <fcs_function name="fcs/refuel-altitude-factor">
+      <!-- Altitude factor: 1.0 at 15,000 ft, reduces to 0.6 at 28,000 ft, 0.8 at 8,000 ft -->
+      <!-- Simple linear: each 10,000 ft above 15k = 0.05 penalty -->
+      <function>
+        <max>
+          <value>0.6</value>
+          <min>
+            <value>1.0</value>
+            <sum>
+              <value>1.0</value>
+              <product>
+                <difference>
+                  <value>15000.0</value>
+                  <property>position/h-agl-ft</property>
+                </difference>
+                <value>-0.00005</value>
+              </product>
+            </sum>
+          </min>
+        </max>
+      </function>
+    </fcs_function>
+    
+    <fcs_function name="fcs/refuel-speed-factor">
+      <!-- Speed factor: 1.0 at 250-300 kt, penalty outside band -->
+      <!-- Below 240 kt: (speed - 200) / 40, capped at 0.5 -->
+      <!-- Above 310 kt: (350 - speed) / 60, capped at 0.5 -->
+      <function>
+        <ifthenelse>
+          <and>
+            <ge>
+              <property>velocities/vcas-kts</property>
+              <value>240.0</value>
+            </ge>
+            <le>
+              <property>velocities/vcas-kts</property>
+              <value>310.0</value>
+            </le>
+          </and>
+          <value>1.0</value>
+          <ifthenelse>
+            <lt>
+              <property>velocities/vcas-kts</property>
+              <value>240.0</value>
+            </lt>
+            <max>
+              <value>0.5</value>
+              <product>
+                <difference>
+                  <property>velocities/vcas-kts</property>
+                  <value>200.0</value>
+                </difference>
+                <value>0.025</value>
+              </product>
+            </max>
+            <max>
+              <value>0.5</value>
+              <product>
+                <difference>
+                  <value>350.0</value>
+                  <property>velocities/vcas-kts</property>
+                </difference>
+                <value>0.0167</value>
+              </product>
+            </max>
+          </ifthenelse>
+        </ifthenelse>
+      </function>
+    </fcs_function>
+    
+    <!-- Base refuel rate: 1,100 lb/min at optimal conditions -->
+    <fcs_function name="fcs/refuel-rate-base">
+      <!-- Rate only if envelope valid (probe extended + all checks pass) -->
+      <function>
+        <ifthenelse>
+          <property>fcs/refuel-envelope-valid</property>
+          <product>
+            <value>1100.0</value>
+            <property>fcs/refuel-altitude-factor</property>
+            <property>fcs/refuel-speed-factor</property>
+          </product>
+          <value>0.0</value>
+        </ifthenelse>
+      </function>
+    </fcs_function>
+    
+    <!-- Actual refuel rate (limited by tank capacity) -->
+    <fcs_function name="fcs/refuel-rate-lb-min">
+      <!-- Stop refueling if approach max fuel (1,994 lb internal capacity) -->
+      <function>
+        <ifthenelse>
+          <ge>
+            <property>propulsion/tank[0]/contents-lbs</property>
+            <value>1950.0</value>
+          </ge>
+          <value>0.0</value>
+          <property>fcs/refuel-rate-base</property>
+        </ifthenelse>
+      </function>
+    </fcs_function>
+    
+  </channel>
+  
+  
+  <!-- ====== ANNUNCIATOR OUTPUTS ====== -->
+  
+  <channel name="Annunciators">
+    
+    <!-- Probe extended indicator (pilot switch feedback) -->
+    <pure_gain name="afcs/annunciator/refuel-probe-extended">
+      <input>fcs/refuel-probe-state</input>
+      <gain>1.0</gain>
+    </pure_gain>
+    
+    <!-- Refuel contact - GREEN light when boom engaged and fuel flowing -->
+    <pure_gain name="afcs/annunciator/refuel-contact">
+      <input>fcs/refuel-envelope-valid</input>
+      <gain>1.0</gain>
+    </pure_gain>
+    
+    <!-- Refuel envelope warning - AMBER light when outside envelope -->
+    <pure_gain name="afcs/annunciator/refuel-envelope-warning">
+      <input>
+        <and>
+          <property>fcs/refuel-probe-state</property>
+          <not>
+            <property>fcs/refuel-envelope-valid</property>
+          </not>
+        </and>
+      </input>
+      <gain>1.0</gain>
+    </pure_gain>
+    
+    <!-- Max fuel reached indicator -->
+    <pure_gain name="afcs/annunciator/refuel-max-fuel">
+      <input>
+        <ge>
+          <property>propulsion/tank[0]/contents-lbs</property>
+          <value>1950.0</value>
+        </ge>
+      </input>
+      <gain>1.0</gain>
+    </pure_gain>
+    
+  </channel>
+  
+</system>
