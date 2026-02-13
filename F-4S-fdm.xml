@@ -61,6 +61,7 @@
 
 <system file="FCS"/>
 <system file="Systems/BLC.xml"/>
+<system file="Systems/Slats.xml"/>
 <flight_control name="none"/>
 
  <aerodynamics>
@@ -161,6 +162,15 @@
 		<property>metrics/Sw-sqft</property>
 		<property>fcs/blc-active</property>
 		<value> 0.024 </value>
+	</product>
+    </function>
+
+    <function name="aero/coefficient/CL/Lift_Slats">
+	<description>Delta Lift due to Leading Edge Slats (F-4E/S passive system)</description>
+	<product>
+		<property>aero/qbar-psf</property>
+		<property>metrics/Sw-sqft</property>
+		<property>fcs/slats-lift-delta</property>
 	</product>
     </function>
 	
@@ -312,6 +322,15 @@
            <property>fcs/speedbrake-pos-norm</property>
            <value>0.024</value>
          </product>
+    </function>
+
+    <function name="aero/coefficient/CD/Drag_Slats">
+       <description>Drag due to Leading Edge Slats deployment</description>
+       <product>
+           <property>aero/qbar-psf</property>
+           <property>metrics/Sw-sqft</property>
+           <property>fcs/slats-drag-delta</property>
+       </product>
     </function>
 
     <function name="aero/coefficient/CD/CD_STAB">
@@ -1160,6 +1179,7 @@
           <property>aero/coefficient/CL/CL_BASIC</property>
           <property>aero/coefficient/CL/CL_STAB</property>
 	  <property>aero/coefficient/CL/Lift_BLC</property>
+	  <property>aero/coefficient/CL/Lift_Slats</property>
       </sum>
     </function>
   </axis>
@@ -1198,6 +1218,7 @@
             </function>
 		  <property>aero/coefficient/CD/Drag_gear</property>
 		  <property>aero/coefficient/CD/Drag_speedbrake</property>
+		  <property>aero/coefficient/CD/Drag_Slats</property>
                     <property>aero/coefficient/CD/CD_Stores</property>
                     <property>aero/coefficient/CD/CD_WAVE</property>
               </sum>

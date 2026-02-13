@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<system name="Slats">
+  <!-- Leading Edge Slats - F-4E/S passive deployment system (since 1972 upgrade) -->
+  <!-- Reference: Wikipedia F-4 Phantom II - "upgraded with leading edge slats greatly improving high AOA maneuverability" -->
+  <!-- Passive deployment: auto-retracts at high speed, auto-extends at high AOA during maneuvering -->
+  <!-- Effect: Reduces stall speed 2-3 knots (cumulative with BLC's 5-8 kt reduction) -->
+  <!-- No pilot control - purely aerodynamic/automatic system -->
+  
+  <property>fcs/slats-deployed</property>
+  <property>fcs/slats-extension-pct</property>  <!-- 0-100%: deployment state -->
+  <property>fcs/slats-lift-delta</property>     <!-- CL improvement from slats -->
+  <property>fcs/slats-drag-delta</property>     <!-- CD penalty from slats (small) -->
+
+  <!-- Slats auto-extension logic -->
+  <!-- Passive system: extends when AOA increases beyond ~15 deg, retracts at high speed/low AOA -->
+  <!-- The F-4J/S slats are fixed geometry on leading edge, but deployment is modeled as extension -->
+  <!-- In reality, they are statically fixed; we model deployment behavior for aerodynamic effect -->
+  
+  <logic>
+    <if>
+      <!-- Condition for slats deployment: high AOA OR high G-loading during maneuver -->
+      <or>
+        <!-- Primary trigger: Alpha above slat deployment threshold (~14-15 deg) -->
+        <gt><property>aero/alpha-deg</property><value>14.0</value></gt>
+        <!-- Secondary trigger: High G-load (abrupt pitch maneuver) indicates slat deployment -->
+        <gt><property>accelerations/nz</property><value>4.0</value></gt>
+      </or>
+      <then>
+        <!-- Slats extend to get aerodynamic benefit at high AOA -->
+        <set><property>fcs/slats-deployed</property><value>1</value></set>
+      </then>
+      <else>
+        <!-- Slats retract at cruise AOA and normal G-loading -->
+        <set><property>fcs/slats-deployed</property><value>0</value></set>
+      </else>
+    </if>
+  </logic>
+
+  <!-- Slats lift delta coefficient (increase CL at high AOA) -->
+  <!-- When slats are deployed: CL increases by 0.08-0.15 at high AOA -->
+  <!-- Using conservative 0.10 delta CL for realistic performance -->
+  <logic>
+    <if>
+      <eq><property>fcs/slats-deployed</property><value>1</value></eq>
+      <then>
+        <set><property>fcs/slats-lift-delta</property><value>0.10</value></set>
+        <set><property>fcs/slats-extension-pct</property><value>100</value></set>
+      </then>
+      <else>
+        <set><property>fcs/slats-lift-delta</property><value>0.0</value></set>
+        <set><property>fcs/slats-extension-pct</property><value>0</value></set>
+      </else>
+    </if>
+  </logic>
+
+  <!-- Slats drag penalty (slat deployment adds some transonic drag) -->
+  <!-- Small penalty: ~1-2% increase in total drag at high AOA with slats out -->
+  <!-- Modeled as fixed delta CD of 0.005 when slats active -->
+  <logic>
+    <if>
+      <eq><property>fcs/slats-deployed</property><value>1</value></eq>
+      <then>
+        <set><property>fcs/slats-drag-delta</property><value>0.005</value></set>
+      </then>
+      <else>
+        <set><property>fcs/slats-drag-delta</property><value>0.0</value></set>
+      </else>
+    </if>
+  </logic>
+
+</system>
