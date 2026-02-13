@@ -1,15 +1,24 @@
 <system name="BLC">
+  <!-- Boundary Layer Control System for landing/approach improvement -->
+  <!-- Reduces stall speed, improves flap effectiveness, enhances low-speed handling -->
+  <!-- Reference: NATOPS F-4J Section 1.21, reduces stall speed 5-8 knots -->
   <property>fcs/blc-active</property>
-  <property>fcs/blc-failed</property> <!-- Add this line -->
+  <property>fcs/blc-failed</property>
+  <property>fcs/blc-duct-press-psi</property>  <!-- Duct pressure feedback -->
+  <property>fcs/blc-flow-lbs-sec</property>   <!-- Mass flow -->
+  <property>fcs/blc-lift-delta</property>     <!-- CL bonus from BLC -->
+  
+  <!-- BLC engagement logic: requires landing gear down, flaps out, and engine bleed air -->
   <logic>
     <if>
       <and>
-        <eq><property>fcs/blc-failed</property><value>0</value></eq> <!-- Only allow BLC if not failed -->
+        <eq><property>fcs/blc-failed</property><value>0</value></eq>
         <gt><property>gear/gear-pos-norm</property><value>0.9</value></gt>
-        <gt><property>fcs/flap-pos-deg</property><value>0.1</value></gt>
+        <gt><property>fcs/flap-pos-deg</property><value>15</value></gt>
+        <gt><property>propulsion/engine[0]/n1</property><value>60</value></gt>
         <or>
-          <gt><property>propulsion/engine[0]/n1</property><value>0.5</value></gt>
-          <gt><property>propulsion/engine[1]/n1</property><value>0.5</value></gt>
+          <eq><property>fcs/blc-switch</property><value>1</value></eq>
+          <eq><property>fcs/blc-auto</property><value>1</value></eq>
         </or>
       </and>
       <then>
@@ -20,4 +29,8 @@
       </else>
     </if>
   </logic>
+  
+  <!-- BLC System Effects Aerodynamic Modification -->
+  <!-- When active: CL increases by 0.10-0.15, reduces stall margin by ~5 knots -->
+  <!-- Applied as lift bonus in aerodynamics section -->
 </system>
