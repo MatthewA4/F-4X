@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<!--
+  F-4 Phantom II Spin Recovery & Departure Procedures System
+  
+  The F-4 Phantom II was historically susceptible to irrecoverable spins during
+  aileron rolls due to its aerodynamic characteristics:
+  - Prone to adverse yaw during hard maneuvering (high AOA rolling maneuvers)
+  - Susceptible to wing stall asymmetry during rapid aileron deflection
+  - Roll-induced yaw could lead to inadvertent spins during combat rolls
+  
+  NATOPS mitigation strategies:
+  1. Avoid aileron-induced rolls above 15° AOA (use rudder + elevator instead)
+  2. Leading edge slats (F-4E/S) provide stall margin improvement, reducing spin risk
+  3. Manual reversion capability if hydraulics fail allows rudder-only recovery
+  4. Spin recovery: opposite rudder, center stick, dive to gain airspeed
+  
+  Reference: Wikipedia F-4 Phantom II article notes: "Although the F-4 was 
+  subject to irrecoverable spins during aileron rolls, pilots reported the aircraft 
+  to be very responsive and easy to fly on the edge of its performance envelope."
+  
+  This system tracks:
+  - High-AOA aileron deflection warnings (departure risk indicator)
+  - Adverse yaw rate during hard control inputs
+  - Stall asymmetry detection
+  - Spin symptoms (flat spin characteristics)
+  - Recovery procedure guidance
+-->
+
+<system name="SpinRecovery">
+  
+  <!-- ====== DEPARTURE & STALL WARNING SYSTEM ====== -->
+  
+  <!-- Departure risk increases with combined high AOA + aileron deflection -->
+  <!-- Most dangerous envelope: 15-25° AOA + aggressive aileron input + stores load -->
+  
+  <!-- Individual wing stall detection (asymmetric lift condition) -->
+  <property>fcs/left-wing-stall-condition</property>
+  <property>fcs/right-wing-stall-condition</property>
+  <property>fcs/stall-asymmetry-flag</property>
+  
+  <!-- Roll rate instrumentation for spin detection -->
+  <property>fcs/roll-rate-deg-sec</property>
+  <property>fcs/roll-rate-max-deg-sec</property>
+  <property>fcs/roll-rate-damped</property>
+  
+  <!-- Yaw rate from adverse yaw during aileron application -->
+  <property>fcs/adverse-yaw-deg-sec</property>
+  <property>fcs/adverse-yaw-accumulated</property>
+  
+  <!-- Control authority annunciator -->
+  <property>afcs/annunciator/departure-warning</property>
+  <property>afcs/annunciator/spin-suspected</property>
+  <property>afcs/annunciator/recover-rudder-center-stick</property>
+  
+  <!-- ====== DEPARTURE RISK CALCULATION ====== -->
+  <!-- Scores high AOA (>15°) + high aileron deflection (>0.6) as departure risk -->
+  
+  <function name="fcs/departure-risk-index">
+    <description>Combines AOA and aileron deflection to predict departure probability</description>
+    <product>
+      <!-- AOA component: 0 below 15°, scales from 15-25° -->
+      <max>
+        <value>0.0</value>
+        <product>
+          <difference>
+            <property>aero/alpha-deg</property>
+            <value>15.0</value>
+          </difference>
+          <value>0.1</value>
+        </product>
+      </max>
+      <!-- Aileron deflection component: 0 below 30°, scales from 30-90° (normalized to 0-1) -->
+      <product>
+        <max>
+          <value>0.0</value>
+          <product>
+            <difference>
+              <abs>
+                <property>/surface-positions/aileron-left</property>
+              </abs>
+              <value>30.0</value>
+            </difference>
+            <value>0.0111</value>
+          </product>
+        </max>
+        <value>1.0</value>
+      </product>
+      <!-- Stores load penalty: heavier stores increase spin susceptibility -->
+      <product>
+        <max>
+          <value>0.5</value>
+          <min>
+            <value>1.5</value>
+            <product>
+              <property>fcs/stores-total-weight-lb</property>
+              <value>0.00005</value>
+            </product>
+          </min>
+        </max>
+        <value>1.0</value>
+      </product>
+    </product>
+  </function>
+  
+  <!-- ====== ADVERSE YAW MODELING ====== -->
+  <!-- Aileron differential drag creates yaw opposite to intended roll -->
+  <!-- F-4 particularly susceptible due to high wing loading and fuselage design -->
+  
+  <function name="fcs/adverse-yaw-rate">
+    <description>Yaw rate induced by aileron deflection (adverse yaw)</description>
+    <product>
+      <!-- Base adverse yaw coefficient: ~0.08 deg/sec yaw per deg aileron deflection -->
+      <!-- Scales with dynamic pressure (higher speed = more yaw effect) -->
+      <product>
+        <property>/surface-positions/aileron-left</property>
+        <value>-0.08</value>
+      </product>
+      <!-- Speed factor: effect increases with airspeed -->
+      <product>
+        <property>aero/qbar-psf</property>
+        <value>0.001</value>
+        <value>1.0</value>
+      </product>
+      <!-- AOA factor: worse at high AOA (boundary layer effects amplify adverse yaw) -->
+      <ifthenelse>
+        <gt>
+          <property>aero/alpha-deg</property>
+          <value>10.0</value>
+        </gt>
+        <!-- High AOA: adverse yaw is significantly worse -->
+        <product>
+          <difference>
+            <property>aero/alpha-deg</property>
+            <value>10.0</value>
+          </difference>
+          <value>0.05</value>
+          <value>1.0</value>
+        </product>
+        <!-- Low AOA: minimal adverse yaw -->
+        <value>1.0</value>
+      </ifthenelse>
+    </product>
+  </function>
+  
+  <!-- ====== SPIN RECOVERY PROCEDURES ====== -->
+  <!-- NATOPS Procedure T.0: Spin Recovery (from manual reversion capability training) -->
+  <!-- 1. Center stick (reduce AOA to break stall asymmetry) -->
+  <!-- 2. Apply full opposite rudder (opposed to spin direction) -->
+  <!-- 3. Throttle to idle (reduce gyroscopic yaw from engines) -->
+  <!-- 4. Hold recovery inputs until spin stops (monitor roll rate) -->
+  <!-- 5. Level wings gently, recover to level flight -->
+  
+  <!-- Spin characteristics detection: flat spin vs. steep spin -->
+  <function name="fcs/spin-characteristics">
+    <description>Detects spin type based on AOA and roll rate combination</description>
+    <ifthenelse>
+      <and>
+        <gt>
+          <property>fcs/roll-rate-deg-sec</property>
+          <value>60.0</value>
+        </gt>
+        <gt>
+          <property>aero/alpha-deg</property>
+          <value>20.0</value>
+        </gt>
+      </and>
+      <!-- Flat spin characteristics: high AOA + rapid roll -->
+      <value>1.0</value>
+      <!-- Normal stall/incipient spin -->
+      <value>0.0</value>
+    </ifthenelse>
+  </function>
+  
+  <!-- Recovery effectiveness indicator: how much recovery input is needed -->
+  <function name="fcs/spin-recovery-margin">
+    <description>Indicates remaining recovery authority before unrecoverable spin</description>
+    <product>
+      <value>100.0</value>
+      <!-- Margin degrades with high AOA persistence -->
+      <difference>
+        <value>1.0</value>
+        <max>
+          <value>0.0</value>
+          <product>
+            <difference>
+              <property>aero/alpha-deg</property>
+              <value>20.0</value>
+            </difference>
+            <value>0.05</value>
+          </product>
+        </max>
+      </difference>
+      <!-- Margin degrades with roll rate (faster spin = less time to recover) -->
+      <difference>
+        <value>1.0</value>
+        <max>
+          <value>0.0</value>
+          <product>
+            <property>fcs/roll-rate-deg-sec</property>
+            <value>0.002</value>
+          </product>
+        </max>
+      </difference>
+    </product>
+  </function>
+  
+  <!-- ====== SLATS BENEFIT ON SPIN SUSCEPTIBILITY ====== -->
+  <!-- Slats reduce stall AOA threshold, provide earlier stall warning -->
+  <!-- This prevents sharp stall asymmetry that can lead to spin entry -->
+  
+  <function name="fcs/slat-departure-protection">
+    <description>Reduction in departure risk due to slats deployment</description>
+    <product>
+      <ifthenelse>
+        <gt>
+          <property>/fcs/slats-deployed</property>
+          <value>0.5</value>
+        </gt>
+        <!-- Slats deployed: 25% reduction in departure risk -->
+        <value>0.75</value>
+        <!-- Slats retracted: no benefit -->
+        <value>1.0</value>
+      </ifthenelse>
+    </product>
+  </function>
+  
+  <!-- ====== ANNUNCIATOR LOGIC ====== -->
+  
+  <!-- Departure warning: high AOA + aileron input + stores penalty -->
+  <pure_gain name="afcs/annunciator/departure-warning">
+    <input>
+      <product>
+        <gt>
+          <property>fcs/departure-risk-index</property>
+          <value>0.6</value>
+        </gt>
+        <value>1.0</value>
+      </product>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+  
+  <!-- Spin suspected: detects roll rate + AOA combination characteristic of spin entry -->
+  <pure_gain name="afcs/annunciator/spin-suspected">
+    <input>
+      <and>
+        <gt>
+          <property>fcs/roll-rate-deg-sec</property>
+          <value>40.0</value>
+        </gt>
+        <gt>
+          <property>aero/alpha-deg</property>
+          <value>18.0</value>
+        </gt>
+        <lt>
+          <property>velocities/airspeed-kt</property>
+          <value>200.0</value>
+        </lt>
+      </and>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+  
+  <!-- Recovery guidance annunciator: prompts center stick + opposite rudder -->
+  <pure_gain name="afcs/annunciator/recover-rudder-center-stick">
+    <input>
+      <getprop>afcs/annunciator/spin-suspected</getprop>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+
+</system>
