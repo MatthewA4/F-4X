@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!--
+  F-4 Landing Distance Calculator
+  
+  Calculates required landing distance based on aircraft weight, approach speed, 
+  runway conditions, and wind effects per NATOPS performance data.
+  
+  Reference Data (F-4E at Sea Level, Standard Day 59°F):
+  - Max Landing Weight: 36,831 lbs
+  - Landing Roll (baseline): 3,680 ft at max landing weight
+  - Landing Roll (light): ~2,800 ft at 30,000 lbs
+  - Landing Roll with 10 kt headwind: -15% distance
+  - Landing Roll with 10 kt crosswind: +3% distance
+  - Wet runway: +40% distance
+  
+  Touchdown AOA: ~3-4° nose up
+  Touchdown sink rate: ~23 ft/s maximum
+  Braking deceleration: -0.3G nominal (max landing weight), -0.4G (light)
+  
+  This system calculates landing distance as function of:
+  1. Aircraft weight vs. max landing weight ratio
+  2. Touchdown speed (calibrated airspeed)
+  3. Runway surface friction (dry/wet)
+  4. Wind component (headwind reduces, crosswind increases distance)
+  5. Altitude (thin air increases distance)
+-->
+
+<system name="LandingDistance">
+  
+  <!-- ====== LANDING WEIGHT & CONFIGURATION VALIDATION ====== -->
+  <property>fcs/landing-distance-ft</property>
+  <property>fcs/landing-distance-available-ft</property>
+  <property>fcs/landing-distance-margin-ft</property>
+  <property>fcs/landing-overweight-flag</property>
+  
+  <!-- Runway conditions -->
+  <property>fcs/runway-friction-coeff</property>  <!-- 0.6 dry, 0.3 wet, 0.15 icy -->
+  <property>fcs/runway-surface</property>         <!-- 0 = dry, 1 = wet/grass, 2 = ice/snow -->
+  <property>fcs/wind-runway-aligned-kt</property>  <!-- Headwind = positive, tailwind = negative -->
+  <property>fcs/wind-runway-crosswind-kt</property> <!-- Crosswind component -->
+  
+  <!-- Touchdown parameters -->
+  <property>fcs/touchdown-airspeed-kt</property>
+  <property>fcs/touchdown-aoa-deg</property>
+  <property>fcs/touchdown-descent-rate-fpm</property>
+  
+  <!-- Annunciators for runway adequacy -->
+  <property>afcs/annunciator/landing-distance-marginal</property>  <!-- <1000 ft margin -->
+  <property>afcs/annunciator/landing-distance-inadequate</property> <!-- negative margin -->
+  
+  <!-- ====== BASELINE LANDING DISTANCE TABLE ====== -->
+  <!-- Landing roll vs. landing weight (sea level, dry runway, no wind) -->
+  <!-- Based on F-4E NATOPS data -->
+  
+  <function name="fcs/baseline-landing-distance">
+    <description>Baseline landing roll in feet as function of landing weight</description>
+    <table>
+      <independentVar lookup="row">inertia/weight-lbs</independentVar>
+      <tableData>
+        30000.0  2800.0
+        36831.0  3680.0
+        40000.0  4100.0
+        50000.0  5500.0
+      </tableData>
+    </table>
+  </function>
+  
+  <!-- ====== WIND CORRECTION FACTOR ====== -->
+  <!-- Headwind reduces landing distance (positive wind = headwind = shorter landing) -->
+  <!-- Crosswind increases landing distance due to higher touchdown speed -->
+  
+  <function name="fcs/wind-correction-factor">
+    <description>Multiplicative factor for wind effect on landing distance</description>
+    <sum>
+      <value>1.0</value>
+      <!-- Headwind benefit: -4% per 10 knots headwind -->
+      <product>
+        <property>fcs/wind-runway-aligned-kt</property>
+        <value>-0.004</value>
+      </product>
+      <!-- Crosswind penalty: +0.5% per 10 knots crosswind -->
+      <product>
+        <abs>
+          <property>fcs/wind-runway-crosswind-kt</property>
+        </abs>
+        <value>0.0005</value>
+      </product>
+    </sum>
+  </function>
+  
+  <!-- ====== RUNWAY SURFACE CORRECTION ====== -->
+  <!-- Friction coefficient determines available braking deceleration -->
+  <!-- Dry concrete: 0.60 friction = -0.30G deceleration -->
+  <!-- Wet runway: 0.30 friction = -0.15G deceleration (+40% landing distance) -->
+  <!-- Icy/snow: 0.15 friction = -0.075G deceleration (+100% landing distance) -->
+  
+  <function name="fcs/surface-friction-factor">
+    <description>Normalize runway surface friction effect on landing distance</description>
+    <ifthenelse>
+      <eq>
+        <property>fcs/runway-surface</property>
+        <value>0</value>
+      </eq>
+      <!-- Dry runway: baseline friction -->
+      <value>1.0</value>
+      <ifthenelse>
+        <eq>
+          <property>fcs/runway-surface</property>
+          <value>1</value>
+        </eq>
+        <!-- Wet runway: +40% landing distance -->
+        <value>1.40</value>
+        <!-- Ice/snow: +100% landing distance -->
+        <value>2.00</value>
+      </ifthenelse>
+    </ifthenelse>
+  </function>
+  
+  <!-- ====== ALTITUDE CORRECTION ====== -->
+  <!-- Thinner air at altitude = longer landing distance -->
+  <!-- density-ratio = 0.5 at ~18,000 ft -->
+  <!-- Effect: landing distance inversely proportional to air density -->
+  
+  <function name="fcs/altitude-density-factor">
+    <description>Altitude effect on landing distance via density ratio</description>
+    <ifthenelse>
+      <gt>
+        <property>atmosphere/density-ratio</property>
+        <value>0.1</value>
+      </gt>
+      <!-- Normal altitudes: 1 / density-ratio -->
+      <product>
+        <value>1.0</value>
+        <property>atmosphere/density-ratio</property>
+        <value>-1.0</value>
+      </product>
+      <!-- Extreme altitudes: cap minimum density ratio -->
+      <value>10.0</value>
+    </ifthenelse>
+  </function>
+  
+  <!-- ====== TOTAL LANDING DISTANCE CALCULATION ====== -->
+  <!-- Landing Distance = Baseline × Weight Factor × Wind Factor × Surface Factor × Altitude Factor -->
+  
+  <function name="fcs/landing-distance-required">
+    <description>Total landing distance required for safe stop</description>
+    <product>
+      <!-- Baseline landing roll from weight table -->
+      <property>fcs/baseline-landing-distance</property>
+      <!-- Wind correction -->
+      <property>fcs/wind-correction-factor</property>
+      <!-- Runway surface friction -->
+      <property>fcs/surface-friction-factor</property>
+      <!-- Altitude density effect -->
+      <property>fcs/altitude-density-factor</property>
+    </product>
+  </function>
+  
+  <!-- ====== LANDING SAFETY MARGIN ====== -->
+  <!-- Approach briefing should include 67% margin (1.67× landing distance as safety factor) -->
+  <!-- Minimum usable runway = landing distance × 1.67 -->
+  
+  <function name="fcs/minimum-usable-runway">
+    <description>Minimum runway length = landing distance × 1.67 safety margin</description>
+    <product>
+      <property>fcs/landing-distance-required</property>
+      <value>1.67</value>
+    </product>
+  </function>
+  
+  <!-- Runway margin for pilot awareness -->
+  <pure_gain name="fcs/landing-distance-margin">
+    <input>
+      <difference>
+        <property>fcs/landing-distance-available-ft</property>
+        <property>fcs/minimum-usable-runway</property>
+      </difference>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+  
+  <!-- ====== ANNUNCIATORS ====== -->
+  
+  <!-- Marginal landing distance (500-1000 ft margin remaining) -->
+  <pure_gain name="afcs/annunciator/landing-distance-marginal">
+    <input>
+      <and>
+        <lt>
+          <property>fcs/landing-distance-margin</property>
+          <value>1000.0</value>
+        </lt>
+        <gt>
+          <property>fcs/landing-distance-margin</property>
+          <value>0.0</value>
+        </gt>
+      </and>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+  
+  <!-- Inadequate landing distance (not enough runway) -->
+  <pure_gain name="afcs/annunciator/landing-distance-inadequate">
+    <input>
+      <le>
+        <property>fcs/landing-distance-margin</property>
+        <value>0.0</value>
+      </le>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+
+</system>
