@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<!--
+  External Stores Configuration System - F-4 Phantom II
+  
+  Models drag and performance effects from different armament loads.
+  F-4 has 9 external hardpoints with various store options:
+  - 4× AIM-7 Sparrow (fuselage AAA-1 recesses, ~480 lb each)
+  - 4× AIM-9 Sidewinder (wing pylons, ~190 lb each)
+  - Up to 18× Mk.82 bombs (454 lb each + racks)
+  - 6× AGM-65 Maverick (500 lb each)
+  - External fuel tanks (370 gal wing tanks, 600 gal centerline)
+  - Gun pod (SUU-23 Gatling, ~1500 lb with ammo)
+  
+  Reference: Wikipedia notes "MiGs usually could outturn the F-4 because of 
+  the high drag on the Phantom's airframe" - indicating stores significantly 
+  affect performance.
+  
+  Properties:
+    - fcs/stores-total-weight-lb (cumulative external stores weight)
+    - fcs/stores-drag-delta (additional drag coefficient from stores)
+    - fcs/stores-config (numeric identifier for quick reference)
+    - afcs/annunciator/stores-loaded (cockpit indication of heavy load)
+-->
+
+<system name="Stores">
+  <!-- ====== EXTERNAL STORES INVENTORY ====== -->
+  
+  <!-- Properties for each hardpoint (0 = empty, weight in lbs when loaded) -->
+  <property>fcs/store[0]/weight-lb</property>  <!-- Centerline station (600 gal tank = 4,050 lb) -->
+  <property>fcs/store[1]/weight-lb</property>  <!-- Left wing inner pylon -->
+  <property>fcs/store[2]/weight-lb</property>  <!-- Left wing outer pylon -->
+  <property>fcs/store[3]/weight-lb</property>  <!-- Right wing inner pylon -->
+  <property>fcs/store[4]/weight-lb</property>  <!-- Right wing outer pylon -->
+  <property>fcs/store[5]/weight-lb</property>  <!-- Left fuselage AAA-1 recesses (Sparrows) -->
+  <property>fcs/store[6]/weight-lb</property>  <!-- Right fuselage AAA-1 recesses (Sparrows) -->
+  <property>fcs/store[7]/weight-lb</property>  <!-- Gun pod (left or right) -->
+  <property>fcs/store[8]/weight-lb</property>  <!-- Reserved (external ordnance racks) -->
+  
+  <!-- ====== STORE CONFIGURATIONS ====== -->
+  
+  <!-- Calculate total external stores weight -->
+  <function name="fcs/stores-total-weight-lb">
+    <description>Total weight of external stores</description>
+    <sum>
+      <property>fcs/store[0]/weight-lb</property>
+      <property>fcs/store[1]/weight-lb</property>
+      <property>fcs/store[2]/weight-lb</property>
+      <property>fcs/store[3]/weight-lb</property>
+      <property>fcs/store[4]/weight-lb</property>
+      <property>fcs/store[5]/weight-lb</property>
+      <property>fcs/store[6]/weight-lb</property>
+      <property>fcs/store[7]/weight-lb</property>
+      <property>fcs/store[8]/weight-lb</property>
+    </sum>
+  </function>
+  
+  <!-- ====== DRAG MODELING FROM STORES ====== -->
+  
+  <!-- Centerline tank drag (fuel tank generates parasitic drag) -->
+  <function name="fcs/stores-drag-centerline">
+    <description>Drag from centerline fuel tank</description>
+    <product>
+      <property>aero/qbar-psf</property>
+      <property>metrics/Sw-sqft</property>
+      <ifthenelse>
+        <gt>
+          <property>fcs/store[0]/weight-lb</property>
+          <value>100.0</value>
+        </gt>
+        <!-- Centerline tank active: ~0.0040 delta CD -->
+        <value>0.0040</value>
+        <!-- No centerline tank: no additional drag -->
+        <value>0.0</value>
+      </ifthenelse>
+    </product>
+  </function>
+  
+  <!-- Wing station drag (underwing stores create interference drag) -->
+  <function name="fcs/stores-drag-wing-pylons">
+    <description>Drag from wing pylon stores/tanks</description>
+    <product>
+      <property>aero/qbar-psf</property>
+      <property>metrics/Sw-sqft</property>
+      <sum>
+        <!-- Each loaded wing pylon adds ~0.0015 delta CD (interference + pod drag) -->
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[1]/weight-lb</property>
+              <value>50.0</value>
+            </gt>
+            <value>0.0015</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[2]/weight-lb</property>
+              <value>50.0</value>
+            </gt>
+            <value>0.0015</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[3]/weight-lb</property>
+              <value>50.0</value>
+            </gt>
+            <value>0.0015</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[4]/weight-lb</property>
+              <value>50.0</value>
+            </gt>
+            <value>0.0015</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+      </sum>
+    </product>
+  </function>
+  
+  <!-- Fuselage AAA-1 recess drag (Sparrow missiles in recesses are semi-recessed) -->
+  <function name="fcs/stores-drag-sparrows">
+    <description>Drag from fuselage-mounted Sparrow missiles</description>
+    <product>
+      <property>aero/qbar-psf</property>
+      <property>metrics/Sw-sqft</property>
+      <sum>
+        <!-- Each Sparrow in recess: ~0.0008 delta CD (cleaner than wing pylon) -->
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[5]/weight-lb</property>
+              <value>100.0</value>
+            </gt>
+            <value>0.0016</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+        <product>
+          <ifthenelse>
+            <gt>
+              <property>fcs/store[6]/weight-lb</property>
+              <value>100.0</value>
+            </gt>
+            <value>0.0016</value>
+            <value>0.0</value>
+          </ifthenelse>
+          <value>1.0</value>
+        </product>
+      </sum>
+    </product>
+  </function>
+  
+  <!-- Gun pod drag (external pod generates significant drag) -->
+  <function name="fcs/stores-drag-gun-pod">
+    <description>Drag from external gun pod</description>
+    <product>
+      <property>aero/qbar-psf</property>
+      <property>metrics/Sw-sqft</property>
+      <ifthenelse>
+        <gt>
+          <property>fcs/store[7]/weight-lb</property>
+          <value>500.0</value>
+        </gt>
+        <!-- Gun pod (SUU-23): ~0.0045 delta CD (significant obstruction) -->
+        <value>0.0045</value>
+        <value>0.0</value>
+      </ifthenelse>
+    </product>
+  </function>
+  
+  <!-- Heavy ordnance rack drag (bomb racks with multiple Mk.82s) -->
+  <function name="fcs/stores-drag-ordnance-racks">
+    <description>Drag from heavy bomb racks/triple ejector racks</description>
+    <product>
+      <property>aero/qbar-psf</property>
+      <property>metrics/Sw-sqft</property>
+      <ifthenelse>
+        <gt>
+          <property>fcs/store[8]/weight-lb</property>
+          <value>1000.0</value>
+        </gt>
+        <!-- Heavy ordnance configuration: ~0.0080 delta CD (multiple racks create interference) -->
+        <value>0.0080</value>
+        <value>0.0</value>
+      </ifthenelse>
+    </product>
+  </function>
+  
+  <!-- Total stores drag contribution (all sources combined) -->
+  <function name="fcs/stores-drag-delta">
+    <description>Total drag delta from all external stores</description>
+    <sum>
+      <property>fcs/stores-drag-centerline</property>
+      <property>fcs/stores-drag-wing-pylons</property>
+      <property>fcs/stores-drag-sparrows</property>
+      <property>fcs/stores-drag-gun-pod</property>
+      <property>fcs/stores-drag-ordnance-racks</property>
+    </sum>
+  </function>
+  
+  <!-- ====== PERFORMANCE PENALTIES ====== -->
+  
+  <!-- Maximum instantaneous turn rate penalty (G-force limited by weight distribution) -->
+  <!-- Loaded F-4 with stores has reduced turn capability due to weight and aerodynamic changes -->
+  <!-- Clean F-4: 6.7 G limit. Fully loaded: 5.0 G effective (reduced by inertia and drag increase) -->
+  
+  <function name="fcs/stores-g-limit-factor">
+    <description>Turn rate penalty factor from external stores weight and drag</description>
+    <product>
+      <value>1.0</value>
+      <!-- Linear penalty: 0.15 G reduction per 1000 lbs of external stores (beyond fuel tanks) -->
+      <sum>
+        <value>1.0</value>
+        <product>
+          <difference>
+            <property>fcs/stores-total-weight-lb</property>
+            <ifthenelse>
+              <gt>
+                <property>fcs/store[0]/weight-lb</property>
+                <value>100.0</value>
+              </gt>
+              <property>fcs/store[0]/weight-lb</property>
+              <value>0.0</value>
+            </ifthenelse>
+          </difference>
+          <value>-0.00015</value>
+        </product>
+      </sum>
+    </product>
+  </function>
+  
+  <!-- ====== ANNUNCIATORS ====== -->
+  
+  <!-- Heavy stores loaded indicator (more than 8000 lbs external) -->
+  <pure_gain name="afcs/annunciator/stores-loaded">
+    <input>
+      <gt>
+        <property>fcs/stores-total-weight-lb</property>
+        <value>8000.0</value>
+      </gt>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+  
+  <!-- Very heavy load indicator (more than 14000 lbs - combat load + bombs) -->
+  <pure_gain name="afcs/annunciator/stores-heavy-load">
+    <input>
+      <gt>
+        <property>fcs/stores-total-weight-lb</property>
+        <value>14000.0</value>
+      </gt>
+    </input>
+    <gain>1.0</gain>
+  </pure_gain>
+
+</system>

@@ -62,6 +62,10 @@
 <system file="FCS"/>
 <system file="Systems/BLC.xml"/>
 <system file="Systems/Slats.xml"/>
+<system file="Systems/Refueling.xml"/>
+<system file="Systems/Stores.xml"/>
+<system file="Systems/SpinRecovery.xml"/>
+<system file="Systems/LandingDistance.xml"/>
 <flight_control name="none"/>
 
  <aerodynamics>
@@ -267,13 +271,8 @@
     </function>
 
     <function name="aero/coefficient/CD/CD_Stores">
-        <description>Drag due to stores constant (delta)</description>
-        <product>
-          <property>misc/stores/onboard</property>
-	  <property>aero/qbar-psf</property>
-          <property>metrics/Sw-sqft</property>
-          <value>0.0037</value>
-        </product>
+        <description>Drag due to external stores configuration</description>
+        <property>fcs/stores-drag-delta</property>
     </function>
 
     <function name="aero/coefficient/CD/CDM">
