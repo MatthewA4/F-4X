@@ -399,7 +399,7 @@ See [LICENSE](LICENSE) file for full details.
 ## 👨‍✈️ Credits
 
 - **Joshua Davidson** (it0ouchpods): Original FCS/FDM architecture
-- **Matthew A. Anderson**: AFCS, J79 engine, transonic modeling, systems integration
+- **Matthew R. Anderson**: AFCS, J79 engine, transonic modeling, systems integration, 3D, Audio
 - **NASA/AFWAL**: Aerodynamic and high-AOA research data
 - **FlightGear & JSBSim Communities**: Open-source flight simulation platforms
 
