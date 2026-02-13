@@ -63,6 +63,11 @@ var update_hydraulics = func {
     if (hyd_a_leak and hyd_a_qty > hyd_a_qty_min) hyd_a_qty -= 0.01;
     if (hyd_b_leak and hyd_b_qty > hyd_b_qty_min) hyd_b_qty -= 0.01;
 
+    # Automatic RAT deployment on dual engine failure (NATOPS emergency procedure)
+    if (!eng_left_running and !eng_right_running) {
+        rat_deployed = 1;  # Auto-deploy RAM Air Turbine for emergency hydraulic power
+    }
+    
     # System A logic
     var a_pump_on = eng_left_running and !hyd_a_pump_fail and !a_isolated and hyd_a_qty > hyd_a_qty_min;
     if (a_pump_on) {

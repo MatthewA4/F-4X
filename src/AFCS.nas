@@ -51,6 +51,19 @@ var pid_alt = make_pid(0.5, 0.005, 0.1);
 var att_hold = { roll: 0, pitch: 0, active: 0 };
 var alt_hold = { alt: 0, active: 0 };
 
+# High-AOA stall warning system (NATOPS Section 1.17)
+# Stall warning at ~20-21 units AOA (flaps down), ~18 units (approach), warning starts ~2 units before
+var stall_warning = {
+    active: 0,
+    aoa_critical: 21.0,      # Units AOA - stall threshold
+    aoa_warning: 19.0,       # Units AOA - stall warning threshold
+    shaker_on: 0,            # Rudder pedal shaker
+    departure_risk: 0,       # High AOA approach-to-departure
+    wing_rock_active: 0,     # Oscillation at high AOA
+    last_aoa: 0,
+    aoa_rate: 0,
+};
+
 # SAS engagement logic (auto-disengage on stick force, failure, or switch off)
 var update_sas = func {
     var fail = getprop(properties.fail, 0);
@@ -177,6 +190,58 @@ var update_alt_hold = func(dt) {
     }
 };
 
+# High-AOA stall warning system (NATOPS-based)
+# Detects approach to stall and provides warnings
+var update_stall_warning = func(dt) {
+    var aoa = getprop("/orientation/alpha-deg", 0);
+    var cas = getprop("/velocities/airspeed-kt", 0);
+    var alt = getprop("/position/altitude-ft", 0);
+    var gear_down = getprop("/gear/gear-pos-norm", 0) > 0.95;
+    var flaps_down = getprop("/fdm/jsbsim/fcs/flap-pos-deg", 0) > 5;
+    
+    # AOA rate calculation for wing-rock detection
+    stall_warning.aoa_rate = (aoa - stall_warning.last_aoa) / dt;
+    stall_warning.last_aoa = aoa;
+    
+    # Adjust stall warning threshold based on configuration
+    # Flaps down/gear down (landing config): higher stall AOA threshold
+    # Flaps up/gear up (clean): lower stall AOA threshold
+    var threshold_warning = flaps_down ? 20.5 : 18.0;  # NATOPS values
+    var threshold_critical = flaps_down ? 22.0 : 20.0;
+    
+    # Stall warning engages ~1-2 units before stall
+    if (aoa > threshold_warning) {
+        stall_warning.active = 1;
+        stall_warning.shaker_on = 1;
+        setprop("/afcs/annunciator/stall-warning", 1);
+        setprop("/afcs/annunciator/stall-horn", 1);
+        
+        # Simulate rudder pedal shaker vibration by setting cockpit vibration property
+        if (int(systime() * 10) % 3 == 0) {  # ~10 Hz vibration
+            setprop("/controls/afcs/rudder-shaker", 0.3);
+        } else {
+            setprop("/controls/afcs/rudder-shaker", 0);
+        }
+    } else {
+        stall_warning.active = 0;
+        stall_warning.shaker_on = 0;
+        setprop("/afcs/annunciator/stall-warning", 0);
+        setprop("/afcs/annunciator/stall-horn", 0);
+        setprop("/controls/afcs/rudder-shaker", 0);
+    }
+    
+    # Departure/wing-rock detection at extreme AOA
+    # High-AOA oscillations can lead to uncontrolled wing rock
+    if (aoa > threshold_critical + 1.0 and abs(stall_warning.aoa_rate) > 2.0) {
+        stall_warning.departure_risk = 1;
+        stall_warning.wing_rock_active = 1;
+        setprop("/afcs/annunciator/departure-warning", 1);
+    } else {
+        stall_warning.departure_risk = 0;
+        setprop("/afcs/annunciator/departure-warning", 0);
+    }
+};
+
 # Failure annunciator
 var update_annunciators = func {
     setprop(properties.ann_fail, getprop(properties.fail) or 0);
@@ -190,6 +255,7 @@ var periodic_update = func {
     last_time = now;
 
     update_adc_static_correction(dt);
+    update_stall_warning(dt);
     update_sas();
     update_att_hold(dt);
     update_alt_hold(dt);
