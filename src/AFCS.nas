@@ -237,28 +237,36 @@ var update_stall_warning = func(dt) {
     var alt = getprop("/position/altitude-ft", 0);
     var gear_down = getprop("/gear/gear-pos-norm", 0) > 0.95;
     var flaps_down = getprop("/fdm/jsbsim/fcs/flap-pos-deg", 0) > 5;
-    var slats_deployed = getprop("/fdm/jsbsim/fcs/slats-deployed", 0);
+    var slats_deployed = getprop("/fcs/slats-deployed", 0) or getprop("/fdm/jsbsim/fcs/slats-deployed", 0);
     
     # AOA rate calculation for wing-rock detection
     stall_warning.aoa_rate = (aoa - stall_warning.last_aoa) / dt;
     stall_warning.last_aoa = aoa;
     
-    # Adjust stall warning threshold based on configuration
-    # Flaps down/gear down (landing config): higher stall AOA threshold
-    # Flaps up/gear up (clean): lower stall AOA threshold
-    # Slats add 2-3 deg reduction on top of BLC effect (5-8 kt reduction)
-    
-    var threshold_warning = flaps_down ? 20.5 : 18.0;  # NATOPS base values
-    var threshold_critical = flaps_down ? 22.0 : 20.0;
-    
-    # Apply slats reduction: when deployed, reduce stall threshold by 1.5-2.5 deg
-    # This represents the ~2-3 kt improvement in stall speed from slats
+    # Get weight-dependent stall thresholds from JSBSim functions (StallWeightLookup system)
+    var base_critical = getprop("/fcs/stall-aoa-critical") or 20.0;
+    var base_warning = getprop("/fcs/stall-aoa-warning") or (base_critical - 2.0);
+
+    # Flaps configuration modifies thresholds (landing config increases margin)
+    var threshold_critical = base_critical + (flaps_down ? 1.5 : 0.0);
+    var threshold_warning = base_warning + (flaps_down ? 1.5 : 0.0);
+
+    # Slats provide additional stall margin (reduce thresholds by ~2 deg when deployed)
     if (slats_deployed) {
         threshold_warning -= 2.0;
         threshold_critical -= 2.0;
     }
+
+    # Stores/weight penalty: heavier external stores lower effective stall AOA slightly
+    var stores_wt = getprop("/fcs/stores-total-weight-lb") or 0;
+    if (stores_wt > 8000.0) {
+        # Reduce thresholds by up to 1.0 deg for very heavy external loads
+        var penalty = math.min(1.0, (stores_wt - 8000.0) / 6000.0);
+        threshold_warning -= penalty;
+        threshold_critical -= penalty;
+    }
     
-    # Stall warning engages ~1-2 units before stall
+    # Stall warning engages if AOA exceeds computed warning threshold
     if (aoa > threshold_warning) {
         stall_warning.active = 1;
         stall_warning.shaker_on = 1;
@@ -280,7 +288,7 @@ var update_stall_warning = func(dt) {
     }
     
     # Departure/wing-rock detection at extreme AOA
-    # High-AOA oscillations can lead to uncontrolled wing rock
+    # High-AOA oscillations can lead to uncontrolled wing rock or spin entry
     if (aoa > threshold_critical + 1.0 and abs(stall_warning.aoa_rate) > 2.0) {
         stall_warning.departure_risk = 1;
         stall_warning.wing_rock_active = 1;
