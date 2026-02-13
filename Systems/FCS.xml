@@ -5,6 +5,41 @@
 	
 	<channel name="Gains">
 		
+		<!-- Mach-dependent control effectiveness reduction (high-speed flight authority loss) -->
+		<!-- Roll authority: ~30% loss at M=1.5; Pitch: ~25% loss at M=1.5 -->
+		<fcs_function name="hydromech/mach-gain-factor">
+			<function>
+				<table>
+					<independentVar lookup="row">velocities/mach</independentVar>
+					<tableData>
+						0.0  1.00
+						0.8  1.00
+						1.0  0.95
+						1.2  0.85
+						1.5  0.70
+						2.0  0.65
+					</tableData>
+				</table>
+			</function>
+		</fcs_function>
+		
+		<!-- Hydraulic pressure-dependent control authority (pressure degradation factor) -->
+		<!-- Below 2500 psi nominal, control authority degrades gradually -->
+		<fcs_function name="hydromech/pressure-gain-factor">
+			<function>
+				<table>
+					<independentVar lookup="row">/systems/hydraulic-a-psi</independentVar>
+					<tableData>
+						0    0.0
+						500  0.3
+						1500 0.75
+						2500 1.0
+						3000 1.0
+					</tableData>
+				</table>
+			</function>
+		</fcs_function>
+		
 		<switch name="hydromech/roll/KDA">
 			<default value="8.08"/>
 			<test value="4.0">
@@ -120,9 +155,21 @@
 			<gain>hydromech/roll/KDA</gain>
 		</pure_gain>
 		
+		<!-- Apply Mach-dependent gain reduction to roll authority -->
+		<product name="hydromech/roll/a-stick-gain-mach">
+			<input>hydromech/roll/a-stick-gain</input>
+			<input>hydromech/mach-gain-factor</input>
+		</product>
+		
+		<!-- Apply hydraulic pressure gain reduction to roll authority -->
+		<product name="hydromech/roll/a-stick-gain-mach-pressure">
+			<input>hydromech/roll/a-stick-gain-mach</input>
+			<input>hydromech/pressure-gain-factor</input>
+		</product>
+		
 		<summer name="hydromech/roll/delta-aileron">
 			<input>hydromech/roll/p-stick-suml</input>
-			<input>hydromech/roll/a-stick-gain</input>
+			<input>hydromech/roll/a-stick-gain-mach-pressure</input>
 			<clipto>
 				<min>-30</min>
 				<max>30</max>
@@ -239,6 +286,18 @@
 			<gain>2.08</gain> <!-- Half of 4.16, because it is positive and negative -->
 		</pure_gain>
 		
+		<!-- Apply Mach-dependent gain reduction to pitch authority -->
+		<product name="hydromech/pitch/delta-elevator-direct-mach">
+			<input>hydromech/pitch/delta-elevator-direct</input>
+			<input>hydromech/mach-gain-factor</input>
+		</product>
+		
+		<!-- Apply hydraulic pressure gain reduction to pitch authority -->
+		<product name="hydromech/pitch/delta-elevator-direct-mach-pressure">
+			<input>hydromech/pitch/delta-elevator-direct-mach</input>
+			<input>hydromech/pressure-gain-factor</input>
+		</product>
+		
 		<switch name="hydromech/pitch/q-rad_sec">
 			<default value="0"/>
 			<test logic="AND" value="velocities/q-rad_sec"> <!-- Disable SAS if switch off or stick force applied -->
@@ -254,7 +313,7 @@
 		</pure_gain>
 		
 		<summer name="hydromech/pitch/delta-elevator">
-			<input>hydromech/pitch/delta-elevator-direct</input>
+			<input>hydromech/pitch/delta-elevator-direct-mach-pressure</input>
 			<input>hydromech/pitch/q-final</input>
 		</summer>
 	

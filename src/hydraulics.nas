@@ -178,6 +178,17 @@ _setlistener("/nasal/hydraulics/loaded", init);
 
 var periodic_update = func {
     update_hydraulics();
+    
+    # Publish hydraulic pressures to property tree for FCS to read
+    setprop("/systems/hydraulic-a-psi", hyd_a_psi);
+    setprop("/systems/hydraulic-b-psi", hyd_b_psi);
+    setprop("/systems/hydraulic-a-qty", hyd_a_qty);
+    setprop("/systems/hydraulic-b-qty", hyd_b_qty);
+    setprop("/systems/accumulator-a-psi", accumulator_a_psi);
+    setprop("/systems/accumulator-b-psi", accumulator_b_psi);
+    setprop("/systems/rat-deployed", rat_deployed);
+    setprop("/systems/rat-pressure-psi", rat_deployed ? rat_pressure : 0);
+    
     settimer(periodic_update, 1); # update every second
 }
 periodic_update();
