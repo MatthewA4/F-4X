@@ -80,6 +80,8 @@
     <function name="aero/coefficient/CL/CL_BASIC">
       <description>CL_BASIC</description>
       <product>
+          <!-- Apply a simple Prandtl-Glauert style compressibility correction factor (table-based, saturated) -->
+          <property>aero/comp/pg</property>
           <property>aero/qbar-psf</property>
           <property>metrics/Sw-sqft</property>
           <sum>
@@ -1170,9 +1172,34 @@
                   <property>aero/coefficient/CD/CD_BASIC</property>
                   <property>aero/coefficient/CD/CDM </property>
 	          <property>aero/coefficient/CD/CDDF </property>
+
+            <!-- Wave drag due to transonic/supersonic flow (empirical) -->
+            <function name="aero/coefficient/CD/CD_WAVE">
+              <description>Wave drag increment vs Mach</description>
+              <product>
+                <property>aero/qbar-psf</property>
+                <property>metrics/Sw-sqft</property>
+                <table>
+                  <independentVar lookup="row">velocities/mach</independentVar>
+                  <tableData>
+                    0.70  0.000
+                    0.75  0.000
+                    0.80  0.002
+                    0.85  0.006
+                    0.90  0.015
+                    0.95  0.035
+                    1.00  0.080
+                    1.20  0.150
+                    1.60  0.250
+                    2.00  0.400
+                  </tableData>
+                </table>
+              </product>
+            </function>
 		  <property>aero/coefficient/CD/Drag_gear</property>
 		  <property>aero/coefficient/CD/Drag_speedbrake</property>
-                  <property>aero/coefficient/CD/CD_Stores</property>
+                    <property>aero/coefficient/CD/CD_Stores</property>
+                    <property>aero/coefficient/CD/CD_WAVE</property>
               </sum>
           </function>
         </axis>
@@ -1208,6 +1235,28 @@
         <p> aero/coefficient/CR/CRDR </p>
       </sum>
       </function>
+
+    <!-- Compressibility / Prandtl-Glauert style correction (saturated to avoid singularity) -->
+    <function name="aero/comp/pg">
+      <description>Compressibility correction factor (empirical table). Values >1 increase effective lift/rotational terms near transonic.</description>
+      <table>
+        <independentVar lookup="row">velocities/mach</independentVar>
+        <tableData>
+          0.0  1.000
+          0.6  1.020
+          0.7  1.060
+          0.75 1.120
+          0.80 1.250
+          0.85 1.600
+          0.90 2.000
+          0.95 2.800
+          1.00 2.800
+          1.20 2.500
+          1.60 2.000
+          2.00 1.800
+        </tableData>
+      </table>
+    </function>
 
   </axis>
 

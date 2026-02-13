@@ -39,11 +39,31 @@
 </product>
   </function>
 
+  <!-- Ram/Inlet recovery factor vs Mach (simple empirical table) -->
+  <function name="thrust/ram-recovery">
+    <description>Ram recovery factor to account for inlet losses at transonic/supersonic speeds</description>
+    <table>
+      <independentVar lookup="row">velocities/mach</independentVar>
+      <tableData>
+        0.0  1.000
+        0.6  0.995
+        0.8  0.985
+        0.9  0.970
+        1.0  0.940
+        1.2  0.900
+        1.6  0.820
+        2.0  0.750
+      </tableData>
+    </table>
+  </function>
+
   <function name="MilThrust">
-   <table>
-    <independentVar lookup="row">velocities/mach</independentVar>
-    <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-    <tableData>
+    <product>
+     <property>thrust/ram-recovery</property>
+     <table>
+      <independentVar lookup="row">velocities/mach</independentVar>
+      <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+      <tableData>
           -10000       0   10000   20000   30000   40000   50000   60000   90000
       0.0  1.2600  1.0000  0.7400  0.5340  0.3720  0.2410  0.1490  0.0580  0
       0.2  1.1692  0.9326  0.6959  0.5052  0.3545  0.2306  0.1428  0.0399  0
@@ -53,15 +73,18 @@
       1.0  1.3585  1.1114  0.8643  0.6460  0.4713  0.3126  0.1935  0.0625  0
       1.2  1.4713  1.2186  0.9660  0.7371  0.5400  0.3606  0.2229  0.0733  0
       1.4  1.5769  1.3256  1.0743  0.8359  0.6212  0.4194  0.2602  0.0890  0
-    </tableData>
-   </table>
+     </tableData>
+    </table>
+   </product>
   </function>
 
   <function name="AugThrust">
-   <table>
-    <independentVar lookup="row">velocities/mach</independentVar>
-    <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-    <tableData>
+    <product>
+     <property>thrust/ram-recovery</property>
+     <table>
+      <independentVar lookup="row">velocities/mach</independentVar>
+      <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+      <tableData>
            -10000       0   10000   20000   30000   40000   50000   60000
      0.0    1.1816  1.0000  0.8184  0.6627  0.5280  0.3756  0.2327  0
      0.2    1.1308  0.9599  0.7890  0.6406  0.5116  0.3645  0.2258  0
@@ -77,8 +100,9 @@
      2.2    1.9700  1.6900  1.4100  1.2400  0.9100  0.6359  0.3940  0
      2.4    2.0700  1.8000  1.5300  1.3400  1.0000  0.7200  0.4600  0
      2.6    2.2000  1.9200  1.6400  1.4400  1.1000  0.8000  0.5200  0
-    </tableData>
-   </table>
+     </tableData>
+    </table>
+   </product>
   </function>
 
 </turbine_engine>
