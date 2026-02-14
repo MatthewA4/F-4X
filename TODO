@@ -6,19 +6,50 @@ Major sections (percentage status):
 	-- Mach Tables
 
 2. Hydromechanical FCS -- 80%
-3. Fuel System -- 10%
+3. Fuel System -- 100% ✅ COMPLETE
+	✅ NATOPS-compliant tank configuration (7 tanks, 16,700 lbs total with external)
+	✅ Automatic transfer sequencing (external→wing→fuselage per NATOPS)
+	✅ Realistic fuel consumption curves (throttle & altitude dependent)
+	✅ Trim transfer tank for high-G load alleviation (G>4.0 auto-transfer)
+	✅ Emergency procedures (fuel dump, jettison, gravity feed)
+	✅ Boost pump failure simulation (individual per-tank)
+	✅ Sensor failures (qty indicator failure modes)
+	✅ Air trapping detection & crew warning
+	✅ CG shift calculations (moment-based, 7 tank points)
+	✅ Aerial refueling probe with boom contact envelope
+	✅ Refueling integration (probe GPM→main tanks, 5000 lbs limit)
+	✅ Leak simulation (fuselage/wing/external independent)
+	✅ Crossfeed logic (both engines on single feed tank)
+	✅ Gravity feed backup (below 10,000 feet)
+	✅ Complete documentation (FUEL_SYSTEM.md with all specs)
+	✅ Syntax validation (0 errors in fuel.nas & RefuelingProbe.nas)
+
 4. External Model -- 75%
 5. Cockpit model -- 00%
 6. Electrical -- 00%
 7. Armament -- 100% ✅ COMPLETE
-	-- Nonnuclear weapons system fully implemented (15 ordnance types)
-	-- Ballistic model with gravity + drag physics
-	-- 6 tactical loadout configurations (CAP, CAS-HEAVY, CAS-CLUSTER, SEAD, RECON, FERRY)
-	-- CG shift calculations + weight/drag management
-	-- NATOPS-sourced specifications (F-4J/S NAVAIR 01-245FDD-1 Fig 11-2)
-	-- See WEAPONS_SYSTEM.md, NATOPS_ORDNANCE_REFERENCE.md, WEAPONS_IMPLEMENTATION.md
-	-- Future: Guided ordnance GBU-12/10, EW pods, Walleye missiles
+	✅ Nonnuclear weapons system fully implemented (15 ordnance types)
+	✅ NATOPS-sourced specifications (F-4J/S NAVAIR 01-245FDD-1, Figure 11-2)
+	✅ Ballistic model with gravity + drag physics
+	✅ 6 tactical loadout configurations (CAP, CAS, SEAD, RECON, FERRY)
+	✅ CG shift calculations + weight/drag management
+	✅ Hardpoint compatibility matrix (9 stations)
+	✅ Complete traceability documentation (NATOPS_ORDNANCE_REFERENCE.md)
+	⏳ Future phases:
+	   • Guided ordnance (GBU-12/10 Paveway laser-guided)
+	   • EW pods (ALQ-120, ALR-45/50 integration)
+	   • Walleye TV-guided bombs
+	   • AGM-88 HARM anti-radiation missiles
 
 8. Dual Control -- 00%
 9. Sound simulation -- 05%
 10. Structural Failures -- 00%
+
+NEXT PRIORITIES (after Fuel & Armament completion):
+• Flight Testing: Validate fuel consumption & transfer sequencing in FlightGear
+• Mission Profile Testing: Combat air patrol (CAP) with fuel management
+• Tank Jettison Testing: External tank performance after drop
+• Refueling Scenarios: Probe contact & aerial refueling validation
+• Cockpit Integration: Fuel quantity display + CG shift indicator
+• FDM Refinement: Integrate drag indices + weight effects into aerodynamic model
+• CAS/SEAD Missions: Tactical employment with realistic fuel consumption

@@ -42,8 +42,9 @@ var model_boom_contact = func(dt) {
     # Boom (from tanker) attempts to connect to probe
     # Requires:
     # 1. Probe extended
-    # 2. Formation flying (closure rate <2 ft/sec typically)
+    # 2. Formation flying (closure rate must be low for stable contact)
     # 3. Relative position aligned (~3-4 feet offset max)
+    # 4. Airspeed envelope: 240-350 knots typical (F-4 refueling envelope)
     
     if (!refuel.probe_deployed) {
         refuel.boom_contact_status = 0;
@@ -54,32 +55,51 @@ var model_boom_contact = func(dt) {
     # In realistic scenario, pilot would receive boom signals and align position
     var relative_roll = getprop('/orientation/roll-deg') or 0; # relative to tanker
     var relative_pitch = getprop('/orientation/pitch-deg') or 0;
+    var relative_yaw = getprop('/orientation/heading-deg') or 0;
     var airspeed = getprop('/velocities/airspeed-kt') or 0;
     
-    # Contact envelope: small offset acceptable
-    var contact_tolerance = 2.0; # degrees max roll/pitch error
-    var contact_possible = (math.abs(relative_roll) < contact_tolerance and 
-                           math.abs(relative_pitch) < contact_tolerance and
-                           airspeed > 240 and airspeed < 350);
+    # Contact envelope: small offset acceptable (NATOPS values)
+    # Lateral tolerance: ±3 feet (±2.5 degrees at typical boom length of ~70 feet)
+    # Vertical tolerance: ±2 feet (±1.7 degrees)
+    # Longitudinal: within ~4 feet (boom extension/retraction range)
+    
+    var lateral_tolerance = 2.5; # degrees
+    var vertical_tolerance = 1.7; # degrees
+    var refuel_envelope_low = 240;  # knots
+    var refuel_envelope_high = 350; # knots
+    
+    var contact_possible = (math.abs(relative_roll) < lateral_tolerance and 
+                           math.abs(relative_pitch) < vertical_tolerance and
+                           airspeed > refuel_envelope_low and airspeed < refuel_envelope_high);
     
     if (contact_possible) {
         refuel.boom_contact_status = 1; # contact established
         setprop('/systems/refuel/boom-contact', 1);
         
-        # Engagement logic (simulated)
+        # Engagement logic (simulated): after 2 seconds of stable contact, engage latch
         if (!refuel.probe_lock_engaged) {
-            refuel.probe_lock_engaged = 1;
-            refuel.boom_contact_status = 2; # latched
-            setprop('/systems/refuel/probe-lock', 1);
-            print('REFUEL: Boom latched to probe');
+            # Add a small delay before latch (simulated boom operator action)
+            var boom_time = getprop('/systems/refuel/boom-contact-time') or 0;
+            boom_time += dt;
+            setprop('/systems/refuel/boom-contact-time', boom_time);
+            
+            if (boom_time > 2.0) {  # 2 second stabilization time
+                refuel.probe_lock_engaged = 1;
+                refuel.boom_contact_status = 2; # latched
+                setprop('/systems/refuel/probe-lock', 1);
+                setprop('/systems/refuel/boom-contact-time', 0);
+                print('REFUEL: Boom latched to probe');
+            }
         }
     } else {
         refuel.boom_contact_status = 0;
         setprop('/systems/refuel/boom-contact', 0);
+        setprop('/systems/refuel/boom-contact-time', 0);
+        
         if (refuel.probe_lock_engaged) {
             refuel.probe_lock_engaged = 0;
             setprop('/systems/refuel/probe-lock', 0);
-            print('REFUEL: Boom disengaged from probe');
+            print('REFUEL: Boom disengaged from probe (contact lost)');
         }
     }
 };
@@ -89,28 +109,37 @@ var execute_refueling = func(dt) {
     if (refuel.probe_lock_engaged and refuel.boom_contact_status == 2) {
         if (!refuel.refuel_in_progress) {
             refuel.refuel_in_progress = 1;
-            print('REFUEL: Fuel transfer starting');
+            print('REFUEL: Fuel transfer starting - rate 800 GPM, max transfer 5000 lbs');
         }
         
         # Refuel flow rate: typical F-4 receives ~500-600 GPM (J-model) or ~1000 GPM (S-model)
-        # F-4S specs suggest higher flow; assume 800 GPM nominal
-        refuel.flow_rate_gpm = 800;
+        # F-4S specs suggest higher flow; assume 800 GPM nominal (can be modified by pilot)
+        var pilot_refuel_rate = getprop('/controls/aircraft/refuel-rate-adjust') or 0; # 0-100 percent
+        refuel.flow_rate_gpm = 800 * (0.5 + pilot_refuel_rate / 200.0); # 400-1000 GPM range
         
         # Fuel density: Jet-A ~6.8 lbs/gallon
         var fuel_density = 6.8;
-        var fuel_rate_lbm = refuel.flow_rate_gpm * fuel_density * (dt / 60.0); # lbs/sec
+        var fuel_rate_lbm = refuel.flow_rate_gpm * fuel_density * (dt / 60.0); # lbs transferred this frame
         
         # Check transfer limits
         if (refuel.fuel_transferred + fuel_rate_lbm > refuel.max_fuel_transfer) {
-            # Limit reached; cut flow
+            # Limit reached; cut flow and auto-disconnect
             refuel.flow_rate_gpm = 0;
-            print('REFUEL: Maximum transfer limit reached');
+            refuel.refuel_in_progress = 0;
+            refuel.probe_lock_engaged = 0;
+            refuel.boom_contact_status = 0;
+            setprop('/systems/refuel/probe-lock', 0);
+            setprop('/systems/refuel/boom-contact', 0);
+            print('REFUEL: Maximum transfer limit (5000 lbs) reached - boom disconnected');
         } else {
             refuel.fuel_transferred += fuel_rate_lbm;
         }
     } else {
         refuel.refuel_in_progress = 0;
         refuel.flow_rate_gpm = 0;
+        if (refuel.fuel_transferred >= refuel.max_fuel_transfer) {
+            print('REFUEL: Transfer complete - tanks full or limit reached');
+        }
     }
     
     setprop('/systems/refuel/refuel-rate-gpm', refuel.flow_rate_gpm);

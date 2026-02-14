@@ -5,7 +5,8 @@ var fus_fwd_capacity = 2200;
 var fus_ctr_capacity = 2200;
 var fus_aft_capacity = 2200;
 var fus_feed_capacity = 700; # Feed tank (small, always kept full if possible)
-var fuselage_capacity = fus_fwd_capacity + fus_ctr_capacity + fus_aft_capacity + fus_feed_capacity;
+var fus_trim_capacity = 600; # Trim transfer tank (NATOPS: for high-G load alleviation)
+var fuselage_capacity = fus_fwd_capacity + fus_ctr_capacity + fus_aft_capacity + fus_feed_capacity + fus_trim_capacity;
 
 var wing_left_capacity = 1000;
 var wing_right_capacity = 1000;
@@ -20,6 +21,7 @@ var fus_fwd_qty = fus_fwd_capacity;
 var fus_ctr_qty = fus_ctr_capacity;
 var fus_aft_qty = fus_aft_capacity;
 var fus_feed_qty = fus_feed_capacity;
+var fus_trim_qty = 0; # Start empty (will fill during flight as needed)
 
 var wing_left_qty = wing_left_capacity;
 var wing_right_qty = wing_right_capacity;
@@ -39,11 +41,65 @@ var fuselage_leak_rate = 2.0;
 var wing_leak_rate = 1.0;
 var external_leak_rate = 3.0;
 
-# Fuel flow per engine (lbs/sec, typical cruise)
-var engine_flow = 1.2;
+# Fuel consumption curves (lbs/sec per engine)
+# Based on NATOPS F-4J/S thrust data at various altitudes/throttle settings
+# Idle: ~0.3 lbs/sec per engine
+# Military power (mil): ~1.2-1.5 lbs/sec per engine (varies by altitude)
+# Full afterburner (AB): ~3.5-4.5 lbs/sec per engine (varies by altitude)
+
+var calculate_fuel_flow = func(throttle, altitude_ft) {
+    # throttle: 0.0 (idle) to 2.0 (full AB)
+    # Returns fuel flow rate in lbs/sec per engine
+    
+    # Default cruise consumption
+    var idle_flow = 0.3;
+    var mil_flow = 1.2;
+    var ab_flow = 4.0;
+    
+    # Altitude correction factor (fuel consumption increases at altitude due to lean mixture)
+    # Simple model: 5% increase per 10,000 feet
+    var altitude_factor = 1.0 + (altitude_ft / 10000) * 0.05;
+    altitude_factor = math.min(altitude_factor, 1.8); # cap at 80% increase (50,000 ft)
+    
+    var flow = 0;
+    if (throttle <= 1.0) {
+        # Idle to military power (linear interpolation)
+        flow = idle_flow + (mil_flow - idle_flow) * throttle;
+    } else {
+        # Military to full afterburner (linear interpolation)
+        flow = mil_flow + (ab_flow - mil_flow) * (throttle - 1.0);
+    }
+    
+    # Apply altitude correction
+    flow *= altitude_factor;
+    
+    return flow;
+}
+
+# Pilot inputs for emergency procedures
+var emergency_jettison_active = 0;
+var manual_feed_selector = -1; # -1 = auto, 0 = forward, 1 = center, 2 = aft
 
 # Helper: get property or default
 var getp = func(p, d) { return getprop(p) != nil ? getprop(p) : d; }
+
+# Trim transfer logic: moves fuel between fwd and aft tanks to maintain CG during high-G
+# NATOPS procedure: At high G, transfer fuel aft to maintain trim
+var transfer_trim = func(g_load) {
+    # g_load: current sustained G from flight dynamics
+    # At G > 4, start moving fuel from fwd to trim tank (max ~2 lbs/sec)
+    
+    if (g_load > 4.0 and fus_fwd_qty > unusable_fuselage and fus_trim_qty < fus_trim_capacity) {
+        var transfer_rate = math.min(2.0, fus_trim_capacity - fus_trim_qty, fus_fwd_qty - unusable_fuselage);
+        fus_fwd_qty -= transfer_rate;
+        fus_trim_qty += transfer_rate;
+    } elsif (g_load <= 2.0 and fus_trim_qty > unusable_fuselage) {
+        # Dump trim tank back to fwd at 1.5 lbs/sec
+        var transfer_rate = math.min(1.5, fus_trim_qty - unusable_fuselage, fus_fwd_capacity - fus_fwd_qty);
+        fus_trim_qty -= transfer_rate;
+        fus_fwd_qty += transfer_rate;
+    }
+}
 
 # Transfer logic for external tanks to fuselage (to feed tank first, then to other fuselage tanks)
 var transfer_external_to_fuselage = func(ext_attached) {
@@ -241,7 +297,7 @@ var update_fuel = func {
         setprop("/systems/fuel/gravity-feed", 0);
     }
 
-    # Engine feed logic: only from feed tank (crossfeed allows both engines to use any feed tank)
+    # Engine feed logic: fetch actual throttle and altitude for consumption calculation
     var total_flow = 0;
     var feed_available = (pump_fuselage or gravity_feed) and (fus_feed_qty > unusable_fuselage);
     var engine1_flameout = 0;
@@ -250,11 +306,23 @@ var update_fuel = func {
         var engines_active = 0;
         if (engine1_feed) engines_active += 1;
         if (engine2_feed) engines_active += 1;
-        var total_needed = engines_active * engine_flow;
+        
+        # Get actual throttle and altitude for fuel flow calculation
+        var throttle1 = getp("/controls/engines/engine[0]/throttle", 0);
+        var throttle2 = getp("/controls/engines/engine[1]/throttle", 0);
+        var altitude = get_altitude();
+        
+        # Calculate per-engine fuel flow
+        var flow1 = calculate_fuel_flow(throttle1, altitude);
+        var flow2 = calculate_fuel_flow(throttle2, altitude);
+        var total_needed = 0;
+        if (engine1_feed) total_needed += flow1;
+        if (engine2_feed) total_needed += flow2;
+        
         var drawn = draw_feed_fuel(total_needed);
         total_flow += drawn;
-        if (drawn < engine_flow and engine1_feed) engine1_flameout = 1;
-        if (drawn < engine_flow and engine2_feed) engine2_flameout = 1;
+        if (drawn < flow1 and engine1_feed) engine1_flameout = 1;
+        if (drawn < flow2 and engine2_feed) engine2_flameout = 1;
     } else {
         if (engine1_feed) engine1_flameout = 1;
         if (engine2_feed) engine2_flameout = 1;
@@ -267,12 +335,17 @@ var update_fuel = func {
     } else {
         air_trap = 0;
     }
+    
+    # Trim transfer logic: manage CG at high G (NATOPS procedure)
+    var g_load = getp("/accelerations/n-accel-pilot-g", 1.0);
+    transfer_trim(g_load);
 
-    # CG shift: more accurate, based on tank positions
+    # CG shift: more accurate, based on tank positions including trim tank
     cg_shift = (
         (fus_fwd_qty / fus_fwd_capacity) * 0.2 +
         (fus_ctr_qty / fus_ctr_capacity) * 0.1 +
         (fus_aft_qty / fus_aft_capacity) * -0.2 +
+        (fus_trim_qty / fus_trim_capacity) * -0.25 +
         (wing_left_qty / wing_left_capacity + wing_right_qty / wing_right_capacity) * -0.1 +
         (external_qtys[0] / ext_center_capacity) * -0.15 +
         ((external_qtys[1] + external_qtys[2]) / (2 * ext_wing_capacity)) * -0.1
@@ -283,6 +356,7 @@ var update_fuel = func {
     fus_ctr_qty = math.max(math.min(fus_ctr_qty, fus_ctr_capacity), unusable_fuselage);
     fus_aft_qty = math.max(math.min(fus_aft_qty, fus_aft_capacity), unusable_fuselage);
     fus_feed_qty = math.max(math.min(fus_feed_qty, fus_feed_capacity), unusable_fuselage);
+    fus_trim_qty = math.max(math.min(fus_trim_qty, fus_trim_capacity), unusable_fuselage);
     wing_left_qty = math.max(math.min(wing_left_qty, wing_left_capacity), unusable_wing);
     wing_right_qty = math.max(math.min(wing_right_qty, wing_right_capacity), unusable_wing);
     forindex(var i; external_qtys) {
@@ -291,11 +365,11 @@ var update_fuel = func {
     }
 
     # Set properties for instruments and systems (simulate sensor failure)
-    setprop("/systems/fuel/qty-fuselage", sensor_fail.fuselage ? -1 : fus_fwd_qty + fus_ctr_qty + fus_aft_qty + fus_feed_qty);
+    setprop("/systems/fuel/qty-fuselage", sensor_fail.fuselage ? -1 : fus_fwd_qty + fus_ctr_qty + fus_aft_qty + fus_feed_qty + fus_trim_qty);
     setprop("/systems/fuel/qty-wing", sensor_fail.wing ? -1 : wing_left_qty + wing_right_qty);
     setprop("/systems/fuel/qty-external", sensor_fail.external ? -1 : external_qtys[0] + external_qtys[1] + external_qtys[2]);
     setprop("/systems/fuel/qty-total", (sensor_fail.fuselage or sensor_fail.wing or sensor_fail.external) ? -1 :
-        fus_fwd_qty + fus_ctr_qty + fus_aft_qty + fus_feed_qty + wing_left_qty + wing_right_qty + external_qtys[0] + external_qtys[1] + external_qtys[2]);
+        fus_fwd_qty + fus_ctr_qty + fus_aft_qty + fus_feed_qty + fus_trim_qty + wing_left_qty + wing_right_qty + external_qtys[0] + external_qtys[1] + external_qtys[2]);
     setprop("/systems/fuel/cg-shift", cg_shift);
 
     # Set engine flameout properties
@@ -326,6 +400,49 @@ var update_fuel = func {
             }
         }
     }
+    
+    # Emergency fuel jettison: dump ALL external tanks immediately (NATOPS emergency procedure)
+    var emergency_jettison = getp("/systems/fuel/emergency-jettison", 0);
+    if (emergency_jettison and !emergency_jettison_active) {
+        # Trigger jettison
+        emergency_jettison_active = 1;
+        forindex(var i; external_qtys) {
+            external_qtys[i] = 0;
+            ext_attached[i] = 0;
+        }
+        print("FUEL: Emergency jettison triggered - all external tanks dropped");
+        setprop("/systems/fuel/emergency-jettison", 0);
+    } elsif (!emergency_jettison) {
+        emergency_jettison_active = 0;
+    }
+    
+    # Handle refueling probe fuel transfer to main fuel system
+    var refuel_rate = getp("/systems/refuel/refuel-rate-gpm", 0);
+    if (refuel_rate > 0) {
+        # Convert GPM to lbs/sec (6.8 lbs per gallon for Jet-A)
+        var refuel_lbs_sec = refuel_rate * 6.8 / 60.0; 
+        
+        # Add fuel to feed tank first, then other tanks as needed
+        var to_feed = math.min(refuel_lbs_sec, fus_feed_capacity - fus_feed_qty);
+        fus_feed_qty += to_feed;
+        var remaining = refuel_lbs_sec - to_feed;
+        
+        if (remaining > 0) {
+            var to_fwd = math.min(remaining / 3, fus_fwd_capacity - fus_fwd_qty);
+            fus_fwd_qty += to_fwd;
+            remaining -= to_fwd;
+        }
+        if (remaining > 0) {
+            var to_ctr = math.min(remaining / 2, fus_ctr_capacity - fus_ctr_qty);
+            fus_ctr_qty += to_ctr;
+            remaining -= to_ctr;
+        }
+        if (remaining > 0) {
+            var to_aft = math.min(remaining, fus_aft_capacity - fus_aft_qty);
+            fus_aft_qty += to_aft;
+            remaining -= to_aft;
+        }
+    }
 };
 
 # Periodic update
@@ -339,6 +456,7 @@ setprop("/systems/fuel/qty-fuselage-fwd", sensor_fail.fuselage ? -1 : fus_fwd_qt
 setprop("/systems/fuel/qty-fuselage-ctr", sensor_fail.fuselage ? -1 : fus_ctr_qty);
 setprop("/systems/fuel/qty-fuselage-aft", sensor_fail.fuselage ? -1 : fus_aft_qty);
 setprop("/systems/fuel/qty-fuselage-feed", sensor_fail.fuselage ? -1 : fus_feed_qty);
+setprop("/systems/fuel/qty-fuselage-trim", sensor_fail.fuselage ? -1 : fus_trim_qty);
 setprop("/systems/fuel/qty-wing-left", sensor_fail.wing ? -1 : wing_left_qty);
 setprop("/systems/fuel/qty-wing-right", sensor_fail.wing ? -1 : wing_right_qty);
 setprop("/systems/fuel/qty-external-center", sensor_fail.external ? -1 : external_qtys[0]);
