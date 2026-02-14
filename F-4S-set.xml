@@ -232,6 +232,7 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/src/InletControl.nas</file>
 			<file>Aircraft/F-4X/src/AfterburnerDynamics.nas</file>
 			<file>Aircraft/F-4X/src/BleedAirSystem.nas</file>
+			<file>Aircraft/F-4X/src/EngineSurge.nas</file>
 		</J79>
 		<damage>
 			<file>Aircraft/F-4X/src/damage.nas</file>
@@ -242,11 +243,17 @@ See LICENSE file for the GPL version 2 text.
 		<aerodynamics>
 			<file>Aircraft/F-4X/src/TransonicShockEffects.nas</file>
 			<file>Aircraft/F-4X/src/TrimDragEffects.nas</file>
+			<file>Aircraft/F-4X/src/DeparturePreventionSystem.nas</file>
 		</aerodynamics>
 		<systems>
 			<file>Aircraft/F-4X/src/FuelCGManagement.nas</file>
 			<file>Aircraft/F-4X/src/LandingGearDamping.nas</file>
+			<file>Aircraft/F-4X/src/SpinRecoveryChute.nas</file>
+			<file>Aircraft/F-4X/src/RefuelingProbe.nas</file>
 		</systems>
+		<pilot>
+			<file>Aircraft/F-4X/src/PilotPhysiology.nas</file>
+		</pilot>
 	</nasal>
 
 	<systems>
