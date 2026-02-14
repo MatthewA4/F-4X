@@ -1,0 +1,24 @@
+<!-- Simple Radar system stub (APQ-120-like modes) -->
+<system name="Radar">
+
+  <channel name="Radar">
+    <!-- Mode request (0=OFF,1=SEARCH,2=TRACK) -->
+    <pure_gain name="avionics/radar/mode">
+      <input>avionics/radar/mode-request</input>
+      <gain>1.0</gain>
+    </pure_gain>
+
+    <!-- Lock flag (1 when radar has a track lock) -->
+    <pure_gain name="avionics/radar/lock">
+      <input>avionics/radar/lock</input>
+      <gain>1.0</gain>
+    </pure_gain>
+
+    <!-- Number of contacts (simple integer count) -->
+    <pure_gain name="avionics/radar/contacts">
+      <input>avionics/radar/contacts</input>
+      <gain>1.0</gain>
+    </pure_gain>
+  </channel>
+
+</system>

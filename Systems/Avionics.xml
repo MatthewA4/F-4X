@@ -1,0 +1,53 @@
+<!-- Avionics system: HUD, ADI, HSI, Radar & Mission Computer stubs -->
+<system name="Avionics">
+
+  <channel name="HUD">
+    <pure_gain name="avionics/hud/active">
+      <input>avionics/hud/enable</input>
+      <gain>1.0</gain>
+    </pure_gain>
+    <fcs_function name="avionics/hud/flight-data">
+      <function>
+        <sum>
+          <product>
+            <property>velocities/airspeed-kt</property>
+            <value>1.0</value>
+          </product>
+          <product>
+            <property>orientation/pitch-deg</property>
+            <value>1.0</value>
+          </product>
+        </sum>
+      </function>
+    </fcs_function>
+  </channel>
+
+  <channel name="Radar">
+    <!-- Simple radar state: modes and lock flags (stubs to be expanded) -->
+    <pure_gain name="avionics/radar/mode">
+      <input>avionics/radar/mode-request</input>
+      <gain>1.0</gain>
+    </pure_gain>
+
+    <switch name="avionics/radar/lock">
+      <default value="0"/>
+      <test value="1">
+        avionics/radar/mode eq 1
+      </test>
+    </switch>
+  </channel>
+
+  <channel name="MissionComputer">
+    <fcs_function name="avionics/mc/state">
+      <function>
+        <sum>
+          <product>
+            <property>fcs/refuel-probe-extended</property>
+            <value>0.1</value>
+          </product>
+        </sum>
+      </function>
+    </fcs_function>
+  </channel>
+
+</system>

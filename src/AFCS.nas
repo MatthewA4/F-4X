@@ -569,6 +569,7 @@ setprop("/afcs/annunciator/spin-suspected", 0);       # Spin-in-progress indicat
 setprop("/afcs/annunciator/recover-rudder-center-stick", 0); # Recovery procedure
 setprop("/afcs/spin-recovery-active", 0);             # Recovery procedure engaged flag
 setprop("/afcs/departure-warning-active", 0);         # Departure warning engaged flag
+setprop("/afcs/annunciator/weapons-fired", 0);
 
 var last_time = systime();
 var periodic_update = func {
@@ -587,6 +588,20 @@ var periodic_update = func {
     update_att_hold(dt);
     update_alt_hold(dt);
     update_annunciators();
+    # Avionics and cockpit instruments
+    if (typeof("update_avionics") != "nil") update_avionics(dt);
+    if (typeof("update_cockpit_instruments") != "nil") update_cockpit_instruments(dt);
+    if (typeof("update_radar") != "nil") update_radar(dt);
+    if (typeof("update_weapons") != "nil") update_weapons(dt);
+    if (typeof("update_stores") != "nil") update_stores(dt);
+    if (typeof("update_fuel") != "nil") update_fuel(dt);
+    if (typeof("update_hydraulics_manager") != "nil") update_hydraulics_manager(dt);
+    if (typeof("update_electrical_manager") != "nil") update_electrical_manager(dt);
+    if (typeof("update_weapons_ballistics") != "nil") update_weapons_ballistics(dt);
+    if (typeof("update_gears") != "nil") update_gears(dt);
+    if (typeof("update_env") != "nil") update_env(dt);
+    if (typeof("update_fcs_tuning") != "nil") update_fcs_tuning(dt);
+    if (typeof("update_bindings") != "nil") update_bindings(dt);
     # Ensure yaw command property exists for FCS input (default 0)
     setprop("/afcs/att/yaw-cmd", 0);
 

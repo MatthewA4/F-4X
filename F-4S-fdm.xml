@@ -66,6 +66,7 @@
 <system file="Systems/Stores.xml"/>
 <system file="Systems/SpinRecovery.xml"/>
 <system file="Systems/LandingDistance.xml"/>
+<system file="Systems/Avionics.xml"/>
 <flight_control name="none"/>
 
  <aerodynamics>

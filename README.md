@@ -237,6 +237,37 @@ Expected Glide Distance: 5-8 nm from altitude 10,000 ft
 
 ---
 
+### Refueling Probe Binding
+
+You can bind a joystick button or key to the probe-extension property so the pilot can request probe extension/retraction from the cockpit. The simulation reads `/controls/refueling/probe-extended` and enforces safe extension via `Systems/Refueling.xml`.
+
+Example `joystick.xml` snippet (user-level config) to toggle the probe with a button index:
+
+```xml
+   <button index="10">
+      <property>/controls/refueling/probe-extended</property>
+      <value>toggle</value>
+   </button>
+```
+
+Alternatively, bind any input in your FlightGear input configuration to the property `/controls/refueling/probe-extended` (0 = stowed, 1 = pilot-request-extended). The AFCS will only allow extension when the flight envelope is safe.
+
+
+## Developer smoke test
+
+I added a small Nasal test harness to exercise subsystem update loops without running the full sim.
+
+- `src/TestHarness.nas` exposes `run_smoke()` which calls the radar, weapons, stores, fuel, hydraulics, electrical, landing gear, env, and FCS tuning update functions with `dt=0.1`.
+
+To run the smoke test from a FlightGear Nasal prompt (or include the file and call it), load `src/TestHarness.nas` and run:
+
+```bash
+# inside FlightGear Nasal shell or via --script
+> run_smoke();
+```
+
+This will print status messages for radar contacts, missile launches, jettison sequences, RAT deployment, and other subsystems for quick validation.
+
 ## 📁 Project Structure
 
 ```
