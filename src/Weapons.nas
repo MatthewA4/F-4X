@@ -1,8 +1,15 @@
-# Weapons.nas - basic weapons manager for AIM-9 missile launch and HUD cueing
+# Weapons.nas - Air-to-air and air-to-ground weapons management for F-4J/S
+# Enhanced with nonnuclear ordnance support: Mk-series bombs, AGM missiles, rocket pods
+
+# Load OrdnanceDatabase for spec data
+io.load_nasal( getprop('/sim/fg-root') ~ '/Aircraft/F-4X/Systems', 'OrdnanceDatabase' );
 
 var weapons_state = {
     missiles = [], # list of {id, type, status, target_id, px,py,pz, vx,vy,vz}
+    ordnance = [], # list of bombs, rockets, air-to-ground missiles
     next_missile_id = 1,
+    next_ord_id = 1000,
+    active_loadout = 'CAP',
 };
 
 var load_missile = func(type) {
@@ -10,6 +17,69 @@ var load_missile = func(type) {
     weapons_state.next_missile_id += 1;
     weapons_state.missiles.push(m);
     return m;
+};
+
+# Create ordnance object (bombs, rockets, air-to-ground missiles) for release
+var load_ordnance = func(ordnance_type, hardpoint) {
+    var spec = get_ordnance_spec(ordnance_type);
+    if (spec == nil) {
+        print(sprintf('ERROR: Unknown ordnance type %s', ordnance_type));
+        return nil;
+    }
+    
+    var o = {
+        id: weapons_state.next_ord_id,
+        type: ordnance_type,
+        hardpoint: hardpoint,
+        spec: spec,
+        status: 'ready',
+        released: 0,
+        target_id: 0,
+        px: 0.0,
+        py: 0.0, 
+        pz: 0.0,
+        vx: 0.0,
+        vy: 0.0,
+        vz: 0.0,
+        fall_time: 0.0,
+        guidance_mode: 'ballistic',
+    };
+    
+    weapons_state.next_ord_id += 1;
+    weapons_state.ordnance.push(o);
+    return o;
+};
+
+# Apply a loadout configuration to aircraft
+var apply_loadout = func(config_name) {
+    var cfg = get_loadout_config(config_name);
+    if (cfg == nil) {
+        print(sprintf('ERROR: Unknown loadout %s', config_name));
+        return;
+    }
+    
+    print(sprintf('Applying loadout: %s - %s', config_name, cfg.name));
+    weapons_state.active_loadout = config_name;
+    
+    # Clear existing ordnance
+    for (var i = 0; i < 9; i += 1) {
+        setprop('/fcs/store['~i~']/weight-lb', 0);
+        setprop('/fcs/store['~i~']/jettisoned', 0);
+    }
+    weapons_state.ordnance = [];
+    weapons_state.missiles = [];
+    
+    # Load stores from config definition
+    foreach (var store; cfg.stores) {
+        var hardpoint = store.hardpoint;
+        var ord_type = store.ordnance;
+        if (is_compatible(hardpoint, ord_type)) {
+            var o = load_ordnance(ord_type, hardpoint);
+            setprop('/fcs/store['~hardpoint~']/weight-lb', o.spec.weight_lbs);
+        }
+    }
+    
+    setprop('/weapons/loadout-name', config_name);
 };
 
 var find_missile = func(id) {
@@ -70,6 +140,73 @@ var aim7_launch = func(missile_id) {
         print("AIM-7 launch aborted: no lock/target");
         return 0;
     }
+};
+
+# Air-to-ground missile launch: AGM-65 Maverick (TV-guided), AGM-45 Shrike (anti-radiation)
+var agm_launch = func(ordnance_id) {
+    for (var i = 0; i < weapons_state.ordnance.length; i += 1) {
+        var o = weapons_state.ordnance[i];
+        if (o.id == ordnance_id and o.status == 'ready') {
+            if (o.spec.subtype != 'air-to-ground') {
+                print("AGM launch: ordnance is not air-to-ground type");
+                return 0;
+            }
+            
+            o.status = 'launched';
+            o.released = 1;
+            var alt = getprop('/position/altitude-ft') or 0;
+            o.px = 0; o.py = 0; o.pz = alt;
+            
+            # Get aircraft velocity
+            var hdg = getprop('/orientation/heading-deg') * math.pi / 180.0;
+            var air_speed = getprop('/velocities/airspeed-kt') or 300;
+            var air_speed_fts = air_speed * 1.68781;
+            
+            o.vx = air_speed_fts * math.cos(hdg);
+            o.vy = air_speed_fts * math.sin(hdg);
+            o.vz = getprop('/velocities/vertical-speed-fps') or 0;
+            
+            setprop('/afcs/annunciator/weapons-fired', 1);
+            print(sprintf("AGM %s launched (id=%d) at altitude %.0f ft", o.type, ordnance_id, alt));
+            return 1;
+        }
+    }
+    return 0;
+};
+
+# Bomb or cluster ordnance release
+var release_ordnance = func(ordnance_id, mode) {
+    # mode: 'single', 'ripple', 'salvo'
+    for (var i = 0; i < weapons_state.ordnance.length; i += 1) {
+        var o = weapons_state.ordnance[i];
+        if (o.id == ordnance_id and o.status == 'ready') {
+            o.status = 'released';
+            o.released = 1;
+            o.fall_time = 0.0;
+            o.release_mode = mode;
+            
+            var alt = getprop('/position/altitude-ft') or 0;
+            o.px = 0; o.py = 0; o.pz = alt;
+            
+            # Inherit aircraft velocity at release
+            var hdg = getprop('/orientation/heading-deg') * math.pi / 180.0;
+            var air_speed = getprop('/velocities/airspeed-kt') or 300;
+            var air_speed_fts = air_speed * 1.68781;
+            
+            o.vx = air_speed_fts * math.cos(hdg);
+            o.vy = air_speed_fts * math.sin(hdg);
+            o.vz = getprop('/velocities/vertical-speed-fps') or 0;
+            
+            setprop('/afcs/annunciator/weapons-fired', 1);
+            print(sprintf("%s released (id=%d, mode=%s) at altitude %.0f ft", o.type, ordnance_id, mode, alt));
+            
+            # Mark hardpoint jettisoned in stores manager
+            setprop('/fcs/store['~o.hardpoint~']/jettisoned', 1);
+            
+            return 1;
+        }
+    }
+    return 0;
 };
 
 # Missile dynamics: simple proportional navigation / pure pursuit
@@ -171,6 +308,15 @@ var update_weapons = func(dt) {
     setprop('/weapons/missile-ready-count', ready_count);
     setprop('/weapons/next-ready-missile-id', first_ready);
 
+    # Count ordnance status
+    var ordnance_count = weapons_state.ordnance.length;
+    var ordnance_released = 0;
+    foreach (var o; weapons_state.ordnance) {
+        if (o.released) ordnance_released += 1;
+    }
+    setprop('/weapons/ordnance-count', ordnance_count);
+    setprop('/weapons/ordnance-released', ordnance_released);
+
     # Update missile dynamics
     update_missiles(dt);
 
@@ -179,19 +325,17 @@ var update_weapons = func(dt) {
     if (fired) setprop('/afcs/annunciator/weapons-fired', 0);
 };
 
-# Initialize some missiles for the demo
-load_missile('AIM-9');
-load_missile('AIM-9');
-load_missile('AIM-7');
-load_missile('AIM-7');
+# Initialize default CAP loadout and properties
+apply_loadout('CAP');
 
 setprop('/weapons/missile-ready-count', 0);
 setprop('/weapons/next-ready-missile-id', 0);
-setprop('/weapons/aim9-ready', 2);
-setprop('/weapons/aim7-ready', 2);
-setprop('/weapons/gun-ammo', 2000);
+setprop('/weapons/ordnance-count', 0);
+setprop('/weapons/ordnance-released', 0);
+setprop('/weapons/gun-ammo', 640);
 setprop('/weapons/gun-cmd', 0);
 setprop('/weapons/bomb-release', 0);
+setprop('/weapons/loadout-name', 'CAP');
 
 var update_weapons_manager = func(dt) {
     update_weapons(dt);

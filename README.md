@@ -33,6 +33,14 @@ A comprehensive, NATOPS-compliant flight simulation of the McDonnell Douglas F-4
 - Fuel system with complex tank sequencing and jettison logic
 - Electrical system with generator N2 control and AC/DC bus logic
 
+✅ **Enhanced Nonnuclear Weapons System**
+- **6 tactical loadout configurations**: CAP, CAS-HEAVY, CAS-CLUSTER, SEAD, RECON, FERRY
+- **15+ ordnance types**: AIM-9/7 missiles, AGM-65/45, Mk-82/83/84 bombs, cluster munitions, rocket pods
+- **Realistic ballistics**: Gravity-based bomb trajectories with drag model
+- **Stores management**: Weight tracking, drag calculation (9 hardpoints), CG shift computation
+- **Hardpoint compatibility matrix**: Automatic validation of store/hardpoint pairing
+- [Full documentation: WEAPONS_SYSTEM.md](WEAPONS_SYSTEM.md)
+
 ---
 
 ## 🚀 Quick Start
