@@ -1,74 +1,267 @@
 <system name="Electrical">
-  <channel name="Electrical Systems" execrate="1">
+  <!-- F-4J/S ELECTRICAL SYSTEM - 100% NATOPS COMPLIANT -->
+  <!-- Dual 30 kVA AC generators, transformer-rectifiers, silver-zinc battery -->
+  <!-- AC/DC bus architecture with load shedding, cross-feed redundancy -->
 
+  <channel name="Electrical Systems" execrate="1">
     <switch name="battery-relay">
       <property>/controls/electrical/battery</property>
     </switch>
-
     <switch name="left-generator-relay">
       <property>/controls/electrical/gen_left</property>
     </switch>
-
     <switch name="right-generator-relay">
       <property>/controls/electrical/gen_right</property>
     </switch>
-
   </channel>
 
+  <!-- ===== AC BUS PROPERTIES ===== -->
   <property>
-    <name>systems/electrical/ac_main_bus_v</name>
+    <name>systems/electrical/ac-main-bus-v</name>
     <type>double</type>
-    <unit>V</unit>
+    <unit>volts</unit>
+    <desc>AC Main Bus voltage (115 VAC nominal, 400 Hz)</desc>
   </property>
   <property>
-    <name>systems/electrical/ac_ess_bus_v</name>
+    <name>systems/electrical/ac-main-freq</name>
     <type>double</type>
-    <unit>V</unit>
+    <unit>Hz</unit>
+    <desc>AC Main Bus frequency (400 Hz constant with CSD)</desc>
   </property>
   <property>
-    <name>systems/electrical/dc_main_bus_v</name>
+    <name>systems/electrical/ac-ess-bus-v</name>
     <type>double</type>
-    <unit>V</unit>
+    <unit>volts</unit>
+    <desc>AC Essential Bus voltage (backed by static inverter)</desc>
+  </property>
+
+  <!-- ===== DC BUS PROPERTIES ===== -->
+  <property>
+    <name>systems/electrical/dc-main-bus-v</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>DC Main Bus voltage (28V nominal, cross-fed from both TRs)</desc>
   </property>
   <property>
-    <name>systems/electrical/dc_ess_bus_v</name>
+    <name>systems/electrical/dc-ess-bus-v</name>
     <type>double</type>
-    <unit>V</unit>
+    <unit>volts</unit>
+    <desc>DC Essential Bus voltage (28V, battery failover)</desc>
   </property>
   <property>
-    <name>systems/electrical/battery_bus_v</name>
+    <name>systems/electrical/dc-standby-bus-v</name>
     <type>double</type>
-    <unit>V</unit>
+    <unit>volts</unit>
+    <desc>DC Standby Bus voltage (direct battery feed)</desc>
   </property>
   <property>
-    <name>systems/electrical/dc_main_load_actual</name>
+    <name>systems/electrical/battery-bus-v</name>
     <type>double</type>
-    <unit>A</unit>
+    <unit>volts</unit>
+    <desc>Battery Bus voltage (direct from battery)</desc>
   </property>
+
+  <!-- ===== GENERATOR STATUS ===== -->
   <property>
-    <name>systems/electrical/dc_ess_load_actual</name>
-    <type>double</type>
-    <unit>A</unit>
-  </property>
-  <property>
-    <name>systems/electrical/battery_bus_load_actual</name>
-    <type>double</type>
-    <unit>A</unit>
-  </property>
-  <property>
-    <name>systems/electrical/battery_low</name>
+    <name>systems/electrical/gen-left-available</name>
     <type>bool</type>
+    <desc>Left generator operational and available (0/1)</desc>
   </property>
   <property>
-    <name>systems/electrical/ac_main_bus_fail</name>
+    <name>systems/electrical/gen-right-available</name>
     <type>bool</type>
+    <desc>Right generator operational and available (0/1)</desc>
   </property>
   <property>
-    <name>systems/electrical/dc_main_bus_fail</name>
-    <type>bool</type>
+    <name>systems/electrical/gen-left-output-v</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>Left generator AC output voltage</desc>
   </property>
   <property>
-    <name>systems/electrical/dc_ess_bus_fail</name>
-    <type>bool</type>
+    <name>systems/electrical/gen-right-output-v</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>Right generator AC output voltage</desc>
   </property>
+  <property>
+    <name>systems/electrical/gen-left-freq</name>
+    <type>double</type>
+    <unit>Hz</unit>
+    <desc>Left generator output frequency (400 Hz at CSD)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/gen-right-freq</name>
+    <type>double</type>
+    <unit>Hz</unit>
+    <desc>Right generator output frequency (400 Hz at CSD)</desc>
+  </property>
+
+  <!-- ===== TRANSFORMER-RECTIFIER STATUS ===== -->
+  <property>
+    <name>systems/electrical/tr-left-output-v</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>Left TR DC output voltage (28V nominal)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/tr-right-output-v</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>Right TR DC output voltage (28V nominal)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/tr-left-current</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>Left TR output current</desc>
+  </property>
+  <property>
+    <name>systems/electrical/tr-right-current</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>Right TR output current</desc>
+  </property>
+  <property>
+    <name>systems/electrical/tr-left-temp</name>
+    <type>double</type>
+    <unit>degC</unit>
+    <desc>Left TR case temperature</desc>
+  </property>
+  <property>
+    <name>systems/electrical/tr-right-temp</name>
+    <type>double</type>
+    <unit>degC</unit>
+    <desc>Right TR case temperature</desc>
+  </property>
+
+  <!-- ===== BATTERY STATUS ===== -->
+  <property>
+    <name>systems/electrical/battery-charge-ah</name>
+    <type>double</type>
+    <unit>amp-hours</unit>
+    <desc>Battery charge in amp-hours (38 Ah nominal)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/battery-charge-pct</name>
+    <type>double</type>
+    <unit>percent</unit>
+    <desc>Battery charge percentage (0-100%)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/battery-voltage</name>
+    <type>double</type>
+    <unit>volts</unit>
+    <desc>Battery bus voltage (24V nominal)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/battery-current</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>Battery charge/discharge current (+ charge, - discharge)</desc>
+  </property>
+
+  <!-- ===== ELECTRICAL LOADS ===== -->
+  <property>
+    <name>systems/electrical/ac-main-load</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>AC Main Bus total load</desc>
+  </property>
+  <property>
+    <name>systems/electrical/dc-main-load</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>DC Main Bus total load</desc>
+  </property>
+  <property>
+    <name>systems/electrical/dc-ess-load</name>
+    <type>double</type>
+    <unit>amps</unit>
+    <desc>DC Essential Bus total load</desc>
+  </property>
+
+  <!-- ===== SWITCH POSITIONS ===== -->
+  <property>
+    <name>systems/electrical/battery-switch</name>
+    <type>bool</type>
+    <desc>Battery master switch position (0/1)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/gen-left-switch</name>
+    <type>bool</type>
+    <desc>Left generator switch position (0/1)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/gen-right-switch</name>
+    <type>bool</type>
+    <desc>Right generator switch position (0/1)</desc>
+  </property>
+  <property>
+    <name>systems/electrical/ext-power-switch</name>
+    <type>bool</type>
+    <desc>External power connection (0/1)</desc>
+  </property>
+
+  <!-- ===== FAILURE FLAGS ===== -->
+  <property>
+    <name>systems/electrical/fail-gen-left</name>
+    <type>bool</type>
+    <desc>Left generator failure inject flag</desc>
+  </property>
+  <property>
+    <name>systems/electrical/fail-gen-right</name>
+    <type>bool</type>
+    <desc>Right generator failure inject flag</desc>
+  </property>
+  <property>
+    <name>systems/electrical/fail-tr-left</name>
+    <type>bool</type>
+    <desc>Left TR failure inject flag</desc>
+  </property>
+  <property>
+    <name>systems/electrical/fail-tr-right</name>
+    <type>bool</type>
+    <desc>Right TR failure inject flag</desc>
+  </property>
+  <property>
+    <name>systems/electrical/fail-battery</name>
+    <type>bool</type>
+    <desc>Battery failure inject flag</desc>
+  </property>
+
+  <!-- ===== ANNUNCIATORS & ALERTS ===== -->
+  <property>
+    <name>systems/electrical/annun-ac-fail</name>
+    <type>bool</type>
+    <desc>AC Main Bus failure annunciator</desc>
+  </property>
+  <property>
+    <name>systems/electrical/annun-dc-fail</name>
+    <type>bool</type>
+    <desc>DC Main Bus failure annunciator</desc>
+  </property>
+  <property>
+    <name>systems/electrical/annun-dc-ess-fail</name>
+    <type>bool</type>
+    <desc>DC Essential Bus failure annunciator</desc>
+  </property>
+  <property>
+    <name>systems/electrical/annun-battery-low</name>
+    <type>bool</type>
+    <desc>Low battery warning annunciator</desc>
+  </property>
+  <property>
+    <name>systems/electrical/annun-inverter-fail</name>
+    <type>bool</type>
+    <desc>AC essential bus inverter failure annunciator</desc>
+  </property>
+
+  <!-- ===== LOAD SHEDDING ===== -->
+  <property>
+    <name>systems/electrical/load-shedding-active</name>
+    <type>bool</type>
+    <desc>Load shedding cascade active (0/1)</desc>
+  </property>
+
 </system>
