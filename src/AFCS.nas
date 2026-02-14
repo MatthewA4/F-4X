@@ -602,6 +602,18 @@ var periodic_update = func {
     if (typeof("update_env") != "nil") update_env(dt);
     if (typeof("update_fcs_tuning") != "nil") update_fcs_tuning(dt);
     if (typeof("update_bindings") != "nil") update_bindings(dt);
+    # Phase 7: Advanced aerodynamic and propulsion systems
+    if (typeof("update_inlet_control") != "nil") update_inlet_control(dt);
+    if (typeof("update_afterburner") != "nil") update_afterburner(dt);
+    if (typeof("update_bleed_air") != "nil") update_bleed_air(dt);
+    if (typeof("update_transonic_shock") != "nil") update_transonic_shock(dt);
+    if (typeof("update_fuel_cg") != "nil") update_fuel_cg(dt);
+    # Emergency and advanced systems
+    if (typeof("update_electrical_loads") != "nil") update_electrical_loads(dt);
+    if (typeof("update_fire_system") != "nil") update_fire_system(dt);
+    if (typeof("update_hydraulic_loads") != "nil") update_hydraulic_loads(dt);
+    if (typeof("update_landing_gear_dynamics") != "nil") update_landing_gear_dynamics(dt);
+    if (typeof("update_trim_drag") != "nil") update_trim_drag(dt);
     # Ensure yaw command property exists for FCS input (default 0)
     setprop("/afcs/att/yaw-cmd", 0);
 

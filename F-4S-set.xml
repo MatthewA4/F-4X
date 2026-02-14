@@ -218,19 +218,35 @@ See LICENSE file for the GPL version 2 text.
     	</afcs>
 		<electrical>
 			<file>Aircraft/F-4X/src/electrical.nas</file>
+			<file>Aircraft/F-4X/src/ElectricalLoadShedding.nas</file>
 		</electrical>
 		<fuel>
 			<file>Aircraft/F-4X/src/fuel.nas</file>
 		</fuel>
 		<hydraulics>
 			<file>Aircraft/F-4X/src/hydraulics.nas</file>
+			<file>Aircraft/F-4X/src/HydraulicLoadShedding.nas</file>
 		</hydraulics>
 		<J79>
 			<file>Aircraft/F-4X/src/J79.nas</file>
+			<file>Aircraft/F-4X/src/InletControl.nas</file>
+			<file>Aircraft/F-4X/src/AfterburnerDynamics.nas</file>
+			<file>Aircraft/F-4X/src/BleedAirSystem.nas</file>
 		</J79>
 		<damage>
 			<file>Aircraft/F-4X/src/damage.nas</file>
 		</damage>
+		<fire>
+			<file>Aircraft/F-4X/src/FireDetectionSuppression.nas</file>
+		</fire>
+		<aerodynamics>
+			<file>Aircraft/F-4X/src/TransonicShockEffects.nas</file>
+			<file>Aircraft/F-4X/src/TrimDragEffects.nas</file>
+		</aerodynamics>
+		<systems>
+			<file>Aircraft/F-4X/src/FuelCGManagement.nas</file>
+			<file>Aircraft/F-4X/src/LandingGearDamping.nas</file>
+		</systems>
 	</nasal>
 
 	<systems>

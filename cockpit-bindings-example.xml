@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<!-- cockpit-bindings-example.xml - Example input device bindings for F-4X cockpit controls -->
+<!-- Copy relevant sections to your input profile or ~/.fgfsrc to enable cockpit control from hardware. -->
+
+<PropertyList>
+
+  <!-- Keyboard bindings for common controls (examples) -->
+
+  <!-- ENGINES -->
+  <input>
+    <name>Start Engine 1</name>
+    <description>Start Engines (Ctrl+E)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/controls/engines/engine[0]/cutoff</property>
+    </binding>
+    <key>
+      <mod-ctrl/>
+      <sym>e</sym>
+    </key>
+  </input>
+
+  <!-- AUTOPILOT CONTROLS -->
+  <input>
+    <name>Toggle Autopilot Altitude Hold</name>
+    <description>Engage/disengage altitude hold (Ctrl+H)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/afcs/ap-alt-hold</property>
+    </binding>
+    <key>
+      <mod-ctrl/>
+      <sym>h</sym>
+    </key>
+  </input>
+
+  <input>
+    <name>Toggle Autopilot Attitude Hold</name>
+    <description>Engage/disengage attitude hold (Ctrl+T)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/afcs/ap-att-hold</property>
+    </binding>
+    <key>
+      <mod-ctrl/>
+      <sym>t</sym>
+    </key>
+  </input>
+
+  <!-- LANDING GEAR -->
+  <input>
+    <name>Toggle Landing Gear</name>
+    <description>Raise or lower landing gear (G)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/controls/gear/lever-down</property>
+    </binding>
+    <key>
+      <sym>g</sym>
+    </key>
+  </input>
+
+  <input>
+    <name>Toggle Arresting Hook</name>
+    <description>Lower or raise arresting hook (H)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/controls/gear/arrestor-hook</property>
+    </binding>
+    <key>
+      <sym>h</sym>
+    </key>
+  </input>
+
+  <!-- FUEL & JETTISON -->
+  <input>
+    <name>Emergency Stores Jettison</name>
+    <description>Jettison all external stores (Alt+J)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/controls/weapons/jettison</property>
+      <value>1</value>
+    </binding>
+    <key>
+      <mod-alt/>
+      <sym>j</sym>
+    </key>
+  </input>
+
+  <input>
+    <name>Emergency Fuel Jettison (Tank 3)</name>
+    <description>Jettison auxiliary fuel tank (Alt+F, then select tank with number keys)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/controls/fuel/jettison</property>
+      <value>1</value>
+    </binding>
+    <binding>
+      <command>property-assign</command>
+      <property>/controls/fuel/jettison-tank</property>
+      <value>3</value>
+    </binding>
+    <key>
+      <mod-alt/>
+      <sym>f</sym>
+    </key>
+  </input>
+
+  <!-- WEAPONS -->
+  <input>
+    <name>Fire Gun</name>
+    <description>Trigger machine gun (spacebar)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/weapons/gun-cmd</property>
+      <value>1</value>
+    </binding>
+    <key>
+      <sym>space</sym>
+    </key>
+  </input>
+
+  <input>
+    <name>Release Ordnance</name>
+    <description>Release bomb on target (B)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/weapons/bomb-release</property>
+      <value>1</value>
+    </binding>
+    <key>
+      <sym>b</sym>
+    </key>
+  </input>
+
+  <!-- REFUELING PROBE -->
+  <input>
+    <name>Toggle Refueling Probe</name>
+    <description>Request probe extension/retraction (P)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/controls/refueling/probe-extended</property>
+    </binding>
+    <key>
+      <sym>p</sym>
+    </key>
+  </input>
+
+  <!-- CANOPY -->
+  <input>
+    <name>Toggle Canopy</name>
+    <description>Open or close canopy (C)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/controls/canopy/open</property>
+    </binding>
+    <key>
+      <sym>c</sym>
+    </key>
+  </input>
+
+  <!-- ELECTRICAL CONTROLS -->
+  <input>
+    <name>Main Electrical Bus Toggle</name>
+    <description>Toggle main electrical bus (Ctrl+B)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/systems/electrical/main-switch</property>
+    </binding>
+    <key>
+      <mod-ctrl/>
+      <sym>b</sym>
+    </key>
+  </input>
+
+  <!-- SAS SYSTEM -->
+  <input>
+    <name>SAS Roll</name>
+    <description>Engage/disengage SAS Roll channel (Ctrl+U, then R)</description>
+    <binding>
+      <command>property-toggle</command>
+      <property>/afcs/sas-roll-engaged</property>
+    </binding>
+    <key>
+      <mod-ctrl/>
+      <sym>u</sym>
+    </key>
+  </input>
+
+  <!-- RADAR MODE SELECTION -->
+  <input>
+    <name>Radar Mode: Off</name>
+    <description>Turn radar off (R 0)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/avionics/radar/mode-request</property>
+      <value>0</value>
+    </binding>
+    <key>
+      <sym>r</sym>
+    </key>
+  </input>
+
+  <input>
+    <name>Radar Mode: Search</name>
+    <description>Set radar to search mode (R 1)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/avionics/radar/mode-request</property>
+      <value>1</value>
+    </binding>
+    <key>
+      <sym>r</sym>
+    </key>
+  </input>
+
+  <!-- JOYSTICK / CONTROLLER BINDINGS (if using joystick) -->
+  <!-- Example: Map button 0 on axis 0 to fire guns -->
+  <!-- Uncomment and adjust button/axis indices for your hardware -->
+  <!--
+  <input>
+    <name>Joystick Gun Trigger</name>
+    <description>Fire gun via joystick button</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/weapons/gun-cmd</property>
+      <value>1</value>
+    </binding>
+    <joystick>
+      <index>0</index>
+      <button index="0"/>
+    </joystick>
+  </input>
+
+  <input>
+    <name>Joystick Missile Launch</name>
+    <description>Launch missile via joystick button (requires radar lock)</description>
+    <binding>
+      <command>property-assign</command>
+      <property>/weapons/next-ready-missile-id</property>
+      <value>1</value>
+    </binding>
+    <joystick>
+      <index>0</index>
+      <button index="1"/>
+    </joystick>
+  </input>
+  -->
+
+</PropertyList>
