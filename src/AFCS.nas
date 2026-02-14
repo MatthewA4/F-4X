@@ -609,5 +609,11 @@ var periodic_update = func {
 };
 periodic_update();
 
+# NOTE: Test harnesses available:
+# - run_smoke() in TestHarness.nas
+# - run_all_regression_tests() in RegressionTests.nas
+# - run_preflight_checklist() in StartupSequencer.nas
+# - run_startup_procedure() in StartupSequencer.nas
+
 # TODO: Connect /afcs/att/roll-cmd, /afcs/att/pitch-cmd, /afcs/alt/pitch-cmd to FCS input chain for autopilot authority.
 # TODO: Add more detailed failure logic and annunciator logic per NATOPS.

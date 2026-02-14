@@ -19,13 +19,19 @@ var compute_stores = func() {
     for (var i = 0; i < stores_cfg.hardpoints; i += 1) {
         var w = getprop('/fcs/store['~i~']/weight-lb') or 0;
         var j = getprop('/fcs/store['~i~']/jettisoned') or 0;
-        if (j == 1) w = 0;
+        var jseq = getprop('/fcs/store['~i~']/jettisoning') or 0;
+        if (j == 1 or jseq == 1) w = 0;
         total += w;
-        # Simple drag mapping by station type: approximate by weight
-        drag += (w / 10000.0) * 0.002; # each 10k lb gives 0.002 deltaCD
+        # Station-specific drag deltas (refined from research)
+        # Center: +0.0040, wing pylon: +0.0015 each, sparrow: +0.0016 each, gun pod: +0.0045, ordnance: +0.0080
+        if (i == 0) drag += (w > 0 ? 0.004 : 0);       # centerline
+        elsif (i == 1 or i == 2) drag += (w > 0 ? 0.0015 : 0);  # wing pylons
+        elsif (i == 3 or i == 4) drag += (w > 0 ? 0.0016 : 0);  # sparrows
+        elsif (i == 5) drag += (w > 0 ? 0.0045 : 0);   # gun pod
+        elsif (i == 6 or i == 7 or i == 8) drag += (w > 0 ? 0.008 : 0); # ordnance racks
     }
     setprop('/fcs/stores-total-weight-lb', total);
-    setprop('/fcs/stores-drag-delta', drag);
+    setprop('/fcs/stores-drag-delta', math.min(drag, 0.05)); # cap drag delta
 };
 
 var jettison_stores = func() {

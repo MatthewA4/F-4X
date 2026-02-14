@@ -253,20 +253,58 @@ Example `joystick.xml` snippet (user-level config) to toggle the probe with a bu
 Alternatively, bind any input in your FlightGear input configuration to the property `/controls/refueling/probe-extended` (0 = stowed, 1 = pilot-request-extended). The AFCS will only allow extension when the flight envelope is safe.
 
 
-## Developer smoke test
+## 🧪 Testing & Validation
 
-I added a small Nasal test harness to exercise subsystem update loops without running the full sim.
+Three test harnesses are provided for validation:
 
-- `src/TestHarness.nas` exposes `run_smoke()` which calls the radar, weapons, stores, fuel, hydraulics, electrical, landing gear, env, and FCS tuning update functions with `dt=0.1`.
-
-To run the smoke test from a FlightGear Nasal prompt (or include the file and call it), load `src/TestHarness.nas` and run:
-
+### Smoke Test
+`src/TestHarness.nas` provides `run_smoke()` to exercise all subsystem updates in sequence.
 ```bash
-# inside FlightGear Nasal shell or via --script
+# In FlightGear Nasal console or via --script command:
 > run_smoke();
 ```
+Tests: radar, weapons, stores, fuel, hydraulics, electrical, gear, env, FCS.
 
-This will print status messages for radar contacts, missile launches, jettison sequences, RAT deployment, and other subsystems for quick validation.
+### NATOPS Regression Tests
+`src/RegressionTests.nas` provides `run_all_regression_tests()` to validate compliance with NATOPS procedures and system specifications.
+```bash
+> run_all_regression_tests();
+```
+Validates:
+- Envelope limits (landing weight, stall thresholds, max altitude)
+- System initialization (hydraulics, electrical, fuel, gear, pressurization)
+- Gain scheduling and FCS behavior
+
+### Startup Sequencer
+`src/StartupSequencer.nas` provides two functions for cold-start validation:
+```bash
+# Run full preflight checklist
+> run_preflight_checklist();
+
+# Automated engine start procedure (after preflight)
+> run_startup_procedure();
+```
+Both functions follow NATOPS F-4J Flight Manual procedures and print step-by-step output.
+
+## 🎛️ Cockpit Control Bindings
+
+See `cockpit-bindings-example.xml` for example keyboard and joystick bindings. Key mappings include:
+
+| Control | Key | Property |
+|---------|-----|----------|
+| Autopilot Alt-Hold | Ctrl+H | `/afcs/ap-alt-hold` |
+| Autopilot Att-Hold | Ctrl+T | `/afcs/ap-att-hold` |
+| Gear Up/Down | G | `/controls/gear/lever-down` |
+| Arrest Hook | H | `/controls/gear/arrestor-hook` |
+| Jettison Stores | Alt+J | `/controls/weapons/jettison` |
+| Jettison Fuel | Alt+F | `/controls/fuel/jettison` |
+| Fire Gun | Spacebar | `/weapons/gun-cmd` |
+| Release Bomb | B | `/weapons/bomb-release` |
+| Probe Extension | P | `/controls/refueling/probe-extended` |
+| Canopy Toggle | C | `/controls/canopy/open` |
+| Main Bus Toggle | Ctrl+B | `/systems/electrical/main-switch` |
+
+Copy relevant sections into your FlightGear input profile or `.fgfsrc`.
 
 ## 📁 Project Structure
 

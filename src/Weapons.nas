@@ -182,9 +182,16 @@ var update_weapons = func(dt) {
 # Initialize some missiles for the demo
 load_missile('AIM-9');
 load_missile('AIM-9');
+load_missile('AIM-7');
+load_missile('AIM-7');
 
 setprop('/weapons/missile-ready-count', 0);
 setprop('/weapons/next-ready-missile-id', 0);
+setprop('/weapons/aim9-ready', 2);
+setprop('/weapons/aim7-ready', 2);
+setprop('/weapons/gun-ammo', 2000);
+setprop('/weapons/gun-cmd', 0);
+setprop('/weapons/bomb-release', 0);
 
 var update_weapons_manager = func(dt) {
     update_weapons(dt);

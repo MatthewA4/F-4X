@@ -180,8 +180,26 @@ setprop("/avionics/radar/target-range-ft", 0);
 setprop("/avionics/radar/target-bearing-deg", 0);
 setprop("/avionics/radar/target-alt-ft", 0);
 setprop("/avionics/radar/target-id", 0);
+setprop("/avionics/hud/target-range-display", "---");
+setprop("/avionics/hud/radar-mode-text", "OFF");
+setprop("/avionics/hud/lock-indicator", 0);
 
 # Export update function under known name so AFCS can call it
 var update_radar = func(dt) {
     update_radar_manager(dt);
+    # Publish HUD symbology
+    var mode = radar_mgr.mode;
+    var range = getprop("/avionics/radar/target-range-ft") or 0;
+    var lock = getprop("/avionics/radar/lock") or 0;
+    if (mode == 0) setprop("/avionics/hud/radar-mode-text", "OFF");
+    elsif (mode == 1) setprop("/avionics/hud/radar-mode-text", "SRCH");
+    elsif (mode == 2) setprop("/avionics/hud/radar-mode-text", "TWS");
+    elsif (mode == 3) setprop("/avionics/hud/radar-mode-text", "STT");
+    if (range > 0) {
+        var range_nm = range / 6076.0;
+        setprop("/avionics/hud/target-range-display", sprintf("%.1f nm", range_nm));
+    } else {
+        setprop("/avionics/hud/target-range-display", "---");
+    }
+    setprop("/avionics/hud/lock-indicator", lock);
 };
