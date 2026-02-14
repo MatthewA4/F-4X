@@ -244,12 +244,15 @@ See LICENSE file for the GPL version 2 text.
 			<file>Aircraft/F-4X/src/TransonicShockEffects.nas</file>
 			<file>Aircraft/F-4X/src/TrimDragEffects.nas</file>
 			<file>Aircraft/F-4X/src/DeparturePreventionSystem.nas</file>
+			<file>Aircraft/F-4X/src/PitchUpPrevention.nas</file>
 		</aerodynamics>
 		<systems>
 			<file>Aircraft/F-4X/src/FuelCGManagement.nas</file>
 			<file>Aircraft/F-4X/src/LandingGearDamping.nas</file>
 			<file>Aircraft/F-4X/src/SpinRecoveryChute.nas</file>
 			<file>Aircraft/F-4X/src/RefuelingProbe.nas</file>
+			<file>Aircraft/F-4X/src/LandingAnalysis.nas</file>
+			<file>Aircraft/F-4X/src/GustAlleviation.nas</file>
 		</systems>
 		<pilot>
 			<file>Aircraft/F-4X/src/PilotPhysiology.nas</file>

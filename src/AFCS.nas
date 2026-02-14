@@ -620,6 +620,10 @@ var periodic_update = func {
     if (typeof("update_spin_recovery_chute") != "nil") update_spin_recovery_chute(dt);
     if (typeof("update_departure_prevention") != "nil") update_departure_prevention(dt);
     if (typeof("update_refueling_probe") != "nil") update_refueling_probe(dt);
+    # Phase 10: Landing and structural protection systems
+    if (typeof("update_landing_analysis") != "nil") update_landing_analysis(dt);
+    if (typeof("update_gust_alleviation") != "nil") update_gust_alleviation(dt);
+    if (typeof("update_pitch_up_prevention") != "nil") update_pitch_up_prevention(dt);
     # Ensure yaw command property exists for FCS input (default 0)
     setprop("/afcs/att/yaw-cmd", 0);
 
