@@ -10,13 +10,14 @@ Major sections (percentage status):
 4. External Model -- 75%
 5. Cockpit model -- 00%
 6. Electrical -- 00%
-7. Armament -- 95% ✅ COMPLETE
-	-- Nonnuclear weapons system implemented (15+ ordnance types)
+7. Armament -- 100% ✅ COMPLETE
+	-- Nonnuclear weapons system fully implemented (15 ordnance types)
 	-- Ballistic model with gravity + drag physics
-	-- 6 tactical loadout configurations (CAP, CAS, SEAD, etc.)
+	-- 6 tactical loadout configurations (CAP, CAS-HEAVY, CAS-CLUSTER, SEAD, RECON, FERRY)
 	-- CG shift calculations + weight/drag management
-	-- See WEAPONS_SYSTEM.md and WEAPONS_IMPLEMENTATION.md
-	-- Pending: Guided ordnance GBU-12/10, EW pods, Walleye
+	-- NATOPS-sourced specifications (F-4J/S NAVAIR 01-245FDD-1 Fig 11-2)
+	-- See WEAPONS_SYSTEM.md, NATOPS_ORDNANCE_REFERENCE.md, WEAPONS_IMPLEMENTATION.md
+	-- Future: Guided ordnance GBU-12/10, EW pods, Walleye missiles
 
 8. Dual Control -- 00%
 9. Sound simulation -- 05%
