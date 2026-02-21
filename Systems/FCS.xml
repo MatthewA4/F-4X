@@ -25,13 +25,18 @@
 		
 		<!-- Hydraulic pressure-dependent control authority (pressure degradation factor) -->
 		<!-- Below 2500 psi nominal, control authority degrades gradually -->
-		<fcs_function name="hydromech/pressure-gain-factor">
-			<function>
-				<table>
-					<independentVar lookup="row">/systems/hydraulic-a-psi</independentVar>
-					<tableData>
-						0    0.0
-						500  0.3
+<!-- hydraulic pressure-dependent control authority
+             retains a small residual "manual" authority even if pressure
+             collapses, simulating mechanical bypass reversion with heavy
+             stick forces. table ends at 0.1 rather than 0.0.
+        -->
+        <fcs_function name="hydromech/pressure-gain-factor">
+            <function>
+                <table>
+                    <independentVar lookup="row">/systems/hydraulic-a-psi</independentVar>
+                    <tableData>
+                        0    0.10    <!-- 10% manual reversion authority -->
+                        500  0.30
 						1500 0.75
 						2500 1.0
 						3000 1.0

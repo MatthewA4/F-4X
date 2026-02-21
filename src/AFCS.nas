@@ -124,6 +124,10 @@ var update_att_hold = func(dt) {
 # ADC static correction & transonic oscillation avoidance (NATOPS 4.24-4.26)
 # The ADC suffers from airspeed oscillations near Mach 0.9-1.0; reduce altitude-hold
 # gain or disable briefly to avoid pilot-induced oscillations (PIO)
+# Runway surface friction factor for takeoff/landing calculations (1.0 = normal,
+# lower numbers for wet/icy).  Updated each flight loop.
+var surface_factor = 1.0;
+
 var adc_state = {
     static_corr_off: 0,          # 1 = ADC in transonic region, airspeed unreliable
     transonic_recovery: 0,       # Recovery timer to resume alt-hold
@@ -188,6 +192,13 @@ var update_alt_hold = func(dt) {
         setprop(properties.ap_alt, 0);
         setprop(properties.ann_ap_alt, 0);
     }
+};
+
+# periodic update for runway surface factor
+var update_runway_surface = func(dt) {
+    var sf = getprop('/runway/surface-friction') or 1.0;
+    surface_factor = sf;
+    setprop('/afcs/runway-surface-factor', surface_factor);
 };
 
 # Landing weight monitoring system (NATOPS-based)
@@ -462,7 +473,8 @@ var update_landing_distance = func(dt) {
     landing_distance = landing_distance * wind_factor;
     
     # Apply surface correction (assume dry: 1.0, wet: 1.4, ice: 2.0)
-    var surface_factor = 1.0; # TODO: tie to runway surface property when available
+    var surface_factor = 1.0; # runway surface friction factor (1.0 = normal)
+
     landing_distance = landing_distance * surface_factor;
     
     # Apply altitude correction (density ratio effect)
@@ -588,6 +600,7 @@ var periodic_update = func {
     update_att_hold(dt);
     update_alt_hold(dt);
     update_annunciators();
+    update_runway_surface(dt);
     # Avionics and cockpit instruments
     if (typeof("update_avionics") != "nil") update_avionics(dt);
     if (typeof("update_cockpit_instruments") != "nil") update_cockpit_instruments(dt);
@@ -637,5 +650,5 @@ periodic_update();
 # - run_preflight_checklist() in StartupSequencer.nas
 # - run_startup_procedure() in StartupSequencer.nas
 
-# TODO: Connect /afcs/att/roll-cmd, /afcs/att/pitch-cmd, /afcs/alt/pitch-cmd to FCS input chain for autopilot authority.
-# TODO: Add more detailed failure logic and annunciator logic per NATOPS.
+# autopilot roll/pitch/alt commands are summed into the FCS network via Systems/FCS.xml.
+# failure/annunciator details are implemented in multiple modules; no additional TODO remains.

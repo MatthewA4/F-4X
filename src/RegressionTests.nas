@@ -61,11 +61,23 @@ var weapons_test_ballistics = func() {
 var systems_test_hydraulics = func() {
     print('=== Systems: Hydraulics Tests ===');
     
-    # Test 1: Hydraulic pressure nominal
-    var hyd_press = getprop('/hydraulics/pressure-psi') or 0;
-    rt_assert_range('Hydraulic pressure nominal', hyd_press, 2500, 3500);
-    
-    # Test 2: RAT available before emergency
+    # Test 1: Hydraulic pressures nominal
+    var hyd_left = getprop('/hydraulics/pressure/left-psi') or 0;
+    var hyd_right = getprop('/hydraulics/pressure/right-psi') or 0;
+    rt_assert_range('Hydraulic left pressure nominal', hyd_left, 2500, 3500);
+    rt_assert_range('Hydraulic right pressure nominal', hyd_right, 2500, 3500);
+
+    # Test 2: Pumps status properties exist
+    rt_assert('Left pump status property exists', getprop('/hydraulics/pump/left/status') != nil);
+    rt_assert('Right pump status property exists', getprop('/hydraulics/pump/right/status') != nil);
+    rt_assert('Aux pump status property exists', getprop('/hydraulics/pump/aux/status') != nil);
+
+    # Test 3: Actuator position properties
+    rt_assert('Elevator actuator position exists', getprop('/hydraulics/actuator/elevator/position') != nil);
+    rt_assert('Aileron actuator position exists', getprop('/hydraulics/actuator/aileron/position') != nil);
+    rt_assert('Rudder actuator position exists', getprop('/hydraulics/actuator/rudder/position') != nil);
+
+    # Test 4: RAT available before emergency
     rt_assert('RAT available property exists', getprop('/hydraulics/rat-available') != nil);
     rt_assert('RAT deployed property exists', getprop('/hydraulics/rat-deployed') != nil);
 };
@@ -121,6 +133,22 @@ var systems_test_fcs = func() {
     
     var elevator_gain = getprop('/fcs/elevator-gain') or 0;
     rt_assert_range('Elevator gain in bounds', elevator_gain, 0.4, 1.1);
+
+    # Test 2: FDM properties exist
+    rt_assert('FDM mass property exists', getprop('/fdm/mass-lbs') != nil);
+    rt_assert('FDM cg property exists', getprop('/fdm/cg-fraction-mac') != nil);
+    rt_assert('BLC enable flag exists', getprop('/fdm/aero/blc-enabled') != nil);
+    
+    # Test 3: Autopilot command generation
+    # simulate a small attitude error and run update_att_hold
+    setprop('/orientation/roll-deg', 5.0);
+    setprop('/orientation/pitch-deg', 2.0);
+    setprop('/afcs/ap-att-hold', 1);
+    update_att_hold(0.1);
+    var roll_cmd = getprop('/afcs/att/roll-cmd') or 0;
+    var pitch_cmd = getprop('/afcs/att/pitch-cmd') or 0;
+    rt_assert('Autopilot roll command produced', abs(roll_cmd) > 0);
+    rt_assert('Autopilot pitch command produced', abs(pitch_cmd) > 0);
 };
 
 var run_all_regression_tests = func() {

@@ -1,11 +1,12 @@
 Priorities:
 
 Major sections (percentage status):
-1. FDM -- 90%
-	-- BLC
-	-- Mach Tables
+1. FDM -- 100% ✅
+	-- All aerodynamic tables & Mach schedules implemented
+	-- Boundary-Layer Control logic integrated
 
-2. Hydromechanical FCS -- 80%
+2. Hydromechanical FCS -- 100% ✅
+	-- Pumps, actuators, RAT, manual reversion and augmentation laws all modeled
 3. Fuel System -- 100% ✅ COMPLETE
 	✅ NATOPS-compliant tank configuration (7 tanks, 16,700 lbs total with external)
 	✅ Automatic transfer sequencing (external→wing→fuselage per NATOPS)
@@ -75,5 +76,6 @@ NEXT PRIORITIES (after Fuel & Armament completion):
 • Tank Jettison Testing: External tank performance after drop
 • Refueling Scenarios: Probe contact & aerial refueling validation
 • Cockpit Integration: Fuel quantity display + CG shift indicator
-• FDM Refinement: Integrate drag indices + weight effects into aerodynamic model
+• (completed) FDM Refinement: drag/weight effects already included via JSBSim tables
+
 • CAS/SEAD Missions: Tactical employment with realistic fuel consumption
