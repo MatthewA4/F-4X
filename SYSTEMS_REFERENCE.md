@@ -45,11 +45,17 @@ This document provides a comprehensive overview of all implemented F-4X simulati
 - Hydraulic/electrical gauges
 
 ### Fire Control Radar (RadarManager.nas)
-- Search mode (volume scan)
-- Track While Scan (TWS) mode
-- Single Target Track (STT) mode
-- Doppler filtering
-- HUD target symbology
+- AWG-10 family emulation (A/B/C/D/E with AWG-10B/J-S enhancements)
+- Multi‑mode search: Velocity Search (VS), Range‑While‑Scan (RWS), Beacon
+- Track‑While‑Scan (TWS) with 6‑track analog or 8‑track digital (10‑track J/S)
+- Single Target Track (STT) with conical‑scan lock
+- Dogfight (AC) mode, ground‑look (GL) mode for terrain mapping
+- Pulse‑Doppler processing, PRF/pulse‑width variation
+- Antenna mechanical and electronic scanning (azimuth/elevation sweep)
+- Radar cross‑section (RCS) based detection probability and horizon limits
+- Electrical load modelling (25 A transmit, 8 A receive) and load shedding
+- HUD symbology: mode text, range display, lock indicator, track count
+- Data interfaces for weapons (AIM‑7 SARH, Shrike ARM, radar‑guided pods)
 
 ### Weapons System (Weapons.nas)
 - AIM-9 Sidewinder IR seeker

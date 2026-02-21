@@ -1,24 +1,70 @@
-<!-- Simple Radar system stub (APQ-120-like modes) -->
+<!-- Detailed Radar system definition (AWG-10 family) -->
 <system name="Radar">
 
   <channel name="Radar">
-    <!-- Mode request (0=OFF,1=SEARCH,2=TRACK) -->
+    <!-- Mode control: use separate request property for avionics interface -->
     <pure_gain name="avionics/radar/mode">
       <input>avionics/radar/mode-request</input>
       <gain>1.0</gain>
     </pure_gain>
 
-    <!-- Lock flag (1 when radar has a track lock) -->
+    <!-- Lock status (1 when a target is locked in STT or TWS) -->
     <pure_gain name="avionics/radar/lock">
       <input>avionics/radar/lock</input>
       <gain>1.0</gain>
     </pure_gain>
 
-    <!-- Number of contacts (simple integer count) -->
+    <!-- Contact/count data -->
     <pure_gain name="avionics/radar/contacts">
       <input>avionics/radar/contacts</input>
       <gain>1.0</gain>
     </pure_gain>
+
+    <!-- Target guidance outputs -->
+    <property>
+      <name>avionics/radar/target-range-ft</name>
+      <type>double</type>
+      <unit>ft</unit>
+    </property>
+    <property>
+      <name>avionics/radar/target-bearing-deg</name>
+      <type>double</type>
+      <unit>deg</unit>
+    </property>
+    <property>
+      <name>avionics/radar/target-alt-ft</name>
+      <type>double</type>
+      <unit>ft</unit>
+    </property>
+    <property>
+      <name>avionics/radar/target-id</name>
+      <type>int</type>
+    </property>
+
+    <!-- Auxiliary telemetry for debugging/visualization -->
+    <property>
+      <name>avionics/radar/antenna-az-deg</name>
+      <type>double</type>
+      <unit>deg</unit>
+    </property>
+    <property>
+      <name>avionics/radar/prf</name>
+      <type>double</type>
+      <unit>Hz</unit>
+    </property>
+    <property>
+      <name>avionics/radar/pulse-width</name>
+      <type>double</type>
+      <unit>s</unit>
+    </property>
+
   </channel>
+
+  <!-- System-level properties used by electrical load manager -->
+  <property>
+    <name>systems/radar/transmit</name>
+    <type>bool</type>
+    <desc>Flag indicating radar transmitter active (consumes 25A AC)</desc>
+  </property>
 
 </system>

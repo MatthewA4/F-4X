@@ -20,6 +20,19 @@
         </sum>
       </function>
     </fcs_function>
+    <!-- Additional HUD symbology for radar -->
+    <property>
+      <name>avionics/hud/radar-mode-text</name>
+      <type>string</type>
+    </property>
+    <property>
+      <name>avionics/hud/target-range-display</name>
+      <type>string</type>
+    </property>
+    <property>
+      <name>avionics/hud/lock-indicator</name>
+      <type>bool</type>
+    </property>
   </channel>
 
   <channel name="Radar">

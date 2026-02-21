@@ -28,6 +28,11 @@ var natops_test_envelope = func() {
     
     # Test 1: Basic property initialization
     rt_assert('Radar lock property exists', getprop('/avionics/radar/lock') != nil);
+    rt_assert('Radar contacts property exists', getprop('/avionics/radar/contacts') != nil);
+    rt_assert('Radar target range property exists', getprop('/avionics/radar/target-range-ft') != nil);
+    rt_assert('Radar target bearing property exists', getprop('/avionics/radar/target-bearing-deg') != nil);
+    rt_assert('Radar antenna azimuth property exists', getprop('/avionics/radar/antenna-az-deg') != nil);
+    rt_assert('Radar transmit flag property exists', getprop('/systems/radar/transmit') != nil);
     rt_assert('Stall warning horn property exists', getprop('/afcs/annunciator/stall-horn') != nil);
     rt_assert('Landing weight warning property exists', getprop('/afcs/annunciator/landing-weight-warning') != nil);
     

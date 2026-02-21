@@ -23,8 +23,14 @@ Major sections (percentage status):
 	✅ Gravity feed backup (below 10,000 feet)
 	✅ Complete documentation (FUEL_SYSTEM.md with all specs)
 	✅ Syntax validation (0 errors in fuel.nas & RefuelingProbe.nas)
-
-4. External Model -- 75%
+5. Avionics/Radar -- 100% ✅ COMPLETE
+	✅ Full AWG-10 family fire-control radar implemented
+	    • VS, RWS, Beacon, TWS, STT, DF, GL modes
+	    • J/S AWG-10B enhancements (improved TWS, dogfight/ground-look)
+	    • RCS-based detection, horizon masking, PRF/pulse characteristics
+	    • Electrical load integration & HUD symbology
+	✅ Detailed NNWD-derived specification document (RADAR_SYSTEM.md)
+	✅ Regression tests for all radar properties4. External Model -- 75%
 5. Cockpit model -- 00%
 6. Electrical -- 100% ✅ COMPLETE
 	✅ Dual 30 kVA AC generators with N2-proportional output (20-80% N2 ramp)

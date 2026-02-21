@@ -137,7 +137,14 @@ var calc_tr_output = func(ac_input, load_amps) {
 
 # Calculate total AC main bus load
 var calc_ac_main_load = func {
-    ac_main_loads.radar = getprop("/systems/radar/transmit") ? 25.0 : 5.0;
+    # radar load: transmitter consumes ~25A, receiver/search ~8A, standby ~2A
+    if (getprop("/systems/radar/transmit")) {
+        ac_main_loads.radar = 25.0;
+    } elseif (getprop("/avionics/radar/contacts") > 0) {
+        ac_main_loads.radar = 8.0;
+    } else {
+        ac_main_loads.radar = 2.0;
+    }
     ac_main_loads.hydraulic_ac = getprop("/systems/hydraulic/system-running") ? 8.0 : 1.0;
     ac_main_loads.cooling = getprop("/controls/environmental/cooling") ? 6.0 : 2.0;
     
