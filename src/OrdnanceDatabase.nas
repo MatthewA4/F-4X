@@ -353,9 +353,7 @@ var ordnance_types = {
         drag_coeff_full: 0.013,
         quantity_per_rack: 1,
         performance: { fuel_density_lb_gal: 6.7 }
-    },
-        drag_coeff: 0.008,
-        performance: { max_range_ft: 4000, effective_range_ft: 2000 }
+
     },
     
     # Rocket/Unguided Rocket Pods
@@ -537,9 +535,10 @@ var loadout_configs = {
         reference: 'NATOPS maximum fuel configuration'
     },
 
+    'FERRY-ALT': {
         name: 'Ferry Configuration',
         mission: 'ferry',
-        internal_fuel: 12961,   # max internal + 2x 370 gal external
+        internal_fuel_lbs: 12961,   # max internal + 2x 370 gal external
         stores: [
             { hardpoint: 1, ordnance: 'EXT-TANK-370' },
             { hardpoint: 2, ordnance: 'EXT-TANK-370' },
