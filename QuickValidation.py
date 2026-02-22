@@ -18,13 +18,24 @@ def check_nasal_syntax(filepath):
     bracket_count = 0
     
     for i, line in enumerate(lines, 1):
-        # Simple counting (not perfect but catches obvious issues)
-        brace_count += line.count('{') - line.count('}')
-        paren_count += line.count('(') - line.count(')')
-        bracket_count += line.count('[') - line.count(']')
+        # strip comments and string literals before counting to avoid false
+        # positives (e.g. emoticons, URLs, comments containing braces/paren)
+        code = line
+        # remove quoted strings (single and double) first so '#' inside them is safe
+        code = re.sub(r"'[^']*'", '', code)
+        code = re.sub(r'\"[^\"]*\"', '', code)
+        # remove comments beginning with '#' only when '#' is at start of line
+        # or preceded by whitespace; this avoids stripping '#' used for string
+        # concatenation (e.g. '/foo/'#var).  Uses regex lookbehind for whitespace.
+        code = re.sub(r'(?m)(?<!\S)#.*', '', code)
+
+        # Simple counting on sanitized code
+        brace_count += code.count('{') - code.count('}')
+        paren_count += code.count('(') - code.count(')')
+        bracket_count += code.count('[') - code.count(']')
         
         # Check for incomplete statements
-        stripped = line.strip()
+        stripped = code.strip()
         if stripped and not stripped.startswith('#'):
             if stripped.endswith(',') and not ('{' in stripped or '[' in stripped):
                 pass  # OK, comma continuation
@@ -41,16 +52,56 @@ def check_nasal_syntax(filepath):
 def main():
     src_dir = "/home/matt/Dev/F-4X/src"
     modules = [
-        "InletControl.nas",
+        "AFCS.nas",
         "AfterburnerDynamics.nas",
+        "AirConditioning.nas",
+        "AirDataComputer.nas",
+        "Avionics.nas",
         "BleedAirSystem.nas",
-        "TransonicShockEffects.nas",
-        "FuelCGManagement.nas",
+        "CockpitBindings.nas",
+        "CockpitInstruments.nas",
+        "damage.nas",
+        "DeparturePreventionSystem.nas",
+        "ElectricalBuses.nas",
+        "ElectricalGenerators.nas",
         "ElectricalLoadShedding.nas",
+        "electrical.nas",
+        "Electrical.nas",
+        "EngineSurge.nas",
+        "Environmental.nas",
+        "f-4.nas",
+        "FCSTuning.nas",
+        "FDM.nas",
         "FireDetectionSuppression.nas",
+        "FuelCGManagement.nas",
+        "FuelManager.nas",
+        "fuel.nas",
+        "GustAlleviation.nas",
         "HydraulicLoadShedding.nas",
+        "hydraulics.nas",
+        "Hydraulics.nas",
+        "InletControl.nas",
+        "J79.nas",
+        "LandingAnalysis.nas",
         "LandingGearDamping.nas",
-        "TrimDragEffects.nas"
+        "LandingGear.nas",
+        "OrdnanceDatabase.nas",
+        "PilotPhysiology.nas",
+        "PitchUpPrevention.nas",
+        "RadarManager.nas",
+        "RefuelingProbe.nas",
+        "RegressionTests.nas",
+        "SpinRecoveryChute.nas",
+        "StartupSequencer.nas",
+        "StoresManager.nas",
+        "TestHarness.nas",
+        "TransonicShockEffects.nas",
+        "TrimDragEffects.nas",
+        "views.nas",
+        "WeaponsBallistics.nas",
+        "WeaponsDemo.nas",
+        "Weapons.nas",
+        "zoom-views.nas"
     ]
     
     print("=" * 60)
