@@ -28,6 +28,7 @@ Major sections (percentage status):
 	✅ Full AWG-10 family fire-control radar implemented
 	    • VS, RWS, Beacon, TWS, STT, DF, GL modes
 	    • J/S AWG-10B enhancements (improved TWS, dogfight/ground-look)
+	    • Terrain occlusion using FG scenery API; GL mode produces ground returns
 	    • RCS-based detection, horizon masking, PRF/pulse characteristics
 	    • Electrical load integration & HUD symbology
 	✅ Detailed NNWD-derived specification document (RADAR_SYSTEM.md)

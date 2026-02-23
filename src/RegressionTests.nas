@@ -23,6 +23,43 @@ var rt_assert_range = func(test_name, value, min_val, max_val) {
               value >= min_val and value <= max_val);
 };
 
+
+
+# Additional radar-specific tests for terrain occlusion and GL mode
+var radar_test_terrain = func() {
+    print('=== Radar Terrain/Occlusion Tests ===');
+
+    # stub ground intersection to simulate a blocking hill directly ahead
+    var orig_ground = get_cart_ground_intersection;
+    get_cart_ground_intersection = func(pos, dir) {
+        # return a point 1 km ahead of start (so contact would be behind terrain)
+        return { x: pos.x + 1000.0, y: pos.y, z: 0.0 };
+    };
+
+    # setup minimal ownship state
+    setprop('/position/altitude-ft', 1000);
+    setprop('/position/ground-x-m', 0);
+    setprop('/position/ground-y-m', 0);
+    setprop('/orientation/heading-deg', 0);
+
+    radar_mgr.mode = RM.VS;
+    var contact = { dx: 2000.0, dy: 0.0, z: 0.0, rcs: 1.0 };
+    var prob = calc_detection_prob(contact);
+    rt_assert('Blocked contact yields zero detection probability', prob == 0.0);
+
+    # test GL mode generates at least one terrain contact when intersection exists
+    radar_mgr.mode = RM.GL;
+    clear_contacts();
+    radar_mgr.antenna_az = 0;
+    radar_mgr.last_ping = -999;  # force immediate ping
+    update_radar_manager(1.0);
+    rt_assert('Ground-look mode creates ground return contact', radar_mgr.contacts.length > 0);
+
+    # restore original function
+    get_cart_ground_intersection = orig_ground;
+};
+
+# call radar tests from NATOPS envelope
 var natops_test_envelope = func() {
     print('=== NATOPS Envelope Tests ===');
     
@@ -43,6 +80,9 @@ var natops_test_envelope = func() {
     rt_assert('Autopilot altitude hold exists', getprop('/afcs/ap-alt-hold') != nil);
     rt_assert('Autopilot attitude hold exists', getprop('/afcs/ap-att-hold') != nil);
     rt_assert('SAS roll engaged property exists', getprop('/afcs/sas-roll-engaged') != nil);
+
+    # new terrain tests
+    radar_test_terrain();
 };
 
 var weapons_test_ballistics = func() {

@@ -49,7 +49,8 @@ This document provides a comprehensive overview of all implemented F-4X simulati
 - Multi‑mode search: Velocity Search (VS), Range‑While‑Scan (RWS), Beacon
 - Track‑While‑Scan (TWS) with 6‑track analog or 8‑track digital (10‑track J/S)
 - Single Target Track (STT) with conical‑scan lock
-- Dogfight (AC) mode, ground‑look (GL) mode for terrain mapping
+- Dogfight (AC) mode, ground‑look (GL) mode for terrain mapping (GL uses FG terrain intersection helper to return hill/valley echoes)
+- Terrain occlusion test before detection; contacts blocked by scenery are ignored
 - Pulse‑Doppler processing, PRF/pulse‑width variation
 - Antenna mechanical and electronic scanning (azimuth/elevation sweep)
 - Radar cross‑section (RCS) based detection probability and horizon limits

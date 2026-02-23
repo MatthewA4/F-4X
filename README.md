@@ -33,6 +33,10 @@ A comprehensive, NATOPS-compliant flight simulation of the McDonnell Douglas F-4
 - Fuel system with complex tank sequencing and jettison logic
 - Electrical system with generator N2 control and AC/DC bus logic
 
+✅ **Terrain‑aware Fire Control Radar**
+- Line‑of‑sight occlusion uses FlightGear/SimGear scenery intersection API
+- Ground‑look (GL) mode generates realistic terrain returns and clutter
+
 ✅ **Enhanced Nonnuclear Weapons System**
 - **6 tactical loadout configurations**: CAP, CAS-HEAVY, CAS-CLUSTER, SEAD, RECON, FERRY
 - **15+ ordnance types**: AIM-9/7 missiles, AGM-65/45, Mk-82/83/84 bombs, cluster munitions, rocket pods

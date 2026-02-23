@@ -135,6 +135,37 @@ var clear_contacts = func {
     radar_mgr.next_track_id = 1;
     radar_mgr.locked_track = nil;
     radar_mgr.lock_age = 0.0;
+    _los_cache = {};     # drop stale LOS entries
+};
+
+# generate a pseudo‑contact from the terrain in the current beam direction
+var generate_ground_contact = func() {
+    # only valid in GL mode
+    if (radar_mgr.mode != RM.GL) return;
+
+    var own_alt_ft = getprop("/position/altitude-ft") or 0;
+    var start = {
+        x: (getprop("/position/ground-x-m") or 0),
+        y: (getprop("/position/ground-y-m") or 0),
+        z: own_alt_ft * 0.3048
+    };
+    # point along antenna azimuth relative to heading
+    var hdg = getprop("/orientation/heading-deg", 0);
+    var az_rad = (radar_mgr.antenna_az + hdg) * math.pi / 180.0;
+    var dir = { x: math.cos(az_rad), y: math.sin(az_rad), z: 0 };
+
+    var hit = get_cart_ground_intersection(start, dir);
+    if (hit == nil) return;
+
+    var dx = hit.x - start.x;
+    var dy = hit.y - start.y;
+    var rng_ft = math.sqrt(dx*dx + dy*dy) / 0.3048;
+    var bear = math.atan2(dy, dx) * 180.0 / math.pi - hdg;
+    while (bear > 180) bear -= 360;
+    while (bear < -180) bear += 360;
+
+    # create a contact representing the ground return
+    create_contact(rng_ft, bear, hit.z / 0.3048, RCS.GROUND);
 };
 
 # ------------------------------------------------------------------
@@ -218,11 +249,58 @@ var in_scan_volume = func(contact) {
     return true;
 };
 
+# cache results of LOS checks to avoid repeated ray-casts within the same
+# ping.  Keyed by contact id and ping timestamp.
+var _los_cache = {};
+var is_line_of_sight_clear = func(contact) {
+    if (contact.id != nil and contains(_los_cache, contact.id)) {
+        var entry = _los_cache[contact.id];
+        if (entry.ping == radar_mgr.last_ping) {
+            return entry.clear;
+        }
+    }
+
+    # build a start point at the aircraft position (metres)
+    var own_alt_ft = getprop("/position/altitude-ft") or 0;
+    var start = {
+        x: (getprop("/position/ground-x-m") or 0),
+        y: (getprop("/position/ground-y-m") or 0),
+        z: own_alt_ft * 0.3048   # ft -> m
+    };
+    # direction vector towards contact (m)
+    var dir = {
+        x: contact.dx * 0.3048,
+        y: contact.dy * 0.3048,
+        z: (contact.z - own_alt_ft) * 0.3048
+    };
+    var hit = get_cart_ground_intersection(start, dir);
+    var clear;
+    if (hit == nil) {
+        clear = 1;           # nothing blocking
+    } else {
+        # compute distances along ray: hit may not lie exactly on the unit direction
+        var dxh = hit.x - start.x;
+        var dyh = hit.y - start.y;
+        var dzh = hit.z - start.z;
+        var d_hit = math.sqrt(dxh*dxh + dyh*dyh + dzh*dzh);
+        var d_contact = math.sqrt(dir.x*dir.x + dir.y*dir.y + dir.z*dir.z);
+        clear = (d_hit >= d_contact);
+    }
+    if (contact.id != nil) {
+        _los_cache[contact.id] = { ping: radar_mgr.last_ping, clear: clear };
+    }
+    return clear;
+};
+
 var calc_detection_prob = func(contact) {
     var p = radar_params[radar_mgr.mode];
     if (!p) return 0.0;
     var r = math.sqrt(contact.dx*contact.dx + contact.dy*contact.dy);
     if (r > p.max_range_ft) return 0.0;
+    # ground-look returns are synthetic; always detect if within range
+    if (radar_mgr.mode == RM.GL and contact.rcs == RCS.GROUND) return 1.0;
+    # if terrain blocks ray, no detection
+    if (!is_line_of_sight_clear(contact)) return 0.0;
     # simple range-to-rcs scaling using R^4 law
     var sigma = contact.rcs;
     var ref_range = p.max_range_ft * math.pow(sigma, 0.25); # scale with RCS
@@ -262,6 +340,14 @@ var update_radar_manager = func(dt) {
     if (radar_mgr.mode == RM.DF) ping_interval = 1.0 / DF_UPDATE_RATE_HZ;
     if ((now - radar_mgr.last_ping) >= ping_interval) {
         radar_mgr.last_ping = now;
+
+        # clear existing contacts when switching to ground-look mode so we only
+        # report fresh terrain returns
+        if (radar_mgr.mode == RM.GL) {
+            clear_contacts();
+            generate_ground_contact();
+        }
+
         # evaluate detection for each contact
         for (var j = 0; j < radar_mgr.contacts.length; j++) {
             var cc = radar_mgr.contacts[j];
@@ -403,13 +489,13 @@ var update_radar_manager = func(dt) {
         }
         setprop("/avionics/radar/lock", 0);
     } elsif (radar_mgr.mode == RM.GL) {
-        # ground-look: only report ground-like contacts
+        # ground-look: only report ground returns (marked by RCS.GROUND)
         var ground_near = nil;
         var grng = 1e12;
         for (var i = 0; i < radar_mgr.contacts.length; i++) {
             var cc = radar_mgr.contacts[i];
             if (!cc.detected) continue;
-            if (cc.z < 500) { # low altitude => ground target
+            if (cc.rcs == RCS.GROUND) {
                 var rr = math.sqrt(cc.dx*cc.dx + cc.dy*cc.dy);
                 if (rr < grng) { grng = rr; ground_near = cc; }
             }
@@ -449,6 +535,7 @@ var update_radar_manager = func(dt) {
     setprop("/avionics/hud/radar-mode-text", mode_text);
     # target range display in nm
     var r = getprop("/avionics/radar/target-range-ft") or 0;
+    setprop("/avionics/radar/antenna-az-deg", radar_mgr.antenna_az);
     if (r > 0) {
         var rnm = r / FT_PER_NM;
         setprop("/avionics/hud/target-range-display", sprintf("%.1f nm", rnm));

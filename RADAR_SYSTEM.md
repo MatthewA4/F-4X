@@ -40,6 +40,7 @@ This document consolidates technical information about the F-4 Phantom fire cont
    2. [Data Structures](#data-structures)
    3. [Track Initiation and Maintenance](#track-initiation-and-maintenance)
    4. [RCS and Detection](#rcs-and-detection)
+   5. [Terrain Occlusion & Ground Contacts](#terrain-occlusion--ground-contacts)
 9. [Resources and Confidence Levels](#resources-and-confidence-levels)
 
 ---
@@ -312,7 +313,51 @@ struct RadarState {
 
 - Use tabulated RCS values by aspect (frontal 5 m² for F-4, halved for F-5, etc.). For ground targets, RCS is altitude- and terrain-dependent; use simple model $	ext{RCS}_{ground} = 10^{	ext{log}_{}	ext{RCS}_0 - k h}$ where k=0.005 per foot.
 - Combine RCS and range in radar equation to compute SNR and detection probability.
+### Terrain and Ground-Look Handling (Simulation)
 
+To improve realism the simulated radar performs a terrain occlusion test before
+accepting any contact. FlightGear/SimGear provide the Nasal helper
+`get_cart_ground_intersection(start, direction)` which returns the nearest
+point on the scenery mesh intersected by a ray.  The helper is implemented in
+C++ and dispatches to the active terrain engine (tilecache, pagedLOD, or STG);
+it therefore works regardless of which scenery backend the user has selected. The F-4 script converts the
+aircraft position to a start point and the contact vector to a direction, then
+compares the distance to the hit versus the contact range.  If the hit is closer
+than the contact the ray is deemed blocked and the detection probability is
+forced to zero – exactly the behaviour of a real radar losing line‑of‑sight.
+
+> **Performance note:** `get_cart_ground_intersection` is a terrain ray-cast
+> that may touch thousands of triangles; while the radar manager only calls it
+> once per contact per ping, a simple cache keyed by contact ID and current
+> ping timestamp can avoid repeated calls in the same update cycle (see
+> `_los_cache` in `RadarManager.nas`).  The regression test stub simply
+> overrides the Nasal helper rather than invoking the real engine.
+
+The ground-look (GL) mode uses the same API to generate its own returns. On
+each radar ping the manager casts a ray along the current antenna azimuth; if
+it intersects terrain within the mode’s range a synthetic contact with
+`RCS.GROUND` is created.  This produces a single “chord” of ground clutter that
+moves as the antenna sweeps, giving pilots visual feedback of hills and
+valleys when flying over deck.  The implementation is conservative – the
+ground contact is cleared every ping – but could be extended to sample a grid
+for a more continuous map.
+
+Example Nasal helper code:
+
+```nasal
+var is_line_of_sight_clear = func(contact) {
+    # (as implemented in RadarManager.nas)
+    …
+};
+
+var generate_ground_contact = func() {
+    if (radar_mgr.mode != RM.GL) return;
+    …
+};
+```
+
+See the `radar_test_terrain()` regression test for a minimal stub harness that
+exercises both paths without requiring real scenery.
 *Confidence: moderate; formulas standard with reasonably chosen coefficients.*
 
 ---
