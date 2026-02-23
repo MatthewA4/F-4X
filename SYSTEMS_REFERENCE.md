@@ -51,6 +51,7 @@ This document provides a comprehensive overview of all implemented F-4X simulati
 - Single Target Track (STT) with conical‑scan lock
 - Dogfight (AC) mode, ground‑look (GL) mode for terrain mapping (GL uses FG terrain intersection helper to return hill/valley echoes)
 - Terrain occlusion test before detection; contacts blocked by scenery are ignored
+- Weather attenuation (rain/cloud) reduces detection range/probability; heavy rain also generates random clutter pips
 - Pulse‑Doppler processing, PRF/pulse‑width variation
 - Antenna mechanical and electronic scanning (azimuth/elevation sweep)
 - Radar cross‑section (RCS) based detection probability and horizon limits

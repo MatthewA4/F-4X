@@ -35,6 +35,7 @@ A comprehensive, NATOPS-compliant flight simulation of the McDonnell Douglas F-4
 
 ✅ **Terrain‑aware Fire Control Radar**
 - Line‑of‑sight occlusion uses FlightGear/SimGear scenery intersection API
+- Weather‑dependent performance: rain and clouds degrade detection; heavy rain creates random clutter pips
 - Ground‑look (GL) mode generates realistic terrain returns and clutter
 
 ✅ **Enhanced Nonnuclear Weapons System**

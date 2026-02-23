@@ -292,6 +292,23 @@ var is_line_of_sight_clear = func(contact) {
     return clear;
 };
 
+# compute how weather degrades radar detection
+var weather_attenuation = func() {
+    # rain-norm is [0,1] intensity of precipitation
+    var rain = getprop("/environment/rain-norm") or 0.0;
+    # cloud coverage per layer is percent (0-100); average them
+    var num_layers = 3; # check first three layers for simplicity
+    var cov_sum = 0.0;
+    for (var i=0; i<num_layers; i++) {
+        var cov = getprop(sprintf("/environment/clouds/layer[%d]/coverage", i)) or 0.0;
+        cov_sum += cov / 100.0;
+    }
+    var avg_cov = cov_sum / num_layers;
+    # combine effects: heavy rain dominates, clouds moderate
+    var factor = 1.0 - (0.6 * rain + 0.3 * avg_cov);
+    return math.max(0.0, math.min(1.0, factor));
+};
+
 var calc_detection_prob = func(contact) {
     var p = radar_params[radar_mgr.mode];
     if (!p) return 0.0;
@@ -313,6 +330,8 @@ var calc_detection_prob = func(contact) {
     if ((r/FT_PER_NM) > horizon) {
         prob *= 0.5; # beyond horizon degrade
     }
+    # weather attenuation
+    prob *= weather_attenuation();
     return prob;
 };
 
@@ -346,6 +365,17 @@ var update_radar_manager = func(dt) {
         if (radar_mgr.mode == RM.GL) {
             clear_contacts();
             generate_ground_contact();
+        }
+
+        # weather clutter: in rain produce some false pips in normal search modes
+        var rain = getprop("/environment/rain-norm") or 0.0;
+        if (rain > 0.2 and radar_mgr.mode != RM.GL) {
+            var count = math.floor(rain * 5);
+            for (var ci = 0; ci < count; ci++) {
+                var rng = math.random() * 100000.0;
+                var brg = math.random() * 360.0 - 180.0;
+                create_contact(rng, brg, getprop("/position/altitude-ft") or 0, 0.1);
+            }
         }
 
         # evaluate detection for each contact
@@ -522,6 +552,9 @@ var update_radar_manager = func(dt) {
     # electrical load property update
     var transmitting = (radar_mgr.mode != RM.OFF);
     setprop("/systems/radar/transmit", transmitting ? 1 : 0);
+
+    # publish weather attenuation for debugging/visualization
+    setprop("/avionics/radar/weather-atten", weather_attenuation());
 
     # HUD symbology outputs
     var mode_text = "OFF";

@@ -57,6 +57,12 @@
       <type>double</type>
       <unit>s</unit>
     </property>
+    <property>
+      <name>avionics/radar/weather-atten</name>
+      <type>double</type>
+      <unit>ratio</unit>
+      <desc>Computed attenuation factor from rain/cloud (0..1)</desc>
+    </property>
 
   </channel>
 

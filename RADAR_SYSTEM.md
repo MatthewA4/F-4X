@@ -342,6 +342,18 @@ valleys when flying over deck.  The implementation is conservative – the
 ground contact is cleared every ping – but could be extended to sample a grid
 for a more continuous map.
 
+
+### Weather Clutter
+
+In addition to attenuation the simulated radar generates spurious returns
+when precipitation is moderate to heavy (`/environment/rain-norm > 0.2`).
+For each 0.2 units of rain a random false contact is inserted within 16 nm of
+ownship.  These clutter pips have a small RCS (0.1 m²) and are subject to the
+same LOS and weather attenuation checks as real targets, so they flicker and
+vanish as conditions change.  The behaviour approximates the Doppler noise and
+beam scattering that degrade real fire‑control radars in stormy weather; it
+also provides a visual cue to the pilot that the radar is “dirty”.
+
 Example Nasal helper code:
 
 ```nasal
@@ -358,6 +370,31 @@ var generate_ground_contact = func() {
 
 See the `radar_test_terrain()` regression test for a minimal stub harness that
 exercises both paths without requiring real scenery.
+
+### Weather Effects (Simulation)
+
+The radar manager now simulates X-band attenuation due to precipitation and
+cloud cover using native weather properties exposed by FlightGear.  A helper
+function `weather_attenuation()` reads:
+
+- `/environment/rain-norm` – normalized rain intensity (0‑1); uses FG’s
+  precipitation manager.  Values near 1 represent heavy squalls.
+- `/environment/clouds/layer[n]/coverage` – layer coverage in percent.  The
+  first three layers are averaged for a crude estimate of volumetric cloud
+  density.
+
+The attenuation factor is computed as
+`max(0,1 - 0.6*rain - 0.3*avgCloud)` and is applied multiplicatively to the
+detection probability after horizon and LOS checks.  This produces a
+realistic degradation: strong rain can halve detection range, while dispersed
+clouds impose a lighter penalty.  When either term is zero the factor is 1.0.
+
+The regression test `radar_test_weather()` stubs the weather properties to
+confirm that rain and cloud values reduce the probability compared to clear
+conditions.
+
+*Confidence: moderate; simple empirical model chosen for gameplay and
+scalability.*
 *Confidence: moderate; formulas standard with reasonably chosen coefficients.*
 
 ---

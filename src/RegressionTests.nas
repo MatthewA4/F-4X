@@ -59,6 +59,43 @@ var radar_test_terrain = func() {
     get_cart_ground_intersection = orig_ground;
 };
 
+var radar_test_weather = func() {
+    print('=== Radar Weather Attenuation Tests ===');
+
+    # simple contact far enough to detect in clear weather
+    radar_mgr.mode = RM.VS;
+    var contact = { dx: 50000.0, dy: 0.0, z: 5000.0, rcs: 10.0 };
+
+    # clear conditions - attenuation should be 1.0
+    setprop('/environment/rain-norm', 0);
+    for (var i=0;i<3;i++) setprop(sprintf('/environment/clouds/layer[%d]/coverage',i), 0);
+    var prob_clear = calc_detection_prob(contact);
+    var att_clear = weather_attenuation();
+    rt_assert('Weather attenuation unity in clear sky', att_clear == 1.0);
+
+    # heavy rain should reduce probability significantly
+    setprop('/environment/rain-norm', 1.0);
+    var prob_rain = calc_detection_prob(contact);
+    var att_rain = weather_attenuation();
+    rt_assert('Rain attenuation factor < 1', att_rain < 1.0);
+    rt_assert('Rain reduces detection probability', prob_rain < prob_clear);
+
+    # rain clutter generation: put radar in VS and step ping
+    radar_mgr.mode = RM.VS;
+    clear_contacts();
+    radar_mgr.last_ping = -999;
+    update_radar_manager(1.0);
+    rt_assert('Rain generates weather clutter contacts', radar_mgr.contacts.length > 0);
+
+    # heavy cloud cover also reduces probability
+    setprop('/environment/rain-norm', 0);
+    for (var i=0;i<3;i++) setprop(sprintf('/environment/clouds/layer[%d]/coverage',i), 100);
+    var prob_cloud = calc_detection_prob(contact);
+    var att_cloud = weather_attenuation();
+    rt_assert('Cloud attenuation factor < 1', att_cloud < 1.0);
+    rt_assert('Cloud cover reduces detection probability', prob_cloud < prob_clear);
+};
+
 # call radar tests from NATOPS envelope
 var natops_test_envelope = func() {
     print('=== NATOPS Envelope Tests ===');
@@ -69,6 +106,7 @@ var natops_test_envelope = func() {
     rt_assert('Radar target range property exists', getprop('/avionics/radar/target-range-ft') != nil);
     rt_assert('Radar target bearing property exists', getprop('/avionics/radar/target-bearing-deg') != nil);
     rt_assert('Radar antenna azimuth property exists', getprop('/avionics/radar/antenna-az-deg') != nil);
+    rt_assert('Radar weather attenuation property exists', getprop('/avionics/radar/weather-atten') != nil);
     rt_assert('Radar transmit flag property exists', getprop('/systems/radar/transmit') != nil);
     rt_assert('Stall warning horn property exists', getprop('/afcs/annunciator/stall-horn') != nil);
     rt_assert('Landing weight warning property exists', getprop('/afcs/annunciator/landing-weight-warning') != nil);
@@ -83,6 +121,8 @@ var natops_test_envelope = func() {
 
     # new terrain tests
     radar_test_terrain();
+    # and weather attenuation tests
+    radar_test_weather();
 };
 
 var weapons_test_ballistics = func() {

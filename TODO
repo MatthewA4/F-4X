@@ -29,6 +29,7 @@ Major sections (percentage status):
 	    • VS, RWS, Beacon, TWS, STT, DF, GL modes
 	    • J/S AWG-10B enhancements (improved TWS, dogfight/ground-look)
 	    • Terrain occlusion using FG scenery API; GL mode produces ground returns
+	    • Weather attenuation (rain/cloud) applied to detection probability
 	    • RCS-based detection, horizon masking, PRF/pulse characteristics
 	    • Electrical load integration & HUD symbology
 	✅ Detailed NNWD-derived specification document (RADAR_SYSTEM.md)
