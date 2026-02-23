@@ -63,6 +63,11 @@
       <unit>ratio</unit>
       <desc>Computed attenuation factor from rain/cloud (0..1)</desc>
     </property>
+    <property>
+      <name>avionics/radar/clutter-count</name>
+      <type>int</type>
+      <desc>Number of contacts treated as clutter this ping</desc>
+    </property>
 
   </channel>
 

@@ -55,6 +55,14 @@ var radar_test_terrain = func() {
     update_radar_manager(1.0);
     rt_assert('Ground-look mode creates ground return contact', radar_mgr.contacts.length > 0);
 
+    # when flying low in a search mode, ground clutter should appear
+    radar_mgr.mode = RM.RWS;
+    clear_contacts();
+    radar_mgr.last_ping = -999;
+    update_radar_manager(1.0);
+    rt_assert('Search mode ground clutter present', radar_mgr.contacts.length > 0);
+    rt_assert('Clutter-count property reports >0', (getprop('/avionics/radar/clutter-count') or 0) > 0);
+
     # restore original function
     get_cart_ground_intersection = orig_ground;
 };
@@ -86,6 +94,8 @@ var radar_test_weather = func() {
     radar_mgr.last_ping = -999;
     update_radar_manager(1.0);
     rt_assert('Rain generates weather clutter contacts', radar_mgr.contacts.length > 0);
+    var ccnt = getprop('/avionics/radar/clutter-count') or 0;
+    rt_assert('Clutter-count property reports >0', ccnt > 0);
 
     # heavy cloud cover also reduces probability
     setprop('/environment/rain-norm', 0);

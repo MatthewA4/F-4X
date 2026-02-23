@@ -35,8 +35,12 @@ A comprehensive, NATOPS-compliant flight simulation of the McDonnell Douglas F-4
 
 ✅ **Terrain‑aware Fire Control Radar**
 - Line‑of‑sight occlusion uses FlightGear/SimGear scenery intersection API
-- Weather‑dependent performance: rain and clouds degrade detection; heavy rain creates random clutter pips
-- Ground‑look (GL) mode generates realistic terrain returns and clutter
+- Full Doppler processing: low‑velocity returns (ground/weather clutter) are
+  suppressed, emulating AWG‑10 clutter filters
+- Weather‑dependent performance: rain and clouds attenuate returns and
+  generate dynamic clutter pips
+- Ground clutter in search modes when flying low; GL mode provides dedicated
+  terrain returns
 
 ✅ **Enhanced Nonnuclear Weapons System**
 - **6 tactical loadout configurations**: CAP, CAS-HEAVY, CAS-CLUSTER, SEAD, RECON, FERRY

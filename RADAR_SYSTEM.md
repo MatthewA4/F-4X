@@ -343,16 +343,39 @@ ground contact is cleared every ping – but could be extended to sample a grid
 for a more continuous map.
 
 
-### Weather Clutter
+### Weather & Ground Clutter (Simulation)
 
-In addition to attenuation the simulated radar generates spurious returns
-when precipitation is moderate to heavy (`/environment/rain-norm > 0.2`).
-For each 0.2 units of rain a random false contact is inserted within 16 nm of
-ownship.  These clutter pips have a small RCS (0.1 m²) and are subject to the
-same LOS and weather attenuation checks as real targets, so they flicker and
-vanish as conditions change.  The behaviour approximates the Doppler noise and
-beam scattering that degrade real fire‑control radars in stormy weather; it
-also provides a visual cue to the pilot that the radar is “dirty”.
+The model now includes two distinct clutter mechanisms:
+
+* **Weather clutter:** heavy rain and high cloud density inject random false
+  echoes within the radar’s scan volume.  The density scales with rain
+  intensity and to a lesser extent cloud coverage; each pip is placed at a
+  random range/bearing inside the current scan sector with a small random
+  radial velocity (1–30 kt) and low RCS (≈0.1 m²).  These contacts are
+  filtered by the same LOS, horizon, Doppler and attenuation logic as real
+  targets, producing speckled noise that moves with the antenna sweep.  The
+  implementation mirrors actual AWG‑10 behaviour where precipitation scatters
+  the beam and returns low‑velocity clutter.
+
+* **Ground clutter:** even in non‑GL modes the radar will see terrain in the
+  antenna beam.  Because the AWG‑10 employs Doppler filters the clutter is
+  strongest when the aircraft is low and the antenna is sweeping the deck.
+  `generate_ground_clutter()` casts a handful of rays across the search sector
+  and creates low‑altitude returns when the intersection is within 1000 ft of
+  the aircraft’s altitude.  These have a smaller RCS than dedicated ground
+  returns and are heavily suppressed by Doppler if the aircraft is moving
+  relative to the ground.
+
+A Doppler clutter suppression threshold (`DOPPLER_CLUTTER_VEL_FTPS` ≈ 100 kt)
+reduces the detection probability of any contact whose radial velocity is
+below the threshold; this affects both natural and generated clutter.  The
+`/avionics/radar/clutter-count` property reports how many such low‑RCS
+contacts were present during the last ping for debugging.
+
+Regression tests now explicitly verify weather‑ and ground‑clutter generation
+as well as the Doppler attenuation factor.  Performance is still reasonable
+thanks to the existing LOS cache and the fact that clutter only adds a few
+additional contacts per ping.
 
 Example Nasal helper code:
 

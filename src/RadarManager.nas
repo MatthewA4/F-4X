@@ -28,6 +28,8 @@ var RM = {
 var FT_PER_NM = 6076.11549;
 var KT_TO_FT_S = 1.68781;
 var RADAR_HORIZON_FACTOR = 1.23;   # Miles per sqrt(altitude in feet)
+# Doppler clutter suppression threshold (radial velocity in ft/s)
+var DOPPLER_CLUTTER_VEL_FTPS = 100.0 * KT_TO_FT_S;  # ~100 kt
 
 # Radar parameter sets keyed by mode for quick lookup
 var radar_params = {
@@ -136,6 +138,59 @@ var clear_contacts = func {
     radar_mgr.locked_track = nil;
     radar_mgr.lock_age = 0.0;
     _los_cache = {};     # drop stale LOS entries
+};
+
+# generate weather clutter contacts based on rain intensity and clouds
+var generate_weather_clutter = func() {
+    var rain = getprop("/environment/rain-norm") or 0.0;
+    if (rain < 0.2) return;
+    var p = radar_params[radar_mgr.mode] or nil;
+    if (!p) return;
+    # number of pips scaled to rain; limit to 10
+    var count = math.min(10, math.floor(rain * 10));
+    for (var ci = 0; ci < count; ci++) {
+        var rng = math.random() * p.max_range_ft;
+        var brg = math.random() * p.scan_az - p.scan_az/2;
+        # assign small random drift velocity (0-30 kt)
+        var sp = math.random() * 30.0;
+        create_contact(rng, brg, getprop("/position/altitude-ft") or 0, sp, 0.1);
+    }
+};
+
+# generate ground clutter in search modes (non-GL)
+var generate_ground_clutter = func() {
+    if (radar_mgr.mode == RM.GL) return;
+    var p = radar_params[radar_mgr.mode] or nil;
+    if (!p) return;
+    var own_alt = getprop("/position/altitude-ft") or 0;
+    var hdg = getprop("/orientation/heading-deg", 0);
+    var az0 = radar_mgr.antenna_az;
+    var half = p.scan_az/2;
+    var samples = 5;
+    for (var i = 0; i < samples; i++) {
+        var azScan = az0 - half + (i/(samples-1)) * p.scan_az;
+        var az_rad = (azScan + hdg) * math.pi / 180.0;
+        var dir = { x: math.cos(az_rad), y: math.sin(az_rad), z: 0 };
+        var start = {
+            x: (getprop("/position/ground-x-m") or 0),
+            y: (getprop("/position/ground-y-m") or 0),
+            z: own_alt * 0.3048
+        };
+        var hit = get_cart_ground_intersection(start, dir);
+        if (hit != nil) {
+            var dx = hit.x - start.x;
+            var dy = hit.y - start.y;
+            var rng = math.sqrt(dx*dx + dy*dy) / 0.3048;
+            if (rng <= p.max_range_ft) {
+                var alt_ft = hit.z / 0.3048;
+                var rel_alt = own_alt - alt_ft;
+                if (rel_alt < 1000) {
+                    # low clutter return
+                    create_contact(rng, azScan, alt_ft, 0, RCS.GROUND*0.1);
+                }
+            }
+        }
+    }
 };
 
 # generate a pseudo‑contact from the terrain in the current beam direction
@@ -323,6 +378,15 @@ var calc_detection_prob = func(contact) {
     var ref_range = p.max_range_ft * math.pow(sigma, 0.25); # scale with RCS
     var prob = 1.0 - math.pow(r / ref_range, 4);
     prob = math.max(0.0, math.min(1.0, prob));
+    # Doppler clutter suppression: small radial velocity reduces probability
+    var radial_vel = 0.0;
+    if (contact.dx != 0 or contact.dy != 0) {
+        var mag = math.sqrt(contact.dx*contact.dx + contact.dy*contact.dy);
+        radial_vel = (contact.vx * (contact.dx/mag) + contact.vy * (contact.dy/mag));
+    }
+    if (math.abs(radial_vel) < DOPPLER_CLUTTER_VEL_FTPS) {
+        prob *= 0.1;  # suppress nearly-stationary returns
+    }
     # adjust for horizon
     var alt_ft = contact.z;
     var own_alt_ft = getprop("/position/altitude-ft") or 0;
@@ -367,18 +431,12 @@ var update_radar_manager = func(dt) {
             generate_ground_contact();
         }
 
-        # weather clutter: in rain produce some false pips in normal search modes
-        var rain = getprop("/environment/rain-norm") or 0.0;
-        if (rain > 0.2 and radar_mgr.mode != RM.GL) {
-            var count = math.floor(rain * 5);
-            for (var ci = 0; ci < count; ci++) {
-                var rng = math.random() * 100000.0;
-                var brg = math.random() * 360.0 - 180.0;
-                create_contact(rng, brg, getprop("/position/altitude-ft") or 0, 0.1);
-            }
-        }
+        # generate clutter sources
+        generate_weather_clutter();
+        generate_ground_clutter();
 
         # evaluate detection for each contact
+        var clutter_count = 0;
         for (var j = 0; j < radar_mgr.contacts.length; j++) {
             var cc = radar_mgr.contacts[j];
             if (!in_scan_volume(cc)) {
@@ -387,7 +445,9 @@ var update_radar_manager = func(dt) {
             }
             var prob = calc_detection_prob(cc);
             cc.detected = (math.random() < prob) ? 1 : 0;
+            if (cc.rcs < 0.2) clutter_count += 1;
         }
+        setprop("/avionics/radar/clutter-count", clutter_count);
         # manage track initiation (TWS/STT)
         if (radar_mgr.mode == RM.TWS or radar_mgr.mode == RM.STT) {
             for (var k = 0; k < radar_mgr.contacts.length; k++) {
