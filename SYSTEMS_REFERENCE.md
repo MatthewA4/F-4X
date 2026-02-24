@@ -355,7 +355,10 @@ This document provides a comprehensive overview of all implemented F-4X simulati
 - Twin engine simulation
 - Throttle-to-thrust mapping
 - N1/N2 spool dynamics
-- Fuel flow modeling
+- Fuel flow modeling with TSFC lookup
+  (baseline from NATOPS; scaled by Mach and fuel hydrogen content per
+  ADA078440)
+- New property `/fuel/hydrogen-content-pct` controls fuel quality factor
 
 ### Damage System (damage.nas)
 - Structural damage accumulation

@@ -110,6 +110,10 @@
     <property name="engines/engine[1]/flameout-fuel" type="bool">0</property>
     <property name="fuel/air-trap" type="bool">0</property>
 
+    <!-- Fuel hydrogen content, percent by weight.  Used by J79 engine TSFC
+         correction based on ADA078440 study.  Default 14% typical JP-4/JP-5. -->
+    <property name="fuel/hydrogen-content-pct" type="double">14.0</property>
+
     <!-- Sensor failure states -->
     <switch name="fuel/sensor-fail-fuselage">
       <default value="0"/>

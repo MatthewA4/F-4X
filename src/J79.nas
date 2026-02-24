@@ -12,8 +12,13 @@ var engine = {
     n2: [0, 0],           # N2 (HP compressor) RPM percentage [left, right]
     egt: [0, 0],          # Exhaust Gas Temperature (deg C), [left, right]
     fuel_flow: [0, 0],    # Fuel flow (lbs/hr), [left, right]
-    tsfc: 0.84,           # Thrust-Specific Fuel Consumption (baseline MIL)
-    ab_tsfc: 1.97,        # Afterburner TSFC (baseline)
+    # base TSFC values are taken from the F-4J NATOPS data; the ADA078440
+    # "Evaluation of Fuel Character Effects on J79 Engine Combustion System"
+    # report indicates a typical MIL figure of ≈0.846 lb/(lbf·hr) and shows that
+    # fuels with different hydrogen contents alter TSFC by on the order of
+    # ±10–20%.  A simple hydrogen-content correction is applied below.
+    tsfc: 0.846,          # baseline MIL TSFC
+    ab_tsfc: 1.98,        # baseline afterburner TSFC (approximately 2×)
 };
 
 # Throttle states
@@ -59,10 +64,26 @@ var afterburner = {
 # Helper: get property or default
 var getp = func(p, d) { return getprop(p) != nil ? getprop(p) : d; }
 
-# TSFC lookup with Mach/AB compensation
+# TSFC lookup with Mach/AB and fuel‑quality compensation
+# percent hydrogen by weight in fuel; available via property so
+# fuel-system/maintenance routines (or tests) can override for different
+# blends.  Default value reflects typical JP‑4/JP‑5 composition.
+var fuel_hydrogen_pct = func() {
+    return getprop('/fuel/hydrogen-content-pct', 14.0);
+};
+
+# Simple linear correction based on ADA078440 results: more hydrogen tends to
+# slightly increase TSFC (light fuel, lower energy density).  The slope here is
+# modest (~5% per percent H) and can be tuned later.
+var hydrogen_factor = func(h_pct) {
+    return 1.0 + (h_pct - 14.0) * 0.05;
+};
+
 var get_tsfc = func(mach, ab_state) {
-    var tsfc_baseline = ab_state ? 1.97 : 0.84;
-    
+    var tsfc_baseline = ab_state ? engine.ab_tsfc : engine.tsfc;
+var factor = hydrogen_factor(fuel_hydrogen_pct());
+    tsfc_baseline *= factor;
+
     # Apply Mach correction (transonic/supersonic TSFC rise)
     if (mach < 0.8) {
         return tsfc_baseline * 0.95; # slight reduction at low mach

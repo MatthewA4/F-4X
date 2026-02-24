@@ -192,6 +192,18 @@ var systems_test_fuel = func() {
     # Test 2: Jettison tank index valid range (0-3)
     var jettison_tank = getprop('/controls/fuel/jettison-tank') or 0;
     rt_assert_range('Jettison tank index valid', jettison_tank, 0, 3);
+
+    # Test 3: TSFC lookup produces reasonable values
+    var f = get_tsfc(0.0, 0);
+    rt_assert_range('TSFC at zero mach sane', f, 0.5, 1.2);
+    var f2 = get_tsfc(0.9, 0);
+    rt_assert('TSFC increases in transonic', f2 > f);
+    # change hydrogen content and verify factor applies
+    setprop('/fuel/hydrogen-content-pct', 12.0);
+    var f_lowH = get_tsfc(0.0, 0);
+    setprop('/fuel/hydrogen-content-pct', 15.0);
+    var f_highH = get_tsfc(0.0, 0);
+    rt_assert('Higher hydrogen increases TSFC', f_highH > f_lowH);
 };
 
 var systems_test_gear = func() {
