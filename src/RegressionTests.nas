@@ -206,6 +206,24 @@ var systems_test_fuel = func() {
     rt_assert('Higher hydrogen increases TSFC', f_highH > f_lowH);
 };
 
+# smoke model tests
+var engines_test_smoke = func() {
+    print('=== Engine Smoke Tests ===');
+    # baseline smoke
+    var s0 = get_smoke_number(10000, 0.5, 14.0, 1.0);
+    rt_assert_range('Smoke number baseline positive', s0, 0, 10);
+    # hydrogen effect
+    var s_lowH = get_smoke_number(10000, 0.5, 12.0, 1.0);
+    var s_highH = get_smoke_number(10000, 0.5, 15.0, 1.0);
+    rt_assert('Lower hydrogen increases smoke', s_lowH > s_highH);
+    # naphthalene effect
+    var s_lowN = get_smoke_number(10000, 0.5, 14.0, 0.5);
+    var s_highN = get_smoke_number(10000, 0.5, 14.0, 2.0);
+    rt_assert('Higher naphthalene increases smoke', s_highN > s_lowN);
+};
+
+
+
 var systems_test_gear = func() {
     print('=== Systems: Landing Gear Tests ===');
     
@@ -264,6 +282,7 @@ var run_all_regression_tests = func() {
     systems_test_hydraulics();
     systems_test_electrical();
     systems_test_fuel();
+    engines_test_smoke();
     systems_test_gear();
     systems_test_environment();
     systems_test_fcs();

@@ -282,6 +282,13 @@ Three test harnesses are provided for validation:
 ```
 Tests: radar, weapons, stores, fuel, hydraulics, electrical, gear, env, FCS.
 
+The J79 engine simulation now calculates a simple SAE **smoke number** that
+reflects fuel chemistry.  Two new fuel properties control this behaviour:
+`/fuel/hydrogen-content-pct` and `/fuel/naphthalene-content-volpct`.
+Smoke numbers are written to `/engines/engine[i]/smoke-number` and may be used
+by visual effects or diagnostic displays.  Values are based on regression
+analyses from ADA095057 (smokeless combustor study).
+
 ### NATOPS Regression Tests
 `src/RegressionTests.nas` provides `run_all_regression_tests()` to validate compliance with NATOPS procedures and system specifications.
 ```bash

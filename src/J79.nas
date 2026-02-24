@@ -12,6 +12,7 @@ var engine = {
     n2: [0, 0],           # N2 (HP compressor) RPM percentage [left, right]
     egt: [0, 0],          # Exhaust Gas Temperature (deg C), [left, right]
     fuel_flow: [0, 0],    # Fuel flow (lbs/hr), [left, right]
+    smoke_number: [0,0],  # SAE smoke number computed each frame
     # base TSFC values are taken from the F-4J NATOPS data; the ADA078440
     # "Evaluation of Fuel Character Effects on J79 Engine Combustion System"
     # report indicates a typical MIL figure of ≈0.846 lb/(lbf·hr) and shows that
@@ -200,6 +201,12 @@ var update_throttle = func {
         
         engine.fuel_flow[i] = fuel_flow_lbs_per_hr;
         
+        # Smoke number: based on thrust, Mach, fuel chemistry
+        var h_pct = fuel_hydrogen_pct();
+        var naph = getprop('/fuel/naphthalene-content-volpct') or 0;
+        engine.smoke_number[i] = get_smoke_number(thrust_lbf, mach, h_pct, naph);
+        setprop("/engines/engine[" ~ i ~ "]/smoke-number", engine.smoke_number[i]);
+        
         # Push fuel flow to properties so fuel system can read it
         setprop("/engines/engine[" ~ i ~ "]/fuel-flow-gph", fuel_flow_lbs_per_hr / 6.7);
         setprop("/fdm/jsbsim/propulsion/engine[" ~ i ~ "]/fuel-flow-lbs_per_hr", fuel_flow_lbs_per_hr);
@@ -210,6 +217,18 @@ var update_throttle = func {
             engine_state[i == 0 ? "left_running" : "right_running"] = 0;
         }
     }
+};
+
+# Smoke number calculation helper
+var get_smoke_number = func(thrust_lbf, mach, h_pct, naph_v) {
+    # Simple empirical model based on ADA095057 results:
+    #  - smoke increases substantially with lower hydrogen content (exponential)
+    #  - smoke rises linearly with naphthalene volume percent (slope 0.00711)
+    #  - assume smoke roughly proportional to thrust magnitude
+    var base = 0.02 + (thrust_lbf / 50000.0) * 0.1; # very coarse baseline
+    var h_factor = math.exp((14.0 - h_pct) * 0.4);
+    var n_factor = 1.0 + 0.00711 * naph_v;
+    return base * h_factor * n_factor;
 };
 
 # Generator online logic

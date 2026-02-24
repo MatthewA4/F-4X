@@ -42,6 +42,8 @@ var run_smoke = func() {
     assert_prop_exists('/gear/gear-pos-norm');
     assert_prop_exists('/cabin/canopy-open');
     assert_prop_exists('/fcs/aileron-gain');
+    assert_prop_exists('/engines/engine[0]/smoke-number');
+    assert_prop_exists('/engines/engine[1]/smoke-number');
     
     print(sprintf('=== TEST RESULTS: %d/%d passed ===' , test_passed, test_count));
     return (test_passed == test_count);

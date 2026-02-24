@@ -108,11 +108,19 @@
     <property name="fuel/cg-shift" type="double">0.0</property>
     <property name="engines/engine[0]/flameout-fuel" type="bool">0</property>
     <property name="engines/engine[1]/flameout-fuel" type="bool">0</property>
+    <!-- smoke number for each engine (dimensionless SAE) computed by J79.nas -->
+    <property name="engines/engine[0]/smoke-number" type="double">0.0</property>
+    <property name="engines/engine[1]/smoke-number" type="double">0.0</property>
     <property name="fuel/air-trap" type="bool">0</property>
 
     <!-- Fuel hydrogen content, percent by weight.  Used by J79 engine TSFC
          correction based on ADA078440 study.  Default 14% typical JP-4/JP-5. -->
     <property name="fuel/hydrogen-content-pct" type="double">14.0</property>
+
+    <!-- Fuel aromatic content (naphthalene) as volume percent.  Used by J79
+         smoke-number correction per ADA095057 regression (≈0.00711 increase per
+         percent vol). -->
+    <property name="fuel/naphthalene-content-volpct" type="double">1.0</property>
 
     <!-- Sensor failure states -->
     <switch name="fuel/sensor-fail-fuselage">

@@ -358,7 +358,15 @@ This document provides a comprehensive overview of all implemented F-4X simulati
 - Fuel flow modeling with TSFC lookup
   (baseline from NATOPS; scaled by Mach and fuel hydrogen content per
   ADA078440)
+- Smoke emission computation using fuel hydrogen and naphthalene content
+  (ADA095057 smokeless combustor study)
+- Exposed properties:
+  - `/engines/engine[i]/smoke-number` (dimensionless SAE smoke number)
+  - `/fuel/hydrogen-content-pct`
+  - `/fuel/naphthalene-content-volpct`
 - New property `/fuel/hydrogen-content-pct` controls fuel quality factor
+- New property `/fuel/naphthalene-content-volpct` influences smoke emissions
+  (regression slope 0.00711 smoke-number per vol% from ADA095057).
 
 ### Damage System (damage.nas)
 - Structural damage accumulation
