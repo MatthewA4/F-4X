@@ -98,12 +98,55 @@ See LICENSE file for the GPL version 2 text.
 				<z-offset-m type="double">-3.5415</z-offset-m>
 			</config>
 		</view>
+		<view>
+			<name>RIO View</name>
+			<type>lookfrom</type>
+			<internal type="bool">true</internal>
+			<config>
+				<from-model type="bool">true</from-model>
+				<from-model-idx type="int">0</from-model-idx>
+				<x-offset-m type="double">0</x-offset-m>
+				<y-offset-m type="double">-0.79</y-offset-m>
+				<z-offset-m type="double">-3.5415</z-offset-m>
+			</config>
+		</view>
 	</sim>
 
 	<controls>
 		<flight>
 			<elevator-trim type="double">-0.05</elevator-trim>
 		</flight>
+		<switches>
+			<!-- Rear seat (RIO) controls -->
+			<rio>
+				<function-selector type="int">0</function-selector>
+				<intercom-foot-switch type="bool">false</intercom-foot-switch>
+				<bdhi-mode type="int">0</bdhi-mode>
+				<radar-scope-brightness type="double">0.5</radar-scope-brightness>
+				<weapons-station-selector type="int">0</weapons-station-selector>
+				<antenna-switch type="bool">false</antenna-switch>
+				<cooling-reset type="bool">false</cooling-reset>
+				<outflow-valve type="double">0.5</outflow-valve>
+				<canopy-light type="bool">false</canopy-light>
+				<interior-lighting type="double">0.5</interior-lighting>
+				<utility-light type="bool">false</utility-light>
+				<supply-lever type="bool">false</supply-lever>
+				<oxygen-gage type="double">0.0</oxygen-gage>
+				<link-panel type="int">0</link-panel>
+				<emergency-amplifiers type="bool">false</emergency-amplifiers>
+				<attitude-indicator type="int">0</attitude-indicator>
+				<comm-nav-panel type="int">0</comm-nav-panel>
+				<radio-mike type="bool">false</radio-mike>
+				<ados-indicator type="bool">false</ados-indicator>
+				<canopy-controls type="int">0</canopy-controls>
+				<circuit-breakers type="bool">false</circuit-breakers>
+				<fuel-indicators type="double">0.0</fuel-indicators>
+				<electrical-test-receptacle type="bool">false</electrical-test-receptacle>
+				<compass-system type="int">0</compass-system>
+				<computer-control-panel type="int">0</computer-control-panel>
+				<bit-switch type="bool">false</bit-switch>
+			</rio>
+		</switches>
 	</controls>
 
 	<consumables>
@@ -257,6 +300,9 @@ See LICENSE file for the GPL version 2 text.
 		<pilot>
 			<file>Aircraft/F-4X/src/PilotPhysiology.nas</file>
 		</pilot>
+		<rio>
+			<file>Aircraft/F-4X/src/RIO.nas</file>
+		</rio>
 	</nasal>
 
 	<systems>
